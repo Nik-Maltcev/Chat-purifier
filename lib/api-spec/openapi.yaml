@@ -3,20 +3,23 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Telegram Chat Analyzer API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: sessions
+    description: Analysis session management
+  - name: chats
+    description: Chat analysis results
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +27,173 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /sessions:
+    post:
+      operationId: createSession
+      tags: [sessions]
+      summary: Create a new analysis session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSessionBody"
+      responses:
+        "201":
+          description: Session created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Session"
+    get:
+      operationId: listSessions
+      tags: [sessions]
+      summary: List all sessions
+      responses:
+        "200":
+          description: List of sessions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Session"
+
+  /sessions/{sessionId}:
+    get:
+      operationId: getSession
+      tags: [sessions]
+      summary: Get session details
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Session details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Session"
+
+  /sessions/{sessionId}/start:
+    post:
+      operationId: startSession
+      tags: [sessions]
+      summary: Start processing a session
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Session started
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Session"
+
+  /sessions/{sessionId}/stop:
+    post:
+      operationId: stopSession
+      tags: [sessions]
+      summary: Stop processing a session
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Session stopped
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Session"
+
+  /sessions/{sessionId}/chats:
+    get:
+      operationId: getSessionChats
+      tags: [chats]
+      summary: Get chats for a session
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: verdict
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [keep, filter, pending, error]
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [pending, fetching, analyzing, done, error, skipped]
+      responses:
+        "200":
+          description: List of chats
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ChatResult"
+
+  /sessions/{sessionId}/summary:
+    get:
+      operationId: getSessionSummary
+      tags: [sessions]
+      summary: Get summary stats for a session
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Session summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessionSummary"
+
+  /sessions/{sessionId}/export:
+    get:
+      operationId: exportSession
+      tags: [sessions]
+      summary: Export results as CSV text
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: verdict
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [keep, filter, all]
+      responses:
+        "200":
+          description: CSV export
+          content:
+            text/plain:
+              schema:
+                type: string
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +204,145 @@ components:
       required:
         - status
 
+    CreateSessionBody:
+      type: object
+      properties:
+        name:
+          type: string
+        chatList:
+          type: string
+          description: Newline-separated list of chat usernames or links
+        delaySeconds:
+          type: integer
+          default: 12
+        messagesCount:
+          type: integer
+          default: 50
+      required:
+        - name
+        - chatList
+
+    Session:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        status:
+          type: string
+          enum: [idle, running, paused, completed, error]
+        totalChats:
+          type: integer
+        processedChats:
+          type: integer
+        delaySeconds:
+          type: integer
+        messagesCount:
+          type: integer
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      required:
+        - id
+        - name
+        - status
+        - totalChats
+        - processedChats
+        - delaySeconds
+        - messagesCount
+        - createdAt
+        - updatedAt
+
+    ChatResult:
+      type: object
+      properties:
+        id:
+          type: integer
+        sessionId:
+          type: integer
+        chatIdentifier:
+          type: string
+        chatTitle:
+          type: string
+          nullable: true
+        chatUsername:
+          type: string
+          nullable: true
+        membersCount:
+          type: integer
+          nullable: true
+        status:
+          type: string
+          enum: [pending, fetching, analyzing, done, error, skipped]
+        verdict:
+          type: string
+          enum: [keep, filter, pending, error]
+          nullable: true
+        score:
+          type: integer
+          nullable: true
+          description: Quality score 1-10
+        spamScore:
+          type: integer
+          nullable: true
+          description: Spam score 1-10
+        activityScore:
+          type: integer
+          nullable: true
+          description: Activity score 1-10
+        topicScore:
+          type: integer
+          nullable: true
+          description: Topic relevance score 1-10
+        aiSummary:
+          type: string
+          nullable: true
+        errorMessage:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      required:
+        - id
+        - sessionId
+        - chatIdentifier
+        - status
+        - verdict
+        - createdAt
+        - updatedAt
+
+    SessionSummary:
+      type: object
+      properties:
+        sessionId:
+          type: integer
+        total:
+          type: integer
+        processed:
+          type: integer
+        keep:
+          type: integer
+        filter:
+          type: integer
+        errors:
+          type: integer
+        pending:
+          type: integer
+        avgScore:
+          type: number
+          nullable: true
+        avgSpamScore:
+          type: number
+          nullable: true
+      required:
+        - sessionId
+        - total
+        - processed
+        - keep
+        - filter
+        - errors
+        - pending

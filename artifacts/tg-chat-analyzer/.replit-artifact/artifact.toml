@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Telegram Chat Analyzer"
+version = "1.0.0"
+id = "artifacts/tg-chat-analyzer"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18820
+
+[services.development]
+run = "pnpm --filter @workspace/tg-chat-analyzer run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/tg-chat-analyzer", "run", "build" ]
+publicDir = "artifacts/tg-chat-analyzer/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18820"
+BASE_PATH = "/"

@@ -1,0 +1,303 @@
+import { useState } from "react";
+import { useParams } from "wouter";
+import { 
+  useGetSession, 
+  useGetSessionChats, 
+  useGetSessionSummary,
+  useStartSession,
+  useStopSession,
+  useExportSession
+} from "@workspace/api-client-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { SessionStatusBadge } from "@/components/session-status-badge";
+import { VerdictChip } from "@/components/verdict-chip";
+import { ScorePill } from "@/components/score-pill";
+import { Play, Square, Download, ArrowLeft, Info } from "lucide-react";
+import { Link } from "wouter";
+import { useToast } from "@/hooks/use-toast";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+
+export function SessionDetail() {
+  const { id } = useParams<{ id: string }>();
+  const sessionId = parseInt(id, 10);
+  const { toast } = useToast();
+  
+  const [verdictFilter, setVerdictFilter] = useState<string | undefined>();
+  const [exportVerdict, setExportVerdict] = useState<"keep" | "all">("keep");
+
+  const { data: session, refetch: refetchSession } = useGetSession(sessionId, {
+    query: {
+      refetchInterval: (query) => query.state.data?.status === "running" ? 5000 : false
+    }
+  });
+
+  const { data: summary } = useGetSessionSummary(sessionId, {
+    query: {
+      refetchInterval: (query) => session?.status === "running" ? 5000 : false
+    }
+  });
+
+  const { data: chats } = useGetSessionChats(sessionId, 
+    { verdict: verdictFilter as any },
+    {
+      query: {
+        refetchInterval: (query) => session?.status === "running" ? 5000 : false
+      }
+    }
+  );
+
+  const startMutation = useStartSession();
+  const stopMutation = useStopSession();
+  
+  const { refetch: triggerExport, isFetching: isExporting } = useExportSession(
+    sessionId,
+    { verdict: exportVerdict as any },
+    {
+      query: {
+        enabled: false,
+      }
+    }
+  );
+  
+  const handleStart = () => {
+    startMutation.mutate({ sessionId }, {
+      onSuccess: () => {
+        toast({ title: "Session started" });
+        refetchSession();
+      }
+    });
+  };
+
+  const handleStop = () => {
+    stopMutation.mutate({ sessionId }, {
+      onSuccess: () => {
+        toast({ title: "Session stopped" });
+        refetchSession();
+      }
+    });
+  };
+
+  const handleExport = async (verdict: "keep" | "all") => {
+    setExportVerdict(verdict);
+    try {
+      // Small timeout to allow state to settle for query key
+      setTimeout(async () => {
+        const { data } = await triggerExport();
+        if (data) {
+          const blob = new Blob([data], { type: "text/csv" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `session-${sessionId}-${verdict}.csv`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }
+      }, 0);
+    } catch (err) {
+      toast({ title: "Export failed", variant: "destructive" });
+    }
+  };
+
+  if (!session) return <div className="p-8 text-center text-muted-foreground">Loading...</div>;
+
+  const progressPercent = session.totalChats > 0 ? (session.processedChats / session.totalChats) * 100 : 0;
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <Link href="/">
+            <Button variant="ghost" size="icon">
+              <ArrowLeft className="w-4 h-4" />
+            </Button>
+          </Link>
+          <div>
+            <div className="flex items-center gap-3">
+              <h1 className="text-2xl font-bold tracking-tight">{session.name}</h1>
+              <SessionStatusBadge status={session.status} />
+            </div>
+            <p className="text-sm text-muted-foreground mt-1 font-mono">
+              ID: {session.id} | Delay: {session.delaySeconds}s | Context: {session.messagesCount} msgs
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          {session.status === "running" ? (
+            <Button variant="destructive" size="sm" onClick={handleStop} disabled={stopMutation.isPending}>
+              <Square className="w-4 h-4 mr-2" />
+              Stop
+            </Button>
+          ) : session.status !== "completed" ? (
+            <Button variant="default" size="sm" onClick={handleStart} disabled={startMutation.isPending || session.processedChats >= session.totalChats}>
+              <Play className="w-4 h-4 mr-2" />
+              Start Run
+            </Button>
+          ) : null}
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm">
+                <Download className="w-4 h-4 mr-2" />
+                Export
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => handleExport("keep")}>Export 'Keep' only</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleExport("all")}>Export All</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <Card className="col-span-1 md:col-span-2">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium">Progress</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex justify-between items-end mb-2">
+              <span className="text-2xl font-bold font-mono">{session.processedChats} <span className="text-muted-foreground text-sm">/ {session.totalChats}</span></span>
+              <span className="text-sm font-medium">{Math.round(progressPercent)}%</span>
+            </div>
+            <Progress value={progressPercent} className="h-2" />
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium">Verdict Breakdown</CardTitle>
+          </CardHeader>
+          <CardContent className="flex gap-4">
+            <div className="flex flex-col">
+              <span className="text-sm text-muted-foreground">Keep</span>
+              <span className="text-xl font-bold text-green-600 font-mono">{summary?.keep || 0}</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-sm text-muted-foreground">Filter</span>
+              <span className="text-xl font-bold text-red-600 font-mono">{summary?.filter || 0}</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-sm text-muted-foreground">Errors</span>
+              <span className="text-xl font-bold text-orange-600 font-mono">{summary?.errors || 0}</span>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium">Avg Scores</CardTitle>
+          </CardHeader>
+          <CardContent className="flex gap-4">
+            <div className="flex flex-col">
+              <span className="text-sm text-muted-foreground">Quality</span>
+              <span className="text-xl font-bold font-mono">{summary?.avgScore ? summary.avgScore.toFixed(1) : '-'}</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-sm text-muted-foreground">Spam</span>
+              <span className="text-xl font-bold font-mono">{summary?.avgSpamScore ? summary.avgSpamScore.toFixed(1) : '-'}</span>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card>
+        <div className="flex items-center justify-between p-4 border-b">
+          <h3 className="font-semibold">Chat Results</h3>
+          <div className="flex gap-2">
+            {(["all", "keep", "filter", "error", "pending"] as const).map(v => (
+              <Button 
+                key={v}
+                variant={verdictFilter === v || (v === "all" && !verdictFilter) ? "secondary" : "ghost"}
+                size="sm"
+                onClick={() => setVerdictFilter(v === "all" ? undefined : v)}
+                className="h-7 text-xs px-2.5"
+              >
+                {v.charAt(0).toUpperCase() + v.slice(1)}
+              </Button>
+            ))}
+          </div>
+        </div>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-muted/50 hover:bg-muted/50">
+                <TableHead className="w-[180px]">Target</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Verdict</TableHead>
+                <TableHead className="text-center">Scores (Q/S/A/T)</TableHead>
+                <TableHead>Members</TableHead>
+                <TableHead className="max-w-[300px]">AI Summary</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {chats?.map((chat) => (
+                <TableRow key={chat.id}>
+                  <TableCell className="font-mono text-xs font-medium truncate max-w-[180px]">
+                    {chat.chatIdentifier}
+                    {chat.chatTitle && <div className="text-muted-foreground truncate">{chat.chatTitle}</div>}
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant="outline" className="font-mono text-[10px] tracking-wider uppercase bg-transparent">
+                      {chat.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <VerdictChip verdict={chat.verdict} />
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <div className="flex items-center justify-center gap-1">
+                      <ScorePill score={chat.score} />
+                      <ScorePill score={chat.spamScore} />
+                      <ScorePill score={chat.activityScore} />
+                      <ScorePill score={chat.topicScore} />
+                    </div>
+                  </TableCell>
+                  <TableCell className="font-mono text-xs text-muted-foreground">
+                    {chat.membersCount?.toLocaleString() || '-'}
+                  </TableCell>
+                  <TableCell className="text-sm max-w-[300px]">
+                    {chat.aiSummary ? (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="truncate cursor-help text-muted-foreground flex items-center gap-1">
+                            <Info className="w-3 h-3 flex-shrink-0" />
+                            {chat.aiSummary}
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent className="max-w-xs font-mono text-xs">
+                          {chat.aiSummary}
+                        </TooltipContent>
+                      </Tooltip>
+                    ) : chat.errorMessage ? (
+                      <span className="text-destructive text-xs truncate block max-w-[300px]" title={chat.errorMessage}>
+                        {chat.errorMessage}
+                      </span>
+                    ) : (
+                      <span className="text-muted-foreground/30">-</span>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+              {chats?.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
+                    No chats match the selected filter.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+      </Card>
+
+    </div>
+  );
+}
