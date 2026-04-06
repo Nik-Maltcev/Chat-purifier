@@ -2,7 +2,7 @@
 
 ## Overview
 
-pnpm workspace monorepo using TypeScript. Each package manages its own dependencies.
+Telegram Chat Analyzer — инструмент для массовой проверки Telegram-чатов на тему эмиграции. Выгружает последние сообщения из каждого чата и анализирует их через Kimi AI.
 
 ## Stack
 
@@ -15,6 +15,35 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 - **Validation**: Zod (`zod/v4`), `drizzle-zod`
 - **API codegen**: Orval (from OpenAPI spec)
 - **Build**: esbuild (CJS bundle)
+- **Telegram**: gramjs (MTProto), session string auth
+- **AI**: Kimi (Moonshot AI) moonshot-v1-8k model
+
+## Artifacts
+
+- **`artifacts/tg-chat-analyzer`** — React+Vite фронтенд (порт 18820), previewPath `/`
+- **`artifacts/api-server`** — Express API сервер (порт 8080), previewPath `/api`
+
+## Features
+
+- Создание сессий анализа с произвольным списком чатов
+- Фоновая обработка с задержками (настраиваемые, default 12s) для защиты от блокировки Telegram
+- **Извлечение чатов из Telegram папок** (t.me/addlist/...) через MTProto API
+- Анализ через Kimi: спам-score, активность, релевантность теме, итоговая оценка
+- Вердикт keep/filter для каждого чата
+- Авто-обновление прогресса каждые 5 секунд
+- Экспорт результатов в CSV
+
+## Secrets Required
+
+- `TELEGRAM_APP_ID` — App ID с my.telegram.org
+- `TELEGRAM_APP_HASH` — App Hash с my.telegram.org
+- `TELEGRAM_SESSION` — Session String (авторизованная сессия)
+- `KIMI_API_KEY` — API ключ от Moonshot AI (platform.moonshot.cn)
+
+## Notes
+
+- `bufferutil` и `utf-8-validate` — stub-модули в `node_modules/` (нативные бинари не компилируются в Replit, websocket работает без них через JS fallback)
+- Telegram клиент — синглтон, подключается при первом запросе
 
 ## Key Commands
 
