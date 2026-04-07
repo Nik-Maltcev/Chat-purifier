@@ -7,14 +7,36 @@
  * 5. Automatic "human break" every 50 chats (2-5 min pause)
  * 6. Abortable sleeps — stop button works instantly during any wait
  * 7. Fresh session config on every iteration — delay changes take effect immediately
+ * 8. Daily quota — auto-pause when daily limit reached, resumes next day
  */
 import { db, sessionsTable, chatResultsTable } from "@workspace/db";
-import { eq, and } from "drizzle-orm";
+import { eq, and, gte } from "drizzle-orm";
 import { fetchChatMessages, getFloodWaitSeconds } from "./telegram.js";
 import { analyzeChat } from "./deepseek.js";
 import { logger } from "./logger.js";
+import { getSettingValue } from "./settings-store.js";
 
 const activeProcessors = new Map<number, AbortController>();
+
+/** Returns how many chats have been processed today (UTC day boundary). */
+export async function getDailyProcessedCount(): Promise<number> {
+  const todayMidnight = new Date();
+  todayMidnight.setUTCHours(0, 0, 0, 0);
+  const rows = await db.select().from(chatResultsTable)
+    .where(
+      and(
+        gte(chatResultsTable.updatedAt, todayMidnight),
+      )
+    );
+  return rows.filter(r => r.status === "done" || r.status === "skipped" || r.status === "error").length;
+}
+
+/** Returns the daily quota limit from settings (default 150). */
+async function getDailyQuota(): Promise<number> {
+  const val = await getSettingValue("daily_quota");
+  const n = parseInt(val || "150", 10);
+  return isNaN(n) || n <= 0 ? 150 : n;
+}
 
 /**
  * Abortable sleep: returns true if slept full time, false if aborted.
@@ -116,7 +138,43 @@ async function processSession(sessionId: number, signal: AbortSignal): Promise<v
 
       if (!chat) break; // All done
 
-      logger.info({ sessionId, chatId: chat.id, identifier: chat.chatIdentifier }, "Processing chat");
+      // TECHNIQUE 8: Daily quota check
+      const [dailyCount, dailyQuota] = await Promise.all([getDailyProcessedCount(), getDailyQuota()]);
+      if (dailyCount >= dailyQuota) {
+        // Calculate seconds until next UTC midnight
+        const now = new Date();
+        const nextMidnight = new Date();
+        nextMidnight.setUTCHours(24, 0, 0, 0);
+        const msUntilMidnight = nextMidnight.getTime() - now.getTime();
+        const hUntil = Math.ceil(msUntilMidnight / 3600000);
+
+        logger.warn(
+          { dailyCount, dailyQuota, msUntilMidnight },
+          `Дневная квота достигнута (${dailyCount}/${dailyQuota}). Пауза до следующего дня.`
+        );
+
+        await db.update(sessionsTable).set({
+          status: "paused",
+          updatedAt: new Date(),
+        }).where(eq(sessionsTable.id, sessionId));
+
+        // Wait until next UTC midnight + small buffer, or until stopped
+        await abortableSleep(msUntilMidnight + 60_000, signal);
+
+        if (signal.aborted) {
+          activeProcessors.delete(sessionId);
+          return;
+        }
+
+        // Resume automatically next day
+        await db.update(sessionsTable).set({
+          status: "running",
+          updatedAt: new Date(),
+        }).where(eq(sessionsTable.id, sessionId));
+        continue;
+      }
+
+      logger.info({ sessionId, chatId: chat.id, identifier: chat.chatIdentifier, dailyCount, dailyQuota }, "Processing chat");
 
       // TECHNIQUE 5: Human-like break every 50 chats
       if (totalProcessed > 0 && totalProcessed % 50 === 0) {

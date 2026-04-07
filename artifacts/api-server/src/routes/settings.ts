@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { getAllSettings, setSettingValue } from "../lib/settings-store.js";
 import { resetTelegramClient } from "../lib/telegram.js";
+import { getDailyProcessedCount } from "../lib/processor.js";
 
 const router = Router();
 
@@ -21,6 +22,7 @@ router.get("/settings", async (_req, res) => {
   }
   masked["default_delay_seconds"] = all["default_delay_seconds"] ?? "30";
   masked["default_messages_count"] = all["default_messages_count"] ?? "50";
+  masked["daily_quota"] = all["daily_quota"] ?? "150";
   res.json(masked);
 });
 
@@ -32,13 +34,14 @@ router.get("/settings/raw", async (_req, res) => {
   }
   out["default_delay_seconds"] = all["default_delay_seconds"] ?? "30";
   out["default_messages_count"] = all["default_messages_count"] ?? "50";
+  out["daily_quota"] = all["daily_quota"] ?? "150";
   res.json(out);
 });
 
 router.post("/settings", async (req, res) => {
   const body = req.body as Record<string, unknown>;
 
-  const allowed = [...SENSITIVE_KEYS, "default_delay_seconds", "default_messages_count"];
+  const allowed = [...SENSITIVE_KEYS, "default_delay_seconds", "default_messages_count", "daily_quota"];
   let telegramChanged = false;
 
   for (const key of allowed) {
@@ -58,6 +61,20 @@ router.post("/settings", async (req, res) => {
   }
 
   res.json({ ok: true });
+});
+
+router.get("/quota", async (_req, res) => {
+  const all = await getAllSettings();
+  const quota = parseInt(all["daily_quota"] ?? "150", 10);
+  const todayCount = await getDailyProcessedCount();
+  const todayMidnight = new Date();
+  todayMidnight.setUTCHours(0, 0, 0, 0);
+  res.json({
+    quota,
+    todayCount,
+    remaining: Math.max(0, quota - todayCount),
+    resetAt: new Date(todayMidnight.getTime() + 86400000).toISOString(),
+  });
 });
 
 export default router;
