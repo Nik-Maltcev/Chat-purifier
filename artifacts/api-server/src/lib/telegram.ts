@@ -12,7 +12,27 @@ export function resetTelegramClient(): void {
   }
   client = null;
   clientConnected = false;
-  logger.info("Telegram client reset (credentials changed)");
+  logger.info("Telegram client reset");
+}
+
+/**
+ * Detect if an error is a FloodWait and return wait seconds, or null.
+ * gramjs FloodWaitError has .seconds property.
+ */
+export function getFloodWaitSeconds(err: unknown): number | null {
+  if (!err || typeof err !== "object") return null;
+  const e = err as Record<string, unknown>;
+  // gramjs FloodWaitError
+  if (typeof e.seconds === "number") return e.seconds;
+  // Check message string
+  const msg = String(e.message || "");
+  const m = msg.match(/FLOOD_WAIT[_\s]+(\d+)/i);
+  if (m) return parseInt(m[1], 10);
+  // Also check errorMessage
+  const em = String(e.errorMessage || "");
+  const m2 = em.match(/FLOOD_WAIT[_\s]+(\d+)/i);
+  if (m2) return parseInt(m2[1], 10);
+  return null;
 }
 
 export async function getTelegramClient(): Promise<TelegramClient> {
@@ -26,15 +46,19 @@ export async function getTelegramClient(): Promise<TelegramClient> {
   const apiId = parseInt(apiIdStr, 10);
 
   if (!apiId || !apiHash || !sessionString) {
-    throw new Error("Telegram API не настроен. Зайдите в Настройки и укажите App ID, App Hash и Session.");
+    throw new Error("Telegram API не настроен. Зайдите в Настройки.");
   }
 
   const session = new StringSession(sessionString);
   client = new TelegramClient(session, apiId, apiHash, {
-    connectionRetries: 3,
-    retryDelay: 2000,
+    connectionRetries: 5,
+    retryDelay: 3000,
     autoReconnect: true,
-    requestRetries: 3,
+    requestRetries: 5,
+    // Auto-sleep FloodWait up to 120 seconds internally
+    floodSleepThreshold: 120,
+    // Use sequential updates to be less aggressive
+    sequentialUpdates: true,
   });
 
   await client.connect();
@@ -44,7 +68,10 @@ export async function getTelegramClient(): Promise<TelegramClient> {
   return client;
 }
 
-export async function fetchChatMessages(chatIdentifier: string, messagesCount: number): Promise<{
+export async function fetchChatMessages(
+  chatIdentifier: string,
+  messagesCount: number
+): Promise<{
   title: string | null;
   username: string | null;
   membersCount: number | null;
@@ -53,10 +80,9 @@ export async function fetchChatMessages(chatIdentifier: string, messagesCount: n
   const tg = await getTelegramClient();
 
   const cleanIdentifier = chatIdentifier
-    .replace("https://t.me/", "")
-    .replace("http://t.me/", "")
-    .replace("t.me/", "")
-    .replace("@", "")
+    .replace(/^https?:\/\/t\.me\//i, "")
+    .replace(/^t\.me\//i, "")
+    .replace(/^@/, "")
     .trim();
 
   const entity = await tg.getEntity(cleanIdentifier);
@@ -65,12 +91,8 @@ export async function fetchChatMessages(chatIdentifier: string, messagesCount: n
   let username: string | null = null;
   let membersCount: number | null = null;
 
-  if ("title" in entity) {
-    title = (entity as { title?: string }).title ?? null;
-  }
-  if ("username" in entity) {
-    username = (entity as { username?: string }).username ?? null;
-  }
+  if ("title" in entity) title = (entity as { title?: string }).title ?? null;
+  if ("username" in entity) username = (entity as { username?: string }).username ?? null;
   if ("participantsCount" in entity) {
     membersCount = (entity as { participantsCount?: number }).participantsCount ?? null;
   }
