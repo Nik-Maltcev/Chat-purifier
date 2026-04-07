@@ -1,21 +1,32 @@
 import { TelegramClient } from "telegram";
 import { StringSession } from "telegram/sessions/index.js";
 import { logger } from "./logger.js";
+import { getSettingValue } from "./settings-store.js";
 
 let client: TelegramClient | null = null;
 let clientConnected = false;
+
+export function resetTelegramClient(): void {
+  if (client) {
+    try { client.disconnect(); } catch {}
+  }
+  client = null;
+  clientConnected = false;
+  logger.info("Telegram client reset (credentials changed)");
+}
 
 export async function getTelegramClient(): Promise<TelegramClient> {
   if (client && clientConnected) {
     return client;
   }
 
-  const apiId = parseInt(process.env.TELEGRAM_APP_ID || "0", 10);
-  const apiHash = process.env.TELEGRAM_APP_HASH || "";
-  const sessionString = process.env.TELEGRAM_SESSION || "";
+  const apiIdStr = await getSettingValue("telegram_api_id") || process.env.TELEGRAM_APP_ID || "";
+  const apiHash = await getSettingValue("telegram_api_hash") || process.env.TELEGRAM_APP_HASH || "";
+  const sessionString = await getSettingValue("telegram_session") || process.env.TELEGRAM_SESSION || "";
+  const apiId = parseInt(apiIdStr, 10);
 
   if (!apiId || !apiHash || !sessionString) {
-    throw new Error("Missing TELEGRAM_APP_ID, TELEGRAM_APP_HASH, or TELEGRAM_SESSION environment variables");
+    throw new Error("Telegram API не настроен. Зайдите в Настройки и укажите App ID, App Hash и Session.");
   }
 
   const session = new StringSession(sessionString);

@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { ShieldAlert, Plus, LayoutDashboard } from "lucide-react";
+import { ShieldAlert, Plus, LayoutDashboard, Settings } from "lucide-react";
 import { Button } from "./ui/button";
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -18,7 +18,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <Link href="/">
               <div className={`text-sm font-medium transition-colors hover:text-primary flex items-center gap-1.5 ${location === "/" ? "text-primary" : "text-muted-foreground"}`}>
                 <LayoutDashboard className="w-4 h-4" />
-                Dashboard
+                Дашборд
+              </div>
+            </Link>
+            <Link href="/settings">
+              <div className={`text-sm font-medium transition-colors hover:text-primary flex items-center gap-1.5 ${location === "/settings" ? "text-primary" : "text-muted-foreground"}`}>
+                <Settings className="w-4 h-4" />
+                Настройки
               </div>
             </Link>
           </nav>
@@ -27,7 +33,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <Link href="/sessions/new">
               <Button size="sm" variant="default" className="h-8 gap-1">
                 <Plus className="w-4 h-4" />
-                New Session
+                Новая сессия
               </Button>
             </Link>
           </div>

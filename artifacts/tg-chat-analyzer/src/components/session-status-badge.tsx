@@ -4,15 +4,15 @@ import { Badge } from "@/components/ui/badge";
 export function SessionStatusBadge({ status }: { status: SessionStatus }) {
   switch (status) {
     case "idle":
-      return <Badge variant="secondary" className="text-muted-foreground bg-muted font-mono text-xs">IDLE</Badge>;
+      return <Badge variant="secondary" className="text-muted-foreground bg-muted font-mono text-xs">ОЖИДАНИЕ</Badge>;
     case "running":
-      return <Badge variant="default" className="bg-blue-600 hover:bg-blue-600 font-mono text-xs">RUNNING</Badge>;
+      return <Badge variant="default" className="bg-blue-600 hover:bg-blue-600 font-mono text-xs">ЗАПУЩЕНО</Badge>;
     case "paused":
-      return <Badge variant="secondary" className="bg-amber-100 text-amber-800 hover:bg-amber-100 border-amber-200 font-mono text-xs">PAUSED</Badge>;
+      return <Badge variant="secondary" className="bg-amber-100 text-amber-800 hover:bg-amber-100 border-amber-200 font-mono text-xs">ПАУЗА</Badge>;
     case "completed":
-      return <Badge variant="secondary" className="bg-green-100 text-green-800 hover:bg-green-100 border-green-200 font-mono text-xs">COMPLETED</Badge>;
+      return <Badge variant="secondary" className="bg-green-100 text-green-800 hover:bg-green-100 border-green-200 font-mono text-xs">ЗАВЕРШЕНО</Badge>;
     case "error":
-      return <Badge variant="destructive" className="font-mono text-xs">ERROR</Badge>;
+      return <Badge variant="destructive" className="font-mono text-xs">ОШИБКА</Badge>;
     default:
       return <Badge variant="outline" className="font-mono text-xs">{status}</Badge>;
   }

@@ -1,7 +1,7 @@
 import { db, sessionsTable, chatResultsTable } from "@workspace/db";
 import { eq, and } from "drizzle-orm";
 import { fetchChatMessages } from "./telegram.js";
-import { analyzeChat } from "./kimi.js";
+import { analyzeChat } from "./deepseek.js";
 import { logger } from "./logger.js";
 
 const activeProcessors = new Map<number, AbortController>();

@@ -22,6 +22,23 @@ import { useToast } from "@/hooks/use-toast";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
+const VERDICT_LABELS: Record<string, string> = {
+  all: "Все",
+  keep: "Оставить",
+  filter: "Отфильтровать",
+  error: "Ошибка",
+  pending: "Ожидание",
+};
+
+const STATUS_LABELS: Record<string, string> = {
+  pending: "ожидание",
+  fetching: "загрузка",
+  analyzing: "анализ",
+  done: "готово",
+  error: "ошибка",
+  skipped: "пропущен",
+};
+
 export function SessionDetail() {
   const { id } = useParams<{ id: string }>();
   const sessionId = parseInt(id, 10);
@@ -67,7 +84,7 @@ export function SessionDetail() {
   const handleStart = () => {
     startMutation.mutate({ sessionId }, {
       onSuccess: () => {
-        toast({ title: "Session started" });
+        toast({ title: "Сессия запущена" });
         refetchSession();
       }
     });
@@ -76,7 +93,7 @@ export function SessionDetail() {
   const handleStop = () => {
     stopMutation.mutate({ sessionId }, {
       onSuccess: () => {
-        toast({ title: "Session stopped" });
+        toast({ title: "Сессия остановлена" });
         refetchSession();
       }
     });
@@ -85,7 +102,6 @@ export function SessionDetail() {
   const handleExport = async (verdict: "keep" | "all") => {
     setExportVerdict(verdict);
     try {
-      // Small timeout to allow state to settle for query key
       setTimeout(async () => {
         const { data } = await triggerExport();
         if (data) {
@@ -101,11 +117,11 @@ export function SessionDetail() {
         }
       }, 0);
     } catch (err) {
-      toast({ title: "Export failed", variant: "destructive" });
+      toast({ title: "Ошибка экспорта", variant: "destructive" });
     }
   };
 
-  if (!session) return <div className="p-8 text-center text-muted-foreground">Loading...</div>;
+  if (!session) return <div className="p-8 text-center text-muted-foreground">Загрузка...</div>;
 
   const progressPercent = session.totalChats > 0 ? (session.processedChats / session.totalChats) * 100 : 0;
 
@@ -124,7 +140,7 @@ export function SessionDetail() {
               <SessionStatusBadge status={session.status} />
             </div>
             <p className="text-sm text-muted-foreground mt-1 font-mono">
-              ID: {session.id} | Delay: {session.delaySeconds}s | Context: {session.messagesCount} msgs
+              ID: {session.id} | Задержка: {session.delaySeconds}с | Контекст: {session.messagesCount} сообщ.
             </p>
           </div>
         </div>
@@ -133,12 +149,12 @@ export function SessionDetail() {
           {session.status === "running" ? (
             <Button variant="destructive" size="sm" onClick={handleStop} disabled={stopMutation.isPending}>
               <Square className="w-4 h-4 mr-2" />
-              Stop
+              Остановить
             </Button>
           ) : session.status !== "completed" ? (
             <Button variant="default" size="sm" onClick={handleStart} disabled={startMutation.isPending || session.processedChats >= session.totalChats}>
               <Play className="w-4 h-4 mr-2" />
-              Start Run
+              Запустить
             </Button>
           ) : null}
 
@@ -146,12 +162,12 @@ export function SessionDetail() {
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm">
                 <Download className="w-4 h-4 mr-2" />
-                Export
+                Экспорт
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => handleExport("keep")}>Export 'Keep' only</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleExport("all")}>Export All</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleExport("keep")}>Только «Оставить»</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleExport("all")}>Все чаты</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -160,7 +176,7 @@ export function SessionDetail() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card className="col-span-1 md:col-span-2">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Progress</CardTitle>
+            <CardTitle className="text-sm font-medium">Прогресс</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex justify-between items-end mb-2">
@@ -173,19 +189,19 @@ export function SessionDetail() {
         
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Verdict Breakdown</CardTitle>
+            <CardTitle className="text-sm font-medium">Вердикты</CardTitle>
           </CardHeader>
           <CardContent className="flex gap-4">
             <div className="flex flex-col">
-              <span className="text-sm text-muted-foreground">Keep</span>
+              <span className="text-sm text-muted-foreground">Оставить</span>
               <span className="text-xl font-bold text-green-600 font-mono">{summary?.keep || 0}</span>
             </div>
             <div className="flex flex-col">
-              <span className="text-sm text-muted-foreground">Filter</span>
+              <span className="text-sm text-muted-foreground">Убрать</span>
               <span className="text-xl font-bold text-red-600 font-mono">{summary?.filter || 0}</span>
             </div>
             <div className="flex flex-col">
-              <span className="text-sm text-muted-foreground">Errors</span>
+              <span className="text-sm text-muted-foreground">Ошибки</span>
               <span className="text-xl font-bold text-orange-600 font-mono">{summary?.errors || 0}</span>
             </div>
           </CardContent>
@@ -193,15 +209,15 @@ export function SessionDetail() {
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Avg Scores</CardTitle>
+            <CardTitle className="text-sm font-medium">Средние баллы</CardTitle>
           </CardHeader>
           <CardContent className="flex gap-4">
             <div className="flex flex-col">
-              <span className="text-sm text-muted-foreground">Quality</span>
+              <span className="text-sm text-muted-foreground">Качество</span>
               <span className="text-xl font-bold font-mono">{summary?.avgScore ? summary.avgScore.toFixed(1) : '-'}</span>
             </div>
             <div className="flex flex-col">
-              <span className="text-sm text-muted-foreground">Spam</span>
+              <span className="text-sm text-muted-foreground">Спам</span>
               <span className="text-xl font-bold font-mono">{summary?.avgSpamScore ? summary.avgSpamScore.toFixed(1) : '-'}</span>
             </div>
           </CardContent>
@@ -210,7 +226,7 @@ export function SessionDetail() {
 
       <Card>
         <div className="flex items-center justify-between p-4 border-b">
-          <h3 className="font-semibold">Chat Results</h3>
+          <h3 className="font-semibold">Результаты по чатам</h3>
           <div className="flex gap-2">
             {(["all", "keep", "filter", "error", "pending"] as const).map(v => (
               <Button 
@@ -220,7 +236,7 @@ export function SessionDetail() {
                 onClick={() => setVerdictFilter(v === "all" ? undefined : v)}
                 className="h-7 text-xs px-2.5"
               >
-                {v.charAt(0).toUpperCase() + v.slice(1)}
+                {VERDICT_LABELS[v]}
               </Button>
             ))}
           </div>
@@ -229,12 +245,12 @@ export function SessionDetail() {
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/50 hover:bg-muted/50">
-                <TableHead className="w-[180px]">Target</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Verdict</TableHead>
-                <TableHead className="text-center">Scores (Q/S/A/T)</TableHead>
-                <TableHead>Members</TableHead>
-                <TableHead className="max-w-[300px]">AI Summary</TableHead>
+                <TableHead className="w-[180px]">Чат</TableHead>
+                <TableHead>Статус</TableHead>
+                <TableHead>Вердикт</TableHead>
+                <TableHead className="text-center">Баллы (К/С/А/Т)</TableHead>
+                <TableHead>Участников</TableHead>
+                <TableHead className="max-w-[300px]">Вывод ИИ</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -246,7 +262,7 @@ export function SessionDetail() {
                   </TableCell>
                   <TableCell>
                     <Badge variant="outline" className="font-mono text-[10px] tracking-wider uppercase bg-transparent">
-                      {chat.status}
+                      {STATUS_LABELS[chat.status] || chat.status}
                     </Badge>
                   </TableCell>
                   <TableCell>
@@ -261,7 +277,7 @@ export function SessionDetail() {
                     </div>
                   </TableCell>
                   <TableCell className="font-mono text-xs text-muted-foreground">
-                    {chat.membersCount?.toLocaleString() || '-'}
+                    {chat.membersCount?.toLocaleString("ru-RU") || '-'}
                   </TableCell>
                   <TableCell className="text-sm max-w-[300px]">
                     {chat.aiSummary ? (
@@ -289,7 +305,7 @@ export function SessionDetail() {
               {chats?.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
-                    No chats match the selected filter.
+                    Нет чатов по выбранному фильтру.
                   </TableCell>
                 </TableRow>
               )}

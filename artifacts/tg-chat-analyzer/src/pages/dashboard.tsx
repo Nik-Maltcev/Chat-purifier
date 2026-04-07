@@ -6,13 +6,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SessionStatusBadge } from "@/components/session-status-badge";
 import { format } from "date-fns";
+import { ru } from "date-fns/locale";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export function Dashboard() {
   const { data: sessions, isLoading, isError } = useListSessions({
     query: {
       refetchInterval: (query) => {
-        // Auto refresh if any session is running
         const isAnyRunning = query.state.data?.some(s => s.status === "running");
         return isAnyRunning ? 5000 : false;
       }
@@ -27,13 +27,13 @@ export function Dashboard() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-          <p className="text-muted-foreground">Overview of your Telegram group analysis sessions.</p>
+          <h1 className="text-3xl font-bold tracking-tight">Дашборд</h1>
+          <p className="text-muted-foreground">Обзор сессий анализа Telegram-групп.</p>
         </div>
         <Link href="/sessions/new">
           <Button className="gap-2">
             <Plus className="w-4 h-4" />
-            Create Session
+            Создать сессию
           </Button>
         </Link>
       </div>
@@ -41,7 +41,7 @@ export function Dashboard() {
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Sessions</CardTitle>
+            <CardTitle className="text-sm font-medium">Всего сессий</CardTitle>
             <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -50,7 +50,7 @@ export function Dashboard() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Runs</CardTitle>
+            <CardTitle className="text-sm font-medium">Активных</CardTitle>
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -59,7 +59,7 @@ export function Dashboard() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Chats Analyzed</CardTitle>
+            <CardTitle className="text-sm font-medium">Чатов проверено</CardTitle>
             <BarChart2 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -70,8 +70,8 @@ export function Dashboard() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Recent Sessions</CardTitle>
-          <CardDescription>View and manage your analysis runs.</CardDescription>
+          <CardTitle>Последние сессии</CardTitle>
+          <CardDescription>Просматривайте и управляйте запусками анализа.</CardDescription>
         </CardHeader>
         <CardContent>
           {isLoading ? (
@@ -81,12 +81,12 @@ export function Dashboard() {
               <Skeleton className="h-10 w-full" />
             </div>
           ) : isError ? (
-            <div className="text-sm text-destructive py-4 text-center">Failed to load sessions</div>
+            <div className="text-sm text-destructive py-4 text-center">Ошибка загрузки сессий</div>
           ) : !sessions || sessions.length === 0 ? (
             <div className="text-center py-10 border border-dashed rounded-lg">
-              <p className="text-muted-foreground mb-4">No sessions created yet.</p>
+              <p className="text-muted-foreground mb-4">Сессий пока нет.</p>
               <Link href="/sessions/new">
-                <Button variant="outline" size="sm">Create your first session</Button>
+                <Button variant="outline" size="sm">Создать первую сессию</Button>
               </Link>
             </div>
           ) : (
@@ -94,10 +94,10 @@ export function Dashboard() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Progress</TableHead>
-                    <TableHead className="text-right">Created</TableHead>
+                    <TableHead>Название</TableHead>
+                    <TableHead>Статус</TableHead>
+                    <TableHead>Прогресс</TableHead>
+                    <TableHead className="text-right">Создана</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -125,7 +125,7 @@ export function Dashboard() {
                         </div>
                       </TableCell>
                       <TableCell className="text-right text-muted-foreground text-sm">
-                        {format(new Date(session.createdAt), "MMM d, HH:mm")}
+                        {format(new Date(session.createdAt), "d MMM, HH:mm", { locale: ru })}
                       </TableCell>
                     </TableRow>
                   ))}

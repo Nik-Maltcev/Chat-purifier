@@ -2,7 +2,7 @@
 
 ## Overview
 
-Telegram Chat Analyzer — инструмент для массовой проверки Telegram-чатов на тему эмиграции. Выгружает последние сообщения из каждого чата и анализирует их через Kimi AI.
+Telegram Chat Analyzer — инструмент для массовой проверки Telegram-чатов на тему эмиграции. Выгружает последние сообщения из каждого чата и анализирует их через DeepSeek V3 AI.
 
 ## Stack
 
@@ -16,7 +16,7 @@ Telegram Chat Analyzer — инструмент для массовой пров
 - **API codegen**: Orval (from OpenAPI spec)
 - **Build**: esbuild (CJS bundle)
 - **Telegram**: gramjs (MTProto), session string auth
-- **AI**: Kimi (Moonshot AI) moonshot-v1-8k model
+- **AI**: DeepSeek V3 (`deepseek-chat` model via `api.deepseek.com`)
 
 ## Artifacts
 
@@ -26,31 +26,31 @@ Telegram Chat Analyzer — инструмент для массовой пров
 ## Features
 
 - Создание сессий анализа с произвольным списком чатов
-- Фоновая обработка с задержками (настраиваемые, default 12s) для защиты от блокировки Telegram
+- Фоновая обработка с задержками (настраиваемые, default 30s) для защиты от блокировки Telegram
 - **Извлечение чатов из Telegram папок** (t.me/addlist/...) через MTProto API
-- Анализ через Kimi: спам-score, активность, релевантность теме, итоговая оценка
-- Вердикт keep/filter для каждого чата
-- Авто-обновление прогресса каждые 5 секунд
+- Анализ через DeepSeek V3 AI: спам, активность, релевантность, вердикт keep/filter
 - Экспорт результатов в CSV
+- **Страница Настроек** в UI — все реквизиты хранятся в БД (не env vars)
+- Интерфейс полностью на русском языке
 
-## Secrets Required
+## DB Schema
 
-- `TELEGRAM_APP_ID` — App ID с my.telegram.org
-- `TELEGRAM_APP_HASH` — App Hash с my.telegram.org
-- `TELEGRAM_SESSION` — Session String (авторизованная сессия)
-- `KIMI_API_KEY` — API ключ от Moonshot AI (platform.moonshot.cn)
+- `sessions` — сессии анализа (status, delay, progress)
+- `chat_results` — результаты по каждому чату (verdict, scores, summary)
+- `settings` — ключ-значение для хранения реквизитов (Telegram API, DeepSeek key, defaults)
 
-## Notes
+## Settings (хранятся в таблице settings)
 
-- `bufferutil` и `utf-8-validate` — stub-модули в `node_modules/` (нативные бинари не компилируются в Replit, websocket работает без них через JS fallback)
-- Telegram клиент — синглтон, подключается при первом запросе
+- `telegram_api_id` — Telegram App ID
+- `telegram_api_hash` — Telegram App Hash
+- `telegram_session` — Session строка gramjs
+- `deepseek_api_key` — API ключ DeepSeek V3
+- `default_delay_seconds` — задержка по умолчанию
+- `default_messages_count` — кол-во сообщений по умолчанию
 
-## Key Commands
+## Critical notes
 
-- `pnpm run typecheck` — full typecheck across all packages
-- `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- `pnpm --filter @workspace/api-server run dev` — run API server locally
-
-See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details.
+- **bufferutil stubs**: `/home/runner/workspace/node_modules/bufferutil/` и `utf-8-validate/` — ручные stubs, нужны gramjs. При потере после pnpm install — пересоздать.
+- **Port conflicts**: порт 8080 может конфликтовать — перед рестартом запускать `fuser -k 8080/tcp`
+- **zod import**: в API-сервере использовать `import { z } from "zod"` (не `zod/v4`)
+- **Settings fallback**: `telegram.ts` и `deepseek.ts` сначала читают из DB, потом из env vars

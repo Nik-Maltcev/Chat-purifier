@@ -8,6 +8,7 @@ import { Layout } from "@/components/layout";
 import { Dashboard } from "@/pages/dashboard";
 import { NewSession } from "@/pages/new-session";
 import { SessionDetail } from "@/pages/session-detail";
+import { Settings } from "@/pages/settings";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,6 +26,7 @@ function Router() {
         <Route path="/" component={Dashboard} />
         <Route path="/sessions/new" component={NewSession} />
         <Route path="/sessions/:id" component={SessionDetail} />
+        <Route path="/settings" component={Settings} />
         <Route component={NotFound} />
       </Switch>
     </Layout>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -16,12 +16,12 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 
 const formSchema = z.object({
-  name: z.string().min(1, "Session name is required").max(100),
+  name: z.string().min(1, "Название обязательно").max(100),
   chatList: z.string().refine((val) => {
     const lines = val.split("\n").filter(line => line.trim() !== "");
     return lines.length > 0;
-  }, "Please provide at least one chat to analyze"),
-  delaySeconds: z.coerce.number().min(1).max(60).default(12),
+  }, "Укажите хотя бы один чат для анализа"),
+  delaySeconds: z.coerce.number().min(1).max(300).default(30),
   messagesCount: z.coerce.number().min(1).max(1000).default(50),
 });
 
@@ -53,12 +53,26 @@ export function NewSession() {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: `Analysis Run - ${new Date().toISOString().split("T")[0]}`,
+      name: `Анализ - ${new Date().toISOString().split("T")[0]}`,
       chatList: "",
-      delaySeconds: 12,
+      delaySeconds: 30,
       messagesCount: 50,
     },
   });
+
+  useEffect(() => {
+    fetch("/api/settings/raw")
+      .then((r) => r.json())
+      .then((data: { default_delay_seconds?: string; default_messages_count?: string }) => {
+        if (data.default_delay_seconds) {
+          form.setValue("delaySeconds", parseInt(data.default_delay_seconds, 10));
+        }
+        if (data.default_messages_count) {
+          form.setValue("messagesCount", parseInt(data.default_messages_count, 10));
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const handleExtractFolders = async () => {
     const links = folderLinks
@@ -67,7 +81,7 @@ export function NewSession() {
       .filter((l) => l.length > 0);
 
     if (links.length === 0) {
-      toast({ title: "No folder links", description: "Paste at least one t.me/addlist/... link", variant: "destructive" });
+      toast({ title: "Нет ссылок на папки", description: "Вставьте хотя бы одну ссылку t.me/addlist/...", variant: "destructive" });
       return;
     }
 
@@ -83,19 +97,19 @@ export function NewSession() {
 
       if (!res.ok) {
         const errText = await res.text();
-        throw new Error(`Server error: ${errText}`);
+        throw new Error(`Ошибка сервера: ${errText}`);
       }
 
       const data = (await res.json()) as ExtractResponse;
       setExtractResult(data);
 
       toast({
-        title: `Extracted ${data.totalUnique} unique chats`,
-        description: `From ${links.length} folder(s)`,
+        title: `Найдено ${data.totalUnique} уникальных чатов`,
+        description: `Из ${links.length} папки(ок)`,
       });
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
-      toast({ title: "Extraction failed", description: msg, variant: "destructive" });
+      toast({ title: "Ошибка извлечения", description: msg, variant: "destructive" });
     } finally {
       setExtracting(false);
     }
@@ -119,8 +133,8 @@ export function NewSession() {
     form.setValue("chatList", combined, { shouldValidate: true });
 
     toast({
-      title: `Added ${newChats.length} chats to the list`,
-      description: newChats.length === 0 ? "All chats were already in the list" : undefined,
+      title: `Добавлено ${newChats.length} чатов в список`,
+      description: newChats.length === 0 ? "Все чаты уже в списке" : undefined,
     });
   };
 
@@ -130,15 +144,15 @@ export function NewSession() {
       {
         onSuccess: (session) => {
           toast({
-            title: "Session created",
-            description: "Your session has been created successfully.",
+            title: "Сессия создана",
+            description: "Сессия успешно создана.",
           });
           setLocation(`/sessions/${session.id}`);
         },
         onError: (err: unknown) => {
-          const msg = err instanceof Error ? err.message : "An unexpected error occurred";
+          const msg = err instanceof Error ? err.message : "Неожиданная ошибка";
           toast({
-            title: "Error creating session",
+            title: "Ошибка создания сессии",
             description: msg,
             variant: "destructive",
           });
@@ -160,25 +174,25 @@ export function NewSession() {
           </Button>
         </Link>
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">New Analysis Session</h1>
-          <p className="text-sm text-muted-foreground">Configure a new batch run to analyze Telegram chats.</p>
+          <h1 className="text-2xl font-bold tracking-tight">Новая сессия анализа</h1>
+          <p className="text-sm text-muted-foreground">Настройте новый пакетный запуск анализа Telegram-чатов.</p>
         </div>
       </div>
 
-      {/* Folder extraction block */}
+      {/* Извлечение из папок */}
       <Card data-testid="card-folder-extraction">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <FolderSearch className="w-5 h-5" />
-            Extract chats from Telegram folders
+            Извлечь чаты из Telegram-папок
           </CardTitle>
           <CardDescription>
-            Paste your t.me/addlist/... folder links — the app will fetch all chats from those folders automatically.
+            Вставьте ссылки t.me/addlist/... — приложение автоматически достанет все чаты из этих папок.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium">Folder links</label>
+            <label className="text-sm font-medium">Ссылки на папки</label>
             <Textarea
               data-testid="textarea-folder-links"
               placeholder={"https://t.me/addlist/AbCdEfGhIjKl\nhttps://t.me/addlist/XyZ123..."}
@@ -186,7 +200,7 @@ export function NewSession() {
               value={folderLinks}
               onChange={(e) => setFolderLinks(e.target.value)}
             />
-            <p className="text-xs text-muted-foreground">One folder link per line. Format: t.me/addlist/SLUG</p>
+            <p className="text-xs text-muted-foreground">По одной ссылке на строку. Формат: t.me/addlist/SLUG</p>
           </div>
 
           <Button
@@ -202,7 +216,7 @@ export function NewSession() {
             ) : (
               <FolderSearch className="w-4 h-4" />
             )}
-            {extracting ? "Extracting..." : "Extract chats from folders"}
+            {extracting ? "Извлекаем..." : "Извлечь чаты из папок"}
           </Button>
 
           {extractResult && (
@@ -210,7 +224,7 @@ export function NewSession() {
               <Separator />
               <div className="flex items-center justify-between">
                 <p className="text-sm font-medium">
-                  Found <span className="font-bold">{extractResult.totalUnique}</span> unique chats
+                  Найдено <span className="font-bold">{extractResult.totalUnique}</span> уникальных чатов
                 </p>
                 <Button
                   type="button"
@@ -220,7 +234,7 @@ export function NewSession() {
                   className="gap-2"
                 >
                   <Plus className="w-3 h-3" />
-                  Add to chat list
+                  Добавить в список
                 </Button>
               </div>
 
@@ -246,7 +260,7 @@ export function NewSession() {
                       {result.error ? (
                         <p className="text-destructive text-xs mt-1">{result.error}</p>
                       ) : (
-                        <p className="text-muted-foreground text-xs mt-1">{result.chats.length} chats found</p>
+                        <p className="text-muted-foreground text-xs mt-1">{result.chats.length} чатов найдено</p>
                       )}
                     </div>
                   </div>
@@ -257,11 +271,11 @@ export function NewSession() {
         </CardContent>
       </Card>
 
-      {/* Session configuration */}
+      {/* Конфигурация сессии */}
       <Card>
         <CardHeader>
-          <CardTitle>Session Configuration</CardTitle>
-          <CardDescription>Paste your list of chats and set analysis parameters.</CardDescription>
+          <CardTitle>Конфигурация сессии</CardTitle>
+          <CardDescription>Вставьте список чатов и задайте параметры анализа.</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -272,9 +286,9 @@ export function NewSession() {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Session Name</FormLabel>
+                    <FormLabel>Название сессии</FormLabel>
                     <FormControl>
-                      <Input data-testid="input-session-name" placeholder="E.g. Relocation IT Groups pt.1" {...field} />
+                      <Input data-testid="input-session-name" placeholder="Например: Эмиграция IT-групп ч.1" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -287,21 +301,21 @@ export function NewSession() {
                 render={({ field }) => (
                   <FormItem>
                     <div className="flex items-center justify-between">
-                      <FormLabel>Target Chats</FormLabel>
+                      <FormLabel>Целевые чаты</FormLabel>
                       {chatCount > 0 && (
-                        <Badge variant="secondary" data-testid="badge-chat-count">{chatCount} chats</Badge>
+                        <Badge variant="secondary" data-testid="badge-chat-count">{chatCount} чатов</Badge>
                       )}
                     </div>
                     <FormControl>
                       <Textarea
                         data-testid="textarea-chat-list"
-                        placeholder="Paste chat usernames or links here, one per line..."
+                        placeholder="Вставьте @username или ссылки t.me/, по одному на строку..."
                         className="min-h-[200px] font-mono text-sm"
                         {...field}
                       />
                     </FormControl>
                     <FormDescription>
-                      Provide t.me links or @usernames. One entry per line.
+                      Ссылки t.me или @username. Один чат на строку.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -314,12 +328,12 @@ export function NewSession() {
                   name="delaySeconds"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Delay Between Requests (s)</FormLabel>
+                      <FormLabel>Задержка между запросами (сек)</FormLabel>
                       <FormControl>
                         <Input data-testid="input-delay" type="number" {...field} />
                       </FormControl>
                       <FormDescription>
-                        Avoids rate limits. Default 12s.
+                        Защита от бана. Рекомендуется ≥30с.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -331,12 +345,12 @@ export function NewSession() {
                   name="messagesCount"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Messages to Analyze</FormLabel>
+                      <FormLabel>Сообщений для анализа</FormLabel>
                       <FormControl>
                         <Input data-testid="input-messages-count" type="number" {...field} />
                       </FormControl>
                       <FormDescription>
-                        Recent messages context per chat. Default 50.
+                        Последних сообщений на чат. По умолчанию 50.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -356,7 +370,7 @@ export function NewSession() {
                   ) : (
                     <Play className="w-4 h-4" />
                   )}
-                  Create & Initialize
+                  Создать и запустить
                 </Button>
               </div>
 

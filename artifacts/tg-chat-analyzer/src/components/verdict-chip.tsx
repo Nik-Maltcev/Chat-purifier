@@ -1,10 +1,16 @@
 import { ChatResultVerdict } from "@workspace/api-client-react/src/generated/api.schemas";
 
+const LABELS: Record<string, string> = {
+  keep: "ОСТАВИТЬ",
+  filter: "УБРАТЬ",
+  pending: "ОЖИДАНИЕ",
+  error: "ОШИБКА",
+};
+
 export function VerdictChip({ verdict }: { verdict: ChatResultVerdict }) {
   if (!verdict) return <span className="text-xs text-muted-foreground font-mono">--</span>;
 
   let colorClass = "";
-  let label = verdict.toUpperCase();
 
   switch (verdict) {
     case "keep":
@@ -23,7 +29,7 @@ export function VerdictChip({ verdict }: { verdict: ChatResultVerdict }) {
 
   return (
     <span className={`inline-flex items-center px-2 py-0.5 rounded-sm text-[10px] font-mono font-medium ${colorClass}`}>
-      {label}
+      {LABELS[verdict] ?? verdict.toUpperCase()}
     </span>
   );
 }
