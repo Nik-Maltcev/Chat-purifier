@@ -9,7 +9,7 @@ interface KimiAnalysisResult {
   summary: string;
 }
 
-const KIMI_API_URL = "https://api.moonshot.cn/v1/chat/completions";
+const KIMI_API_URL = "https://api.moonshot.ai/v1/chat/completions";
 
 export async function analyzeChat(
   chatTitle: string | null,
@@ -57,7 +57,7 @@ ${messagesText}
       Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      model: "moonshot-v1-8k",
+      model: "kimi-k2-0905-preview",
       messages: [
         {
           role: "user",
