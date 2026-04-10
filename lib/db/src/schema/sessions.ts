@@ -1,4 +1,4 @@
-import { pgTable, serial, text, integer, timestamp, pgEnum, primaryKey } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, integer, timestamp, pgEnum, primaryKey, boolean } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
@@ -63,6 +63,26 @@ export const settingsTable = pgTable("settings", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
+export const accountStatusEnum = pgEnum("account_status", [
+  "active",
+  "flood_wait",
+  "banned",
+  "disabled",
+]);
+
+export const telegramAccountsTable = pgTable("telegram_accounts", {
+  id: serial("id").primaryKey(),
+  label: text("label").notNull().default("Аккаунт"),
+  apiId: text("api_id").notNull(),
+  apiHash: text("api_hash").notNull(),
+  session: text("session").notNull(),
+  status: accountStatusEnum("status").notNull().default("active"),
+  floodWaitUntil: timestamp("flood_wait_until"),
+  priority: integer("priority").notNull().default(0),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
 export const insertSessionSchema = createInsertSchema(sessionsTable).omit({ id: true, createdAt: true, updatedAt: true });
 export const insertChatResultSchema = createInsertSchema(chatResultsTable).omit({ id: true, createdAt: true, updatedAt: true });
 
@@ -70,3 +90,4 @@ export type Session = typeof sessionsTable.$inferSelect;
 export type InsertSession = z.infer<typeof insertSessionSchema>;
 export type ChatResult = typeof chatResultsTable.$inferSelect;
 export type InsertChatResult = z.infer<typeof insertChatResultSchema>;
+export type TelegramAccount = typeof telegramAccountsTable.$inferSelect;

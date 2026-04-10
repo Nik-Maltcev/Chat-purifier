@@ -9,6 +9,7 @@ import { Dashboard } from "@/pages/dashboard";
 import { NewSession } from "@/pages/new-session";
 import { SessionDetail } from "@/pages/session-detail";
 import { Settings } from "@/pages/settings";
+import { Accounts } from "@/pages/accounts";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -27,6 +28,7 @@ function Router() {
         <Route path="/sessions/new" component={NewSession} />
         <Route path="/sessions/:id" component={SessionDetail} />
         <Route path="/settings" component={Settings} />
+        <Route path="/accounts" component={Accounts} />
         <Route component={NotFound} />
       </Switch>
     </Layout>

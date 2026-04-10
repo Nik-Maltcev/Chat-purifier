@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { ShieldAlert, Plus, LayoutDashboard, Settings } from "lucide-react";
+import { ShieldAlert, Plus, LayoutDashboard, Settings, Users } from "lucide-react";
 import { Button } from "./ui/button";
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -19,6 +19,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <div className={`text-sm font-medium transition-colors hover:text-primary flex items-center gap-1.5 ${location === "/" ? "text-primary" : "text-muted-foreground"}`}>
                 <LayoutDashboard className="w-4 h-4" />
                 Дашборд
+              </div>
+            </Link>
+            <Link href="/accounts">
+              <div className={`text-sm font-medium transition-colors hover:text-primary flex items-center gap-1.5 ${location === "/accounts" ? "text-primary" : "text-muted-foreground"}`}>
+                <Users className="w-4 h-4" />
+                Аккаунты
               </div>
             </Link>
             <Link href="/settings">

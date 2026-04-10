@@ -1,83 +1,96 @@
 import { TelegramClient } from "telegram";
 import { StringSession } from "telegram/sessions/index.js";
 import { logger } from "./logger.js";
-import { getSettingValue } from "./settings-store.js";
+import type { TelegramAccount } from "./account-manager.js";
 
-let client: TelegramClient | null = null;
-let clientConnected = false;
-
-export function resetTelegramClient(): void {
-  if (client) {
-    try { client.disconnect(); } catch {}
-  }
-  client = null;
-  clientConnected = false;
-  logger.info("Telegram client reset");
-}
+// Per-account client pool
+const clientPool = new Map<number, { client: TelegramClient; connected: boolean }>();
 
 /**
  * Detect if an error is a FloodWait and return wait seconds, or null.
- * gramjs FloodWaitError has .seconds property.
  */
 export function getFloodWaitSeconds(err: unknown): number | null {
   if (!err || typeof err !== "object") return null;
   const e = err as Record<string, unknown>;
-  // gramjs FloodWaitError
   if (typeof e.seconds === "number") return e.seconds;
-  // Check message string
   const msg = String(e.message || "");
   const m = msg.match(/FLOOD_WAIT[_\s]+(\d+)/i);
   if (m) return parseInt(m[1], 10);
-  // Also check errorMessage
   const em = String(e.errorMessage || "");
   const m2 = em.match(/FLOOD_WAIT[_\s]+(\d+)/i);
   if (m2) return parseInt(m2[1], 10);
   return null;
 }
 
-export async function getTelegramClient(): Promise<TelegramClient> {
-  if (client && clientConnected) {
-    return client;
+/**
+ * Check if an error looks like an auth/banned error.
+ */
+export function isAuthError(err: unknown): boolean {
+  if (!err || typeof err !== "object") return false;
+  const e = err as Record<string, unknown>;
+  const msg = String(e.message || e.errorMessage || "");
+  return /auth_key|session_revoked|user_deactivated|banned|unauthorized/i.test(msg);
+}
+
+export async function getClientForAccount(account: TelegramAccount): Promise<TelegramClient> {
+  const cached = clientPool.get(account.id);
+  if (cached?.connected) return cached.client;
+
+  const apiId = parseInt(account.apiId, 10);
+  if (!apiId || !account.apiHash || !account.session) {
+    throw new Error(`Аккаунт #${account.id} (${account.label}) не настроен корректно`);
   }
 
-  const apiIdStr = await getSettingValue("telegram_api_id") || process.env.TELEGRAM_APP_ID || "";
-  const apiHash = await getSettingValue("telegram_api_hash") || process.env.TELEGRAM_APP_HASH || "";
-  const sessionString = await getSettingValue("telegram_session") || process.env.TELEGRAM_SESSION || "";
-  const apiId = parseInt(apiIdStr, 10);
-
-  if (!apiId || !apiHash || !sessionString) {
-    throw new Error("Telegram API не настроен. Зайдите в Настройки.");
+  // Disconnect old client if exists
+  if (cached) {
+    try { cached.client.disconnect(); } catch {}
   }
 
-  const session = new StringSession(sessionString);
-  client = new TelegramClient(session, apiId, apiHash, {
+  const session = new StringSession(account.session);
+  const client = new TelegramClient(session, apiId, account.apiHash, {
     connectionRetries: 5,
     retryDelay: 3000,
     autoReconnect: true,
     requestRetries: 5,
-    // Auto-sleep FloodWait up to 120 seconds internally
     floodSleepThreshold: 120,
-    // Use sequential updates to be less aggressive
     sequentialUpdates: true,
   });
 
   await client.connect();
-  clientConnected = true;
-  logger.info("Telegram client connected");
+  clientPool.set(account.id, { client, connected: true });
+  logger.info({ accountId: account.id, label: account.label }, "Telegram клиент подключён");
 
   return client;
 }
 
+export function disconnectClientForAccount(accountId: number): void {
+  const cached = clientPool.get(accountId);
+  if (cached) {
+    try { cached.client.disconnect(); } catch {}
+    clientPool.delete(accountId);
+    logger.info({ accountId }, "Telegram клиент отключён");
+  }
+}
+
+export function resetAllClients(): void {
+  for (const [id, entry] of clientPool) {
+    try { entry.client.disconnect(); } catch {}
+  }
+  clientPool.clear();
+  logger.info("Все Telegram клиенты сброшены");
+}
+
 export async function fetchChatMessages(
   chatIdentifier: string,
-  messagesCount: number
+  messagesCount: number,
+  account: TelegramAccount
 ): Promise<{
   title: string | null;
   username: string | null;
   membersCount: number | null;
   messages: string[];
 }> {
-  const tg = await getTelegramClient();
+  const tg = await getClientForAccount(account);
 
   const cleanIdentifier = chatIdentifier
     .replace(/^https?:\/\/t\.me\//i, "")
@@ -107,4 +120,47 @@ export async function fetchChatMessages(
   }
 
   return { title, username, membersCount, messages };
+}
+
+// Legacy: kept for telegram-folders.ts which still uses settings-based client
+import { getSettingValue } from "./settings-store.js";
+
+let legacyClient: TelegramClient | null = null;
+let legacyConnected = false;
+
+export function resetTelegramClient(): void {
+  if (legacyClient) {
+    try { legacyClient.disconnect(); } catch {}
+  }
+  legacyClient = null;
+  legacyConnected = false;
+  resetAllClients();
+}
+
+export async function getTelegramClient(): Promise<TelegramClient> {
+  if (legacyClient && legacyConnected) return legacyClient;
+
+  const apiIdStr = await getSettingValue("telegram_api_id") || process.env.TELEGRAM_APP_ID || "";
+  const apiHash = await getSettingValue("telegram_api_hash") || process.env.TELEGRAM_APP_HASH || "";
+  const sessionString = await getSettingValue("telegram_session") || process.env.TELEGRAM_SESSION || "";
+  const apiId = parseInt(apiIdStr, 10);
+
+  if (!apiId || !apiHash || !sessionString) {
+    throw new Error("Telegram API не настроен. Зайдите в Настройки.");
+  }
+
+  const session = new StringSession(sessionString);
+  legacyClient = new TelegramClient(session, apiId, apiHash, {
+    connectionRetries: 5,
+    retryDelay: 3000,
+    autoReconnect: true,
+    requestRetries: 5,
+    floodSleepThreshold: 120,
+    sequentialUpdates: true,
+  });
+
+  await legacyClient.connect();
+  legacyConnected = true;
+  logger.info("Telegram legacy client connected");
+  return legacyClient;
 }

@@ -8,13 +8,22 @@
  * 6. Abortable sleeps — stop button works instantly during any wait
  * 7. Fresh session config on every iteration — delay changes take effect immediately
  * 8. Daily quota — auto-pause when daily limit reached, resumes next day
+ * 9. Multi-account — auto-switches between accounts on FloodWait, waits if all banned
  */
 import { db, sessionsTable, chatResultsTable } from "@workspace/db";
 import { eq, and, gte } from "drizzle-orm";
-import { fetchChatMessages, getFloodWaitSeconds } from "./telegram.js";
+import { fetchChatMessages, getFloodWaitSeconds, isAuthError } from "./telegram.js";
 import { analyzeChat } from "./deepseek.js";
 import { logger } from "./logger.js";
 import { getSettingValue } from "./settings-store.js";
+import {
+  getNextAvailableAccount,
+  markAccountFloodWait,
+  markAccountBanned,
+  hasAnyAccount,
+  msUntilNextAccountAvailable,
+  type TelegramAccount,
+} from "./account-manager.js";
 
 const activeProcessors = new Map<number, AbortController>();
 
@@ -49,24 +58,19 @@ function abortableSleep(ms: number, signal: AbortSignal): Promise<boolean> {
   });
 }
 
-/**
- * Add ±30% jitter to a delay (milliseconds). Min 5s.
- */
+/** Add ±30% jitter to a delay */
 function withJitter(ms: number): number {
-  const jitter = (Math.random() * 0.6 - 0.3) * ms;
-  return Math.max(5000, Math.round(ms + jitter));
+  const factor = 0.7 + Math.random() * 0.6; // 0.7–1.3
+  return Math.round(ms * factor);
 }
 
-function formatSeconds(s: number): string {
-  if (s < 60) return `${s}с`;
-  return `${Math.floor(s / 60)}м ${s % 60}с`;
+function formatSeconds(sec: number): string {
+  if (sec < 60) return `${sec}с`;
+  return `${Math.floor(sec / 60)}м ${sec % 60}с`;
 }
 
-export async function startProcessor(sessionId: number): Promise<void> {
-  if (activeProcessors.has(sessionId)) {
-    logger.info({ sessionId }, "Processor already running");
-    return;
-  }
+export function startProcessor(sessionId: number): void {
+  if (activeProcessors.has(sessionId)) return;
   const controller = new AbortController();
   activeProcessors.set(sessionId, controller);
   processSession(sessionId, controller.signal).catch((err) => {
@@ -98,6 +102,37 @@ async function updateProgress(sessionId: number): Promise<void> {
     .where(eq(sessionsTable.id, sessionId));
 }
 
+/**
+ * Get the best available account. If all are in FloodWait, waits until the soonest one recovers.
+ * Returns null if all are banned.
+ */
+async function waitForAvailableAccount(signal: AbortSignal): Promise<TelegramAccount | null> {
+  while (true) {
+    if (signal.aborted) return null;
+
+    const account = await getNextAvailableAccount();
+    if (!account) return null; // All banned
+
+    if (account.status === "active") return account;
+
+    // Account is in flood_wait — wait until it recovers
+    const msWait = await msUntilNextAccountAvailable();
+    if (msWait <= 0) {
+      // Should be available now — loop again
+      continue;
+    }
+    if (msWait < 0) return null; // All banned
+
+    const waitSec = Math.ceil(msWait / 1000);
+    logger.warn(
+      { waitSec: formatSeconds(waitSec) },
+      `Все аккаунты в FloodWait. Ожидание ${formatSeconds(waitSec + 60)} до восстановления`
+    );
+    const resumed = await abortableSleep(msWait + 60_000, signal);
+    if (!resumed) return null;
+  }
+}
+
 async function processSession(sessionId: number, signal: AbortSignal): Promise<void> {
   try {
     const [session] = await db.select().from(sessionsTable).where(eq(sessionsTable.id, sessionId));
@@ -110,6 +145,8 @@ async function processSession(sessionId: number, signal: AbortSignal): Promise<v
     await db.update(sessionsTable)
       .set({ status: "running", updatedAt: new Date() })
       .where(eq(sessionsTable.id, sessionId));
+
+    const useMultiAccount = await hasAnyAccount();
 
     let consecutiveErrors = 0;
     let totalProcessed = 0;
@@ -141,12 +178,10 @@ async function processSession(sessionId: number, signal: AbortSignal): Promise<v
       // TECHNIQUE 8: Daily quota check
       const [dailyCount, dailyQuota] = await Promise.all([getDailyProcessedCount(), getDailyQuota()]);
       if (dailyCount >= dailyQuota) {
-        // Calculate seconds until next UTC midnight
         const now = new Date();
         const nextMidnight = new Date();
         nextMidnight.setUTCHours(24, 0, 0, 0);
         const msUntilMidnight = nextMidnight.getTime() - now.getTime();
-        const hUntil = Math.ceil(msUntilMidnight / 3600000);
 
         logger.warn(
           { dailyCount, dailyQuota, msUntilMidnight },
@@ -158,7 +193,6 @@ async function processSession(sessionId: number, signal: AbortSignal): Promise<v
           updatedAt: new Date(),
         }).where(eq(sessionsTable.id, sessionId));
 
-        // Wait until next UTC midnight + small buffer, or until stopped
         await abortableSleep(msUntilMidnight + 60_000, signal);
 
         if (signal.aborted) {
@@ -166,7 +200,6 @@ async function processSession(sessionId: number, signal: AbortSignal): Promise<v
           return;
         }
 
-        // Resume automatically next day
         await db.update(sessionsTable).set({
           status: "running",
           updatedAt: new Date(),
@@ -174,7 +207,32 @@ async function processSession(sessionId: number, signal: AbortSignal): Promise<v
         continue;
       }
 
-      logger.info({ sessionId, chatId: chat.id, identifier: chat.chatIdentifier, dailyCount, dailyQuota }, "Processing chat");
+      // TECHNIQUE 9: Get available Telegram account
+      let currentAccount: TelegramAccount | null = null;
+      if (useMultiAccount) {
+        currentAccount = await waitForAvailableAccount(signal);
+        if (!currentAccount) {
+          logger.error({ sessionId }, "Все аккаунты Telegram заблокированы — остановка сессии");
+          await db.update(sessionsTable).set({
+            status: "paused",
+            updatedAt: new Date(),
+          }).where(eq(sessionsTable.id, sessionId));
+          activeProcessors.delete(sessionId);
+          return;
+        }
+      }
+
+      logger.info(
+        {
+          sessionId,
+          chatId: chat.id,
+          identifier: chat.chatIdentifier,
+          dailyCount,
+          dailyQuota,
+          account: currentAccount ? `${currentAccount.label} (#${currentAccount.id})` : "legacy",
+        },
+        "Processing chat"
+      );
 
       // TECHNIQUE 5: Human-like break every 50 chats
       if (totalProcessed > 0 && totalProcessed % 50 === 0) {
@@ -188,17 +246,20 @@ async function processSession(sessionId: number, signal: AbortSignal): Promise<v
         }
       }
 
-      let floodWaitRetried = false;
-
-      const processSingleChat = async (): Promise<"done" | "flood_wait" | "error"> => {
+      const processSingleChat = async (): Promise<"done" | "flood_wait" | "auth_error" | "error"> => {
         try {
           await db.update(chatResultsTable)
             .set({ status: "fetching", updatedAt: new Date() })
             .where(eq(chatResultsTable.id, chat.id));
 
+          if (!currentAccount) {
+            throw new Error("Аккаунт Telegram не настроен. Добавьте аккаунт в настройках.");
+          }
+
           const { title, username, membersCount, messages } = await fetchChatMessages(
             chat.chatIdentifier,
-            freshSession.messagesCount
+            freshSession.messagesCount,
+            currentAccount,
           );
 
           if (messages.length === 0) {
@@ -235,17 +296,29 @@ async function processSession(sessionId: number, signal: AbortSignal): Promise<v
           // TECHNIQUE 2: FloodWait detection
           const floodSec = getFloodWaitSeconds(err);
           if (floodSec !== null) {
-            const waitSec = floodSec + 60; // +60s safety buffer
-            logger.warn({ floodSec, waitSec: formatSeconds(waitSec) }, "FloodWait — ждём и повторяем чат");
+            const waitSec = floodSec + 60;
+            logger.warn({ floodSec, waitSec: formatSeconds(waitSec) }, "FloodWait — переключаем аккаунт");
 
-            // Reset chat to pending so it gets retried
+            // Mark this account as flood_wait
+            if (currentAccount) {
+              await markAccountFloodWait(currentAccount.id, waitSec);
+            }
+
+            // Reset chat to pending so it gets retried with another account
             await db.update(chatResultsTable)
               .set({ status: "pending", updatedAt: new Date() })
               .where(eq(chatResultsTable.id, chat.id));
 
-            const resumed = await abortableSleep(waitSec * 1000, signal);
-            if (!resumed) return "error";
             return "flood_wait";
+          }
+
+          // Auth / ban error
+          if (isAuthError(err) && currentAccount) {
+            await markAccountBanned(currentAccount.id);
+            await db.update(chatResultsTable)
+              .set({ status: "pending", updatedAt: new Date() })
+              .where(eq(chatResultsTable.id, chat.id));
+            return "auth_error";
           }
 
           // Regular error
@@ -263,12 +336,10 @@ async function processSession(sessionId: number, signal: AbortSignal): Promise<v
 
       const result = await processSingleChat();
 
-      if (result === "flood_wait") {
-        // Don't count as processed, don't count as error — it'll be retried
-        floodWaitRetried = true;
+      if (result === "flood_wait" || result === "auth_error") {
+        // Don't count as processed — will be retried with different account
         consecutiveErrors = 0;
-        // Continue loop immediately (no extra delay, we already waited)
-        continue;
+        continue; // Immediately try next (waitForAvailableAccount will pick new one)
       }
 
       totalProcessed++;
@@ -278,7 +349,7 @@ async function processSession(sessionId: number, signal: AbortSignal): Promise<v
         consecutiveErrors++;
         // TECHNIQUE 4: Exponential backoff on consecutive errors
         if (consecutiveErrors >= 3) {
-          const backoffSec = Math.min(consecutiveErrors * 45, 300); // up to 5 min
+          const backoffSec = Math.min(consecutiveErrors * 45, 300);
           logger.warn({ consecutiveErrors, backoffSec }, "Consecutive errors — exponential backoff");
           const resumed = await abortableSleep(backoffSec * 1000, signal);
           if (!resumed) {
