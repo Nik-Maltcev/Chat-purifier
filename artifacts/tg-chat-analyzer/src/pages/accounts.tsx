@@ -26,6 +26,10 @@ interface TelegramAccount {
   status: "active" | "flood_wait" | "banned" | "disabled";
   floodWaitUntil: string | null;
   priority: number;
+  proxyHost: string | null;
+  proxyPort: number | null;
+  proxyUsername: string | null;
+  proxyPassword: string | null;
   updatedAt: string;
 }
 
@@ -42,6 +46,10 @@ const EMPTY_FORM = {
   apiHash: "",
   session: "",
   priority: "0",
+  proxyHost: "",
+  proxyPort: "",
+  proxyUsername: "",
+  proxyPassword: "",
 };
 
 export function Accounts() {
@@ -89,6 +97,10 @@ export function Accounts() {
       apiHash: "",
       session: "",
       priority: String(acc.priority),
+      proxyHost: acc.proxyHost || "",
+      proxyPort: acc.proxyPort ? String(acc.proxyPort) : "",
+      proxyUsername: acc.proxyUsername || "",
+      proxyPassword: "",
     });
     setShowSession(false);
     setShowHash(false);
@@ -216,6 +228,9 @@ export function Accounts() {
                       </div>
                       <div className="text-sm text-muted-foreground font-mono">
                         App ID: {acc.apiId} · Hash: {acc.apiHash} · Сессия: {acc.session}
+                        {acc.proxyHost && (
+                          <span className="ml-2 text-blue-600">· Прокси: {acc.proxyHost}:{acc.proxyPort}</span>
+                        )}
                       </div>
                       <div className="text-xs text-muted-foreground">
                         Обновлён: {format(new Date(acc.updatedAt), "d MMM HH:mm", { locale: ru })}
@@ -324,6 +339,53 @@ export function Accounts() {
                 className={`font-mono text-xs min-h-[70px] ${!showSession && form.session ? "blur-sm" : ""}`}
                 onFocus={() => setShowSession(true)}
               />
+            </div>
+
+            {/* SOCKS5 Proxy Settings */}
+            <div className="border-t pt-4 mt-4">
+              <p className="text-sm font-medium mb-3">SOCKS5 Прокси (опционально)</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <label className="text-xs text-muted-foreground">Хост</label>
+                  <Input
+                    placeholder="proxy.example.com"
+                    value={form.proxyHost}
+                    onChange={set("proxyHost")}
+                    className="font-mono text-sm"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs text-muted-foreground">Порт</label>
+                  <Input
+                    placeholder="1080"
+                    value={form.proxyPort}
+                    onChange={set("proxyPort")}
+                    className="font-mono text-sm"
+                    type="number"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3 mt-2">
+                <div className="space-y-1.5">
+                  <label className="text-xs text-muted-foreground">Логин (если есть)</label>
+                  <Input
+                    placeholder="username"
+                    value={form.proxyUsername}
+                    onChange={set("proxyUsername")}
+                    className="font-mono text-sm"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs text-muted-foreground">Пароль (если есть)</label>
+                  <Input
+                    placeholder={editId ? "Оставьте пустым" : "password"}
+                    value={form.proxyPassword}
+                    onChange={set("proxyPassword")}
+                    className="font-mono text-sm"
+                    type="password"
+                  />
+                </div>
+              </div>
             </div>
           </div>
           <DialogFooter>
