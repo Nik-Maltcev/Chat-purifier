@@ -39,8 +39,6 @@ async function buildAll() {
       "re2",
       "farmhash",
       "xxhash-addon",
-      "bufferutil",
-      "utf-8-validate",
       "ssh2",
       "cpu-features",
       "dtrace-provider",
