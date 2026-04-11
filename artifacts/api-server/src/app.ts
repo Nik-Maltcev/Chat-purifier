@@ -36,7 +36,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api", router);
 
 // Serve frontend static files
-const frontendPath = path.resolve(__dirname, "../public");
+const frontendPath = path.resolve(__dirname, "public");
 app.use(express.static(frontendPath));
 
 // SPA fallback - serve index.html for all non-API routes
