@@ -1,5 +1,6 @@
 import { TelegramClient } from "telegram";
 import { StringSession } from "telegram/sessions/index.js";
+import { SocksProxyAgent } from "socks-proxy-agent";
 import { logger } from "./logger.js";
 import type { TelegramAccount } from "./account-manager.js";
 
@@ -47,14 +48,29 @@ export async function getClientForAccount(account: TelegramAccount): Promise<Tel
   }
 
   const session = new StringSession(account.session);
-  const client = new TelegramClient(session, apiId, account.apiHash, {
+  
+  // Build client options
+  const clientOptions: ConstructorParameters<typeof TelegramClient>[3] = {
     connectionRetries: 5,
     retryDelay: 3000,
     autoReconnect: true,
     requestRetries: 5,
     floodSleepThreshold: 120,
     sequentialUpdates: true,
-  });
+  };
+
+  // Add SOCKS5 proxy if configured
+  if (account.proxyHost && account.proxyPort) {
+    const proxyUrl = account.proxyUsername && account.proxyPassword
+      ? `socks5://${account.proxyUsername}:${account.proxyPassword}@${account.proxyHost}:${account.proxyPort}`
+      : `socks5://${account.proxyHost}:${account.proxyPort}`;
+    
+    const agent = new SocksProxyAgent(proxyUrl);
+    clientOptions.networkSocket = agent as unknown as typeof clientOptions.networkSocket;
+    logger.info({ accountId: account.id, label: account.label, proxyHost: account.proxyHost }, "Используем SOCKS5 прокси");
+  }
+
+  const client = new TelegramClient(session, apiId, account.apiHash, clientOptions);
 
   await client.connect();
   clientPool.set(account.id, { client, connected: true });
@@ -80,6 +96,20 @@ export function resetAllClients(): void {
   logger.info("Все Telegram клиенты сброшены");
 }
 
+/**
+ * Wraps a promise with a timeout. Rejects if the promise doesn't resolve within the given time.
+ */
+function withTimeout<T>(promise: Promise<T>, ms: number, operation: string): Promise<T> {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => {
+      reject(new Error(`Timeout: ${operation} took longer than ${Math.round(ms / 1000)}s`));
+    }, ms);
+    promise
+      .then((result) => { clearTimeout(timer); resolve(result); })
+      .catch((err) => { clearTimeout(timer); reject(err); });
+  });
+}
+
 export async function fetchChatMessages(
   chatIdentifier: string,
   messagesCount: number,
@@ -98,7 +128,12 @@ export async function fetchChatMessages(
     .replace(/^@/, "")
     .trim();
 
-  const entity = await tg.getEntity(cleanIdentifier);
+  // 30 second timeout for getEntity
+  const entity = await withTimeout(
+    tg.getEntity(cleanIdentifier),
+    30_000,
+    `getEntity(${cleanIdentifier})`
+  );
 
   let title: string | null = null;
   let username: string | null = null;
@@ -113,7 +148,15 @@ export async function fetchChatMessages(
   const messages: string[] = [];
   const iter = tg.iterMessages(entity, { limit: messagesCount });
 
+  // 2 minute timeout for fetching all messages
+  const startTime = Date.now();
+  const maxDuration = 120_000; // 2 minutes max for message fetching
+
   for await (const msg of iter) {
+    if (Date.now() - startTime > maxDuration) {
+      logger.warn({ chatIdentifier, fetchedCount: messages.length }, "Message fetch timeout - returning partial results");
+      break;
+    }
     if (msg.message && msg.message.trim().length > 0) {
       messages.push(msg.message.trim());
     }
@@ -185,7 +228,12 @@ export async function fetchChatMessagesLegacy(
     .replace(/^@/, "")
     .trim();
 
-  const entity = await tg.getEntity(cleanIdentifier);
+  // 30 second timeout for getEntity
+  const entity = await withTimeout(
+    tg.getEntity(cleanIdentifier),
+    30_000,
+    `getEntity(${cleanIdentifier})`
+  );
 
   let title: string | null = null;
   let username: string | null = null;
@@ -200,7 +248,15 @@ export async function fetchChatMessagesLegacy(
   const messages: string[] = [];
   const iter = tg.iterMessages(entity, { limit: messagesCount });
 
+  // 2 minute timeout for fetching all messages
+  const startTime = Date.now();
+  const maxDuration = 120_000; // 2 minutes max for message fetching
+
   for await (const msg of iter) {
+    if (Date.now() - startTime > maxDuration) {
+      logger.warn({ chatIdentifier, fetchedCount: messages.length }, "Message fetch timeout - returning partial results");
+      break;
+    }
     if (msg.message && msg.message.trim().length > 0) {
       messages.push(msg.message.trim());
     }

@@ -81,6 +81,11 @@ export const telegramAccountsTable = pgTable("telegram_accounts", {
   status: accountStatusEnum("status").notNull().default("active"),
   floodWaitUntil: timestamp("flood_wait_until"),
   priority: integer("priority").notNull().default(0),
+  // SOCKS5 proxy settings (optional)
+  proxyHost: text("proxy_host"),
+  proxyPort: integer("proxy_port"),
+  proxyUsername: text("proxy_username"),
+  proxyPassword: text("proxy_password"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });

@@ -28,6 +28,10 @@ router.get("/accounts", async (_req, res) => {
     status: a.status,
     floodWaitUntil: a.floodWaitUntil,
     priority: a.priority,
+    proxyHost: a.proxyHost,
+    proxyPort: a.proxyPort,
+    proxyUsername: a.proxyUsername,
+    proxyPassword: a.proxyPassword ? "***" : null,
     createdAt: a.createdAt,
     updatedAt: a.updatedAt,
   }));
@@ -35,7 +39,7 @@ router.get("/accounts", async (_req, res) => {
 });
 
 router.post("/accounts", async (req, res) => {
-  const { label, apiId, apiHash, session, priority } = req.body as Record<string, string>;
+  const { label, apiId, apiHash, session, priority, proxyHost, proxyPort, proxyUsername, proxyPassword } = req.body as Record<string, string>;
   if (!apiId || !apiHash || !session) {
     res.status(400).json({ error: "apiId, apiHash, session обязательны" });
     return;
@@ -47,13 +51,17 @@ router.post("/accounts", async (req, res) => {
     session: session.trim(),
     priority: parseInt(priority || "0", 10) || 0,
     status: "active",
+    proxyHost: proxyHost?.trim() || null,
+    proxyPort: proxyPort ? parseInt(proxyPort, 10) || null : null,
+    proxyUsername: proxyUsername?.trim() || null,
+    proxyPassword: proxyPassword?.trim() || null,
   }).returning();
   res.json({ ok: true, id: created.id });
 });
 
 router.put("/accounts/:id", async (req, res) => {
   const id = parseInt(req.params.id, 10);
-  const { label, apiId, apiHash, session, priority, status } = req.body as Record<string, string>;
+  const { label, apiId, apiHash, session, priority, status, proxyHost, proxyPort, proxyUsername, proxyPassword } = req.body as Record<string, string>;
   const updates: Record<string, unknown> = { updatedAt: new Date() };
 
   if (label !== undefined) updates.label = label.trim();
@@ -65,6 +73,12 @@ router.put("/accounts/:id", async (req, res) => {
     updates.status = status;
     if (status === "active") updates.floodWaitUntil = null;
   }
+  
+  // Proxy settings - allow clearing by passing empty string
+  if (proxyHost !== undefined) updates.proxyHost = proxyHost.trim() || null;
+  if (proxyPort !== undefined) updates.proxyPort = proxyPort ? parseInt(proxyPort, 10) || null : null;
+  if (proxyUsername !== undefined) updates.proxyUsername = proxyUsername.trim() || null;
+  if (proxyPassword !== undefined && proxyPassword !== "***") updates.proxyPassword = proxyPassword.trim() || null;
 
   await db.update(telegramAccountsTable).set(updates as never).where(eq(telegramAccountsTable.id, id));
 
