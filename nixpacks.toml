@@ -10,9 +10,8 @@ cmds = [
   "pnpm --filter @workspace/tg-chat-analyzer run build",
   "pnpm --filter @workspace/api-server run build",
   "mkdir -p artifacts/api-server/dist/public",
-  "cp -r artifacts/tg-chat-analyzer/dist/* artifacts/api-server/dist/public/",
-  "pnpm --filter @workspace/db push"
+  "cp -r artifacts/tg-chat-analyzer/dist/* artifacts/api-server/dist/public/"
 ]
 
 [start]
-cmd = "node artifacts/api-server/dist/index.mjs"
+cmd = "pnpm --filter @workspace/db push && node artifacts/api-server/dist/index.mjs"
