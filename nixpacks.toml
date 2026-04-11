@@ -7,7 +7,10 @@ cmds = ["pnpm install --no-frozen-lockfile"]
 [phases.build]
 cmds = [
   "pnpm run typecheck:libs",
+  "pnpm --filter @workspace/tg-chat-analyzer run build",
   "pnpm --filter @workspace/api-server run build",
+  "mkdir -p artifacts/api-server/dist/public",
+  "cp -r artifacts/tg-chat-analyzer/dist/* artifacts/api-server/dist/public/",
   "pnpm --filter @workspace/db push"
 ]
 
