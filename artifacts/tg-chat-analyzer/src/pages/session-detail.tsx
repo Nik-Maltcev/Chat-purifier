@@ -47,15 +47,18 @@ export function SessionDetail() {
   const [verdictFilter, setVerdictFilter] = useState<string | undefined>();
   const [exportVerdict, setExportVerdict] = useState<"keep" | "all">("keep");
 
+  const shouldPoll = (s?: { status: string; autoRestart?: boolean }) =>
+    s?.status === "running" || (s?.status === "paused" && s?.autoRestart);
+
   const { data: session, refetch: refetchSession } = useGetSession(sessionId, {
     query: {
-      refetchInterval: (query) => query.state.data?.status === "running" ? 5000 : false
+      refetchInterval: (query) => shouldPoll(query.state.data) ? 5000 : false
     }
   });
 
   const { data: summary } = useGetSessionSummary(sessionId, {
     query: {
-      refetchInterval: (query) => session?.status === "running" ? 5000 : false
+      refetchInterval: () => shouldPoll(session) ? 5000 : false
     }
   });
 
@@ -63,7 +66,7 @@ export function SessionDetail() {
     { verdict: verdictFilter as any },
     {
       query: {
-        refetchInterval: (query) => session?.status === "running" ? 5000 : false
+        refetchInterval: () => shouldPoll(session) ? 5000 : false
       }
     }
   );
@@ -137,7 +140,7 @@ export function SessionDetail() {
           <div>
             <div className="flex items-center gap-3">
               <h1 className="text-2xl font-bold tracking-tight">{session.name}</h1>
-              <SessionStatusBadge status={session.status} />
+              <SessionStatusBadge status={session.status} autoRestart={session.autoRestart} />
             </div>
             <p className="text-sm text-muted-foreground mt-1 font-mono">
               ID: {session.id} | Задержка: {session.delaySeconds}с | Контекст: {session.messagesCount} сообщ.
@@ -151,6 +154,16 @@ export function SessionDetail() {
               <Square className="w-4 h-4 mr-2" />
               Остановить
             </Button>
+          ) : session.status === "paused" && session.autoRestart ? (
+            <>
+              <span className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1">
+                ⏳ Возобновится автоматически
+              </span>
+              <Button variant="outline" size="sm" onClick={handleStop} disabled={stopMutation.isPending} className="text-muted-foreground">
+                <Square className="w-4 h-4 mr-2" />
+                Остановить совсем
+              </Button>
+            </>
           ) : session.status !== "completed" ? (
             <Button variant="default" size="sm" onClick={handleStart} disabled={startMutation.isPending || session.processedChats >= session.totalChats}>
               <Play className="w-4 h-4 mr-2" />

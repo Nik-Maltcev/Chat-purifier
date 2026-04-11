@@ -34,6 +34,7 @@ export const sessionsTable = pgTable("sessions", {
   processedChats: integer("processed_chats").notNull().default(0),
   delaySeconds: integer("delay_seconds").notNull().default(12),
   messagesCount: integer("messages_count").notNull().default(50),
+  autoRestart: boolean("auto_restart").notNull().default(true),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });

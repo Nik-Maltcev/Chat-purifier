@@ -84,6 +84,11 @@ router.post("/sessions/:sessionId/start", async (req, res) => {
     return;
   }
 
+  // Mark autoRestart=true so server restarts pick this up
+  await db.update(sessionsTable)
+    .set({ autoRestart: true, updatedAt: new Date() })
+    .where(eq(sessionsTable.id, sessionId));
+
   await startProcessor(sessionId);
 
   const [updated] = await db.select().from(sessionsTable).where(eq(sessionsTable.id, sessionId));
@@ -101,9 +106,10 @@ router.post("/sessions/:sessionId/stop", async (req, res) => {
 
   stopProcessor(sessionId);
 
+  // autoRestart=false means "user manually stopped, don't auto-resume"
   await db
     .update(sessionsTable)
-    .set({ status: "paused", updatedAt: new Date() })
+    .set({ status: "paused", autoRestart: false, updatedAt: new Date() })
     .where(eq(sessionsTable.id, sessionId));
 
   const [updated] = await db.select().from(sessionsTable).where(eq(sessionsTable.id, sessionId));
@@ -232,6 +238,7 @@ function formatSession(session: typeof sessionsTable.$inferSelect) {
     processedChats: session.processedChats,
     delaySeconds: session.delaySeconds,
     messagesCount: session.messagesCount,
+    autoRestart: session.autoRestart,
     createdAt: session.createdAt.toISOString(),
     updatedAt: session.updatedAt.toISOString(),
   };

@@ -35,6 +35,7 @@ export interface Session {
   processedChats: number;
   delaySeconds: number;
   messagesCount: number;
+  autoRestart: boolean;
   createdAt: string;
   updatedAt: string;
 }

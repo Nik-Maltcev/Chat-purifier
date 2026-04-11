@@ -109,7 +109,7 @@ export function Dashboard() {
                         </Link>
                       </TableCell>
                       <TableCell>
-                        <SessionStatusBadge status={session.status} />
+                        <SessionStatusBadge status={session.status} autoRestart={session.autoRestart} />
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
