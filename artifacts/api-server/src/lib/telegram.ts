@@ -164,3 +164,47 @@ export async function getTelegramClient(): Promise<TelegramClient> {
   logger.info("Telegram legacy client connected");
   return legacyClient;
 }
+
+/**
+ * Legacy version of fetchChatMessages that uses settings-based single account.
+ */
+export async function fetchChatMessagesLegacy(
+  chatIdentifier: string,
+  messagesCount: number
+): Promise<{
+  title: string | null;
+  username: string | null;
+  membersCount: number | null;
+  messages: string[];
+}> {
+  const tg = await getTelegramClient();
+
+  const cleanIdentifier = chatIdentifier
+    .replace(/^https?:\/\/t\.me\//i, "")
+    .replace(/^t\.me\//i, "")
+    .replace(/^@/, "")
+    .trim();
+
+  const entity = await tg.getEntity(cleanIdentifier);
+
+  let title: string | null = null;
+  let username: string | null = null;
+  let membersCount: number | null = null;
+
+  if ("title" in entity) title = (entity as { title?: string }).title ?? null;
+  if ("username" in entity) username = (entity as { username?: string }).username ?? null;
+  if ("participantsCount" in entity) {
+    membersCount = (entity as { participantsCount?: number }).participantsCount ?? null;
+  }
+
+  const messages: string[] = [];
+  const iter = tg.iterMessages(entity, { limit: messagesCount });
+
+  for await (const msg of iter) {
+    if (msg.message && msg.message.trim().length > 0) {
+      messages.push(msg.message.trim());
+    }
+  }
+
+  return { title, username, membersCount, messages };
+}

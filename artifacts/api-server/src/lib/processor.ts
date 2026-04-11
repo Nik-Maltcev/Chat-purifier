@@ -12,7 +12,7 @@
  */
 import { db, sessionsTable, chatResultsTable } from "@workspace/db";
 import { eq, and, gte } from "drizzle-orm";
-import { fetchChatMessages, getFloodWaitSeconds, isAuthError } from "./telegram.js";
+import { fetchChatMessages, fetchChatMessagesLegacy, getFloodWaitSeconds, isAuthError } from "./telegram.js";
 import { analyzeChat } from "./deepseek.js";
 import { logger } from "./logger.js";
 import { getSettingValue } from "./settings-store.js";
@@ -252,15 +252,33 @@ async function processSession(sessionId: number, signal: AbortSignal): Promise<v
             .set({ status: "fetching", updatedAt: new Date() })
             .where(eq(chatResultsTable.id, chat.id));
 
-          if (!currentAccount) {
-            throw new Error("Аккаунт Telegram не настроен. Добавьте аккаунт в настройках.");
-          }
+          let title: string | null;
+          let username: string | null;
+          let membersCount: number | null;
+          let messages: string[];
 
-          const { title, username, membersCount, messages } = await fetchChatMessages(
-            chat.chatIdentifier,
-            freshSession.messagesCount,
-            currentAccount,
-          );
+          if (currentAccount) {
+            // Multi-account mode
+            const result = await fetchChatMessages(
+              chat.chatIdentifier,
+              freshSession.messagesCount,
+              currentAccount,
+            );
+            title = result.title;
+            username = result.username;
+            membersCount = result.membersCount;
+            messages = result.messages;
+          } else {
+            // Legacy mode (settings-based single account)
+            const result = await fetchChatMessagesLegacy(
+              chat.chatIdentifier,
+              freshSession.messagesCount,
+            );
+            title = result.title;
+            username = result.username;
+            membersCount = result.membersCount;
+            messages = result.messages;
+          }
 
           if (messages.length === 0) {
             await db.update(chatResultsTable).set({
