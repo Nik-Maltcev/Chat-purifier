@@ -98,14 +98,19 @@ export async function extractChatsFromFolderLink(folderLink: string): Promise<Fo
     let folderTitle: string | null = null;
 
     if (result instanceof Api.chatlists.ChatlistInviteAlready) {
-      folderTitle = extractTitle((result.filter as { title?: unknown } | undefined)?.title);
+      // Access filter property safely
+      const resultAny = result as unknown as { 
+        filter?: { title?: unknown };
+        chats?: Api.TypeChat[];
+        users?: Api.TypeUser[];
+      };
+      folderTitle = extractTitle(resultAny.filter?.title);
 
       // The actual chat objects are in result.chats and result.users
       // result.alreadyPeers and result.missingPeers are just TypePeer references
-      const chatObjects = (result as unknown as { chats?: Api.TypeChat[]; users?: Api.TypeUser[] });
       const allObjects = [
-        ...(chatObjects.chats ?? []),
-        ...(chatObjects.users ?? []),
+        ...(resultAny.chats ?? []),
+        ...(resultAny.users ?? []),
       ];
 
       logger.info({ slug, objectCount: allObjects.length }, "ChatlistInviteAlready chat objects");
@@ -115,19 +120,24 @@ export async function extractChatsFromFolderLink(folderLink: string): Promise<Fo
         if (chat) chats.push(chat);
       }
     } else if (result instanceof Api.chatlists.ChatlistInvite) {
-      folderTitle = extractTitle((result as unknown as { title?: unknown }).title);
+      const resultAny = result as unknown as { 
+        title?: unknown;
+        peers?: unknown[];
+        chats?: Api.TypeChat[];
+        users?: Api.TypeUser[];
+      };
+      folderTitle = extractTitle(resultAny.title);
 
       // result.peers is TypePeer[] references; full objects are in result.chats / result.users
-      const chatObjects = (result as unknown as { chats?: Api.TypeChat[]; users?: Api.TypeUser[] });
       const allObjects = [
-        ...(chatObjects.chats ?? []),
-        ...(chatObjects.users ?? []),
+        ...(resultAny.chats ?? []),
+        ...(resultAny.users ?? []),
       ];
 
       logger.info(
         {
           slug,
-          peerCount: result.peers?.length,
+          peerCount: resultAny.peers?.length,
           chatObjectCount: allObjects.length,
           folderTitle,
         },
@@ -139,7 +149,8 @@ export async function extractChatsFromFolderLink(folderLink: string): Promise<Fo
         if (chat) chats.push(chat);
       }
     } else {
-      logger.warn({ slug, resultType: result.className }, "Unknown result type from CheckChatlistInvite");
+      const resultAny = result as { className?: string };
+      logger.warn({ slug, resultType: resultAny.className }, "Unknown result type from CheckChatlistInvite");
     }
 
     logger.info({ slug, folderTitle, chatCount: chats.length }, "Extracted chats from folder");
