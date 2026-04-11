@@ -81,6 +81,7 @@ export interface ChatResult {
   /** Topic relevance score 1-10 */
   topicScore?: number | null;
   aiSummary?: string | null;
+  country?: string | null;
   errorMessage?: string | null;
   createdAt: string;
   updatedAt: string;

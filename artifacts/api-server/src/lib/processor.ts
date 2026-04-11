@@ -287,6 +287,7 @@ async function processSession(sessionId: number, signal: AbortSignal): Promise<v
               activityScore: analysis.activityScore,
               topicScore: analysis.topicScore,
               aiSummary: analysis.summary,
+              country: analysis.country,
               updatedAt: new Date(),
             }).where(eq(chatResultsTable.id, chat.id));
           }

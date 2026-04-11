@@ -259,6 +259,7 @@ export function SessionDetail() {
             <TableHeader>
               <TableRow className="bg-muted/50 hover:bg-muted/50">
                 <TableHead className="w-[180px]">Чат</TableHead>
+                <TableHead>Страна</TableHead>
                 <TableHead>Статус</TableHead>
                 <TableHead>Вердикт</TableHead>
                 <TableHead className="text-center">Баллы (К/С/А/Т)</TableHead>
@@ -272,6 +273,15 @@ export function SessionDetail() {
                   <TableCell className="font-mono text-xs font-medium truncate max-w-[180px]">
                     {chat.chatIdentifier}
                     {chat.chatTitle && <div className="text-muted-foreground truncate">{chat.chatTitle}</div>}
+                  </TableCell>
+                  <TableCell>
+                    {chat.country ? (
+                      <span className="inline-flex items-center gap-1 text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200 rounded px-1.5 py-0.5 whitespace-nowrap">
+                        {chat.country}
+                      </span>
+                    ) : (
+                      <span className="text-muted-foreground/30 text-xs">—</span>
+                    )}
                   </TableCell>
                   <TableCell>
                     <Badge variant="outline" className="font-mono text-[10px] tracking-wider uppercase bg-transparent">

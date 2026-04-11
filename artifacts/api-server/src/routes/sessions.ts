@@ -202,12 +202,13 @@ router.get("/sessions/:sessionId/export", async (req, res) => {
       .orderBy(chatResultsTable.id);
   }
 
-  const header = "chat_identifier,chat_title,chat_username,members_count,verdict,score,spam_score,activity_score,topic_score,summary";
+  const header = "chat_identifier,chat_title,chat_username,members_count,country,verdict,score,spam_score,activity_score,topic_score,summary";
   const rows = chats.map((c) => [
     csvEscape(c.chatIdentifier),
     csvEscape(c.chatTitle ?? ""),
     csvEscape(c.chatUsername ? `@${c.chatUsername}` : ""),
     c.membersCount ?? "",
+    csvEscape(c.country ?? ""),
     c.verdict ?? "",
     c.score ?? "",
     c.spamScore ?? "",
@@ -259,6 +260,7 @@ function formatChat(chat: typeof chatResultsTable.$inferSelect) {
     activityScore: chat.activityScore ?? null,
     topicScore: chat.topicScore ?? null,
     aiSummary: chat.aiSummary ?? null,
+    country: chat.country ?? null,
     errorMessage: chat.errorMessage ?? null,
     createdAt: chat.createdAt.toISOString(),
     updatedAt: chat.updatedAt.toISOString(),

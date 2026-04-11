@@ -53,6 +53,7 @@ export const chatResultsTable = pgTable("chat_results", {
   activityScore: integer("activity_score"),
   topicScore: integer("topic_score"),
   aiSummary: text("ai_summary"),
+  country: text("country"),
   errorMessage: text("error_message"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),

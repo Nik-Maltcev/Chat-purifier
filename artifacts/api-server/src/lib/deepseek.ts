@@ -8,6 +8,7 @@ interface AnalysisResult {
   activityScore: number;
   topicScore: number;
   summary: string;
+  country: string | null;
 }
 
 export async function analyzeChat(
@@ -39,6 +40,8 @@ ${messagesText}
 - "keep" — если чат активный, по делу, люди реально помогают друг другу с эмиграцией/переездом/документами/жильём/работой за рубежом
 - "filter" — если чат завален спамом, рекламой, оффтопом, неактивен, или не связан с темой
 
+Дополнительно: определи страну, которой посвящён чат (Германия, США, Канада и т.д.). Ориентируйся прежде всего на название чата, затем на сообщения. Если страна не определяется — верни null.
+
 Ответь ТОЛЬКО в формате JSON без лишних слов:
 {
   "verdict": "keep" or "filter",
@@ -46,7 +49,8 @@ ${messagesText}
   "spamScore": число 1-10,
   "activityScore": число 1-10,
   "topicScore": число 1-10,
-  "summary": "краткий вывод на русском до 150 символов"
+  "summary": "краткий вывод на русском до 150 символов",
+  "country": "Название страны на русском или null"
 }`;
 
   const response = await fetch("https://api.deepseek.com/v1/chat/completions", {
@@ -85,7 +89,13 @@ ${messagesText}
     throw new Error(`Не удалось разобрать JSON из ответа DeepSeek: ${content}`);
   }
 
-  const parsed = JSON.parse(jsonMatch[0]) as AnalysisResult;
+  const parsed = JSON.parse(jsonMatch[0]) as AnalysisResult & { country?: unknown };
+
+  const rawCountry = parsed.country;
+  const country =
+    typeof rawCountry === "string" && rawCountry.toLowerCase() !== "null" && rawCountry.trim()
+      ? rawCountry.trim()
+      : null;
 
   return {
     verdict: parsed.verdict === "keep" ? "keep" : "filter",
@@ -94,5 +104,6 @@ ${messagesText}
     activityScore: Math.min(10, Math.max(1, parsed.activityScore || 5)),
     topicScore: Math.min(10, Math.max(1, parsed.topicScore || 5)),
     summary: parsed.summary || "",
+    country,
   };
 }
