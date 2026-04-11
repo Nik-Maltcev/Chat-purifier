@@ -6,7 +6,8 @@ cmds = ["pnpm install --frozen-lockfile"]
 
 [phases.build]
 cmds = [
-  "pnpm run build"
+  "pnpm run build",
+  "pnpm --filter @workspace/db push"
 ]
 
 [start]
