@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "preinstall": "sh -c 'rm -f package-lock.json yarn.lock; case \"$npm_config_user_agent\" in pnpm/*) ;; *) echo \"Use pnpm instead\" >&2; exit 1 ;; esac'",
-    "build": "tsc --build && pnpm --filter @workspace/tg-chat-analyzer run build && pnpm --filter @workspace/api-server run build && cp -r artifacts/tg-chat-analyzer/dist artifacts/api-server/dist/public",
+    "build": "tsc --build && pnpm --filter @workspace/tg-chat-analyzer run build && pnpm --filter @workspace/api-server run build && mkdir -p artifacts/api-server/dist/public && cp -r artifacts/tg-chat-analyzer/dist/* artifacts/api-server/dist/public/",
     "build:full": "pnpm run typecheck && pnpm -r --if-present run build",
     "typecheck:libs": "tsc --build",
     "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck"
