@@ -335,6 +335,7 @@ async function processSession(sessionId: number, signal: AbortSignal): Promise<v
 
           // Auth / ban error
           if (isAuthError(err) && currentAccount) {
+            logger.error({ err, accountId: currentAccount.id }, "Auth error detected — marking account as banned");
             await markAccountBanned(currentAccount.id);
             await db.update(chatResultsTable)
               .set({ status: "pending", updatedAt: new Date() })
@@ -342,9 +343,9 @@ async function processSession(sessionId: number, signal: AbortSignal): Promise<v
             return "auth_error";
           }
 
-          // Regular error
+          // Regular error — log full details
           const errMsg = err instanceof Error ? err.message : String(err);
-          logger.error({ err, chatId: chat.id, identifier: chat.chatIdentifier }, "Chat processing error");
+          logger.error({ err, chatId: chat.id, identifier: chat.chatIdentifier, accountId: currentAccount?.id }, "Chat processing error");
           await db.update(chatResultsTable).set({
             status: "error",
             verdict: "error",

@@ -24,12 +24,25 @@ export function getFloodWaitSeconds(err: unknown): number | null {
 
 /**
  * Check if an error looks like an auth/banned error.
+ * Be strict to avoid false positives from proxy/network errors.
  */
 export function isAuthError(err: unknown): boolean {
   if (!err || typeof err !== "object") return false;
   const e = err as Record<string, unknown>;
-  const msg = String(e.message || e.errorMessage || "");
-  return /auth_key|session_revoked|user_deactivated|banned|unauthorized/i.test(msg);
+  const msg = String(e.message || e.errorMessage || "").toUpperCase();
+  
+  // Only match specific Telegram API error codes
+  const telegramAuthErrors = [
+    "AUTH_KEY_UNREGISTERED",
+    "AUTH_KEY_INVALID", 
+    "AUTH_KEY_PERM_EMPTY",
+    "SESSION_REVOKED",
+    "SESSION_EXPIRED",
+    "USER_DEACTIVATED",
+    "USER_DEACTIVATED_BAN",
+  ];
+  
+  return telegramAuthErrors.some(code => msg.includes(code));
 }
 
 export async function getClientForAccount(account: TelegramAccount): Promise<TelegramClient> {
@@ -44,17 +57,18 @@ export async function getClientForAccount(account: TelegramAccount): Promise<Tel
   // Disconnect old client if exists
   if (cached) {
     try { cached.client.disconnect(); } catch {}
+    clientPool.delete(account.id);
   }
 
   const session = new StringSession(account.session);
   
   // Build client options
   const clientOptions: ConstructorParameters<typeof TelegramClient>[3] = {
-    connectionRetries: 5,
-    retryDelay: 3000,
-    autoReconnect: true,
-    requestRetries: 5,
-    floodSleepThreshold: 120,
+    connectionRetries: 3,
+    retryDelay: 2000,
+    autoReconnect: false, // Disable auto-reconnect to prevent zombie connections
+    requestRetries: 3,
+    floodSleepThreshold: 0, // Don't auto-sleep, we handle FloodWait ourselves
     sequentialUpdates: true,
   };
 
@@ -72,11 +86,17 @@ export async function getClientForAccount(account: TelegramAccount): Promise<Tel
 
   const client = new TelegramClient(session, apiId, account.apiHash, clientOptions);
 
-  await client.connect();
-  clientPool.set(account.id, { client, connected: true });
-  logger.info({ accountId: account.id, label: account.label }, "Telegram клиент подключён");
-
-  return client;
+  try {
+    await client.connect();
+    clientPool.set(account.id, { client, connected: true });
+    logger.info({ accountId: account.id, label: account.label }, "Telegram клиент подключён");
+    return client;
+  } catch (err) {
+    // Clean up on connection failure
+    try { client.disconnect(); } catch {}
+    logger.error({ err, accountId: account.id }, "Ошибка подключения Telegram клиента");
+    throw err;
+  }
 }
 
 export function disconnectClientForAccount(accountId: number): void {
