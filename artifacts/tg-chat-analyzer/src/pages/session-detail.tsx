@@ -16,7 +16,7 @@ import { Progress } from "@/components/ui/progress";
 import { SessionStatusBadge } from "@/components/session-status-badge";
 import { VerdictChip } from "@/components/verdict-chip";
 import { ScorePill } from "@/components/score-pill";
-import { Play, Square, Download, ArrowLeft, Info } from "lucide-react";
+import { Play, Square, Download, ArrowLeft, Info, RotateCcw } from "lucide-react";
 import { Link } from "wouter";
 import { useToast } from "@/hooks/use-toast";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -46,6 +46,7 @@ export function SessionDetail() {
   
   const [verdictFilter, setVerdictFilter] = useState<string | undefined>();
   const [exportVerdict, setExportVerdict] = useState<"keep" | "all">("keep");
+  const [retrying, setRetrying] = useState(false);
 
   const shouldPoll = (s?: { status: string; autoRestart?: boolean }) =>
     s?.status === "running" || (s?.status === "paused" && s?.autoRestart);
@@ -124,6 +125,22 @@ export function SessionDetail() {
     }
   };
 
+  const handleRetryErrors = async () => {
+    setRetrying(true);
+    try {
+      const res = await fetch(`/api/sessions/${sessionId}/retry-errors`, { method: "POST" });
+      const data = await res.json();
+      if (data.ok) {
+        toast({ title: `Сброшено ${data.resetCount} ошибочных чатов`, description: "Они будут обработаны заново" });
+        refetchSession();
+      }
+    } catch (err) {
+      toast({ title: "Ошибка", variant: "destructive" });
+    } finally {
+      setRetrying(false);
+    }
+  };
+
   if (!session) return <div className="p-8 text-center text-muted-foreground">Загрузка...</div>;
 
   const progressPercent = session.totalChats > 0 ? (session.processedChats / session.totalChats) * 100 : 0;
@@ -170,6 +187,13 @@ export function SessionDetail() {
               Запустить
             </Button>
           ) : null}
+
+          {(summary?.errors || 0) > 0 && (
+            <Button variant="outline" size="sm" onClick={handleRetryErrors} disabled={retrying}>
+              <RotateCcw className={`w-4 h-4 mr-2 ${retrying ? 'animate-spin' : ''}`} />
+              Повторить ошибки ({summary?.errors})
+            </Button>
+          )}
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

@@ -116,6 +116,35 @@ router.post("/sessions/:sessionId/stop", async (req, res) => {
   res.json(formatSession(updated));
 });
 
+router.post("/sessions/:sessionId/retry-errors", async (req, res) => {
+  const sessionId = Number(req.params.sessionId);
+  const [session] = await db.select().from(sessionsTable).where(eq(sessionsTable.id, sessionId));
+
+  if (!session) {
+    res.status(404).json({ error: "Session not found" });
+    return;
+  }
+
+  // Reset all error chats back to pending
+  const result = await db
+    .update(chatResultsTable)
+    .set({ 
+      status: "pending", 
+      verdict: "pending",
+      errorMessage: null,
+      updatedAt: new Date() 
+    })
+    .where(
+      and(
+        eq(chatResultsTable.sessionId, sessionId),
+        eq(chatResultsTable.status, "error")
+      )
+    )
+    .returning();
+
+  res.json({ ok: true, resetCount: result.length });
+});
+
 router.get("/sessions/:sessionId/chats", async (req, res) => {
   const { sessionId } = GetSessionChatsParams.parse({ sessionId: Number(req.params.sessionId) });
   const query = GetSessionChatsQueryParams.parse(req.query);
