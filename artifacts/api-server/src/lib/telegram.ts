@@ -1,6 +1,5 @@
 import { TelegramClient } from "telegram";
 import { StringSession } from "telegram/sessions/index.js";
-import { SocksProxyAgent } from "socks-proxy-agent";
 import { logger } from "./logger.js";
 import type { TelegramAccount } from "./account-manager.js";
 
@@ -59,15 +58,16 @@ export async function getClientForAccount(account: TelegramAccount): Promise<Tel
     sequentialUpdates: true,
   };
 
-  // Add SOCKS5 proxy if configured
+  // Add SOCKS5 proxy if configured (gramjs native proxy support)
   if (account.proxyHost && account.proxyPort) {
-    const proxyUrl = account.proxyUsername && account.proxyPassword
-      ? `socks5://${account.proxyUsername}:${account.proxyPassword}@${account.proxyHost}:${account.proxyPort}`
-      : `socks5://${account.proxyHost}:${account.proxyPort}`;
-    
-    const agent = new SocksProxyAgent(proxyUrl);
-    clientOptions.networkSocket = agent as unknown as typeof clientOptions.networkSocket;
-    logger.info({ accountId: account.id, label: account.label, proxyHost: account.proxyHost }, "Используем SOCKS5 прокси");
+    clientOptions.proxy = {
+      socksType: 5,
+      ip: account.proxyHost,
+      port: account.proxyPort,
+      username: account.proxyUsername || undefined,
+      password: account.proxyPassword || undefined,
+    };
+    logger.info({ accountId: account.id, label: account.label, proxyHost: account.proxyHost, proxyPort: account.proxyPort }, "Используем SOCKS5 прокси");
   }
 
   const client = new TelegramClient(session, apiId, account.apiHash, clientOptions);
