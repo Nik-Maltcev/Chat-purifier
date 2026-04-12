@@ -46,18 +46,32 @@ export function isAuthError(err: unknown): boolean {
 }
 
 export async function getClientForAccount(account: TelegramAccount): Promise<TelegramClient> {
+  // First, disconnect ALL other clients to prevent AUTH_KEY_DUPLICATED
+  // This is aggressive but necessary when accounts share API credentials
+  for (const [id, entry] of clientPool) {
+    if (id !== account.id) {
+      try { await entry.client.disconnect(); } catch {}
+      clientPool.delete(id);
+    }
+  }
+
   const cached = clientPool.get(account.id);
-  if (cached?.connected) return cached.client;
+  
+  // Check if cached client is still connected
+  if (cached) {
+    try {
+      if (cached.client.connected) {
+        return cached.client;
+      }
+    } catch {}
+    // Client disconnected or errored — clean up
+    try { await cached.client.disconnect(); } catch {}
+    clientPool.delete(account.id);
+  }
 
   const apiId = parseInt(account.apiId, 10);
   if (!apiId || !account.apiHash || !account.session) {
     throw new Error(`Аккаунт #${account.id} (${account.label}) не настроен корректно`);
-  }
-
-  // Disconnect old client if exists
-  if (cached) {
-    try { cached.client.disconnect(); } catch {}
-    clientPool.delete(account.id);
   }
 
   const session = new StringSession(account.session);
