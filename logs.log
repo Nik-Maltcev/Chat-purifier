@@ -1,0 +1,1001 @@
+2026-04-12T15:20:56.436986875Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:20:56.436989655Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:21:36.451886096Z [err]  Error: TIMEOUT
+2026-04-12T15:21:36.451892816Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:21:36.451897236Z [err]      at runNextTicks (node:internal/process/task_queues:60:5)
+2026-04-12T15:21:36.451900986Z [err]      at process.processTimers (node:internal/timers:516:9)
+2026-04-12T15:21:36.451906446Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:21:36.451910726Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:22:16.180189783Z [err]  Error: TIMEOUT
+2026-04-12T15:22:16.180193492Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:22:16.180196012Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:22:16.180198432Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:22:56.185239613Z [err]  Error: TIMEOUT
+2026-04-12T15:22:56.185244633Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:22:56.185247613Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:22:56.185250143Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:23:36.204056695Z [err]  Error: TIMEOUT
+2026-04-12T15:23:36.204060965Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:23:36.204063915Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:23:36.204066645Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:24:16.201294793Z [err]  Error: TIMEOUT
+2026-04-12T15:24:16.201297933Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:24:16.201300683Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:24:16.201303263Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:24:46.202849095Z [err]  Error: TIMEOUT
+2026-04-12T15:24:46.202853635Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:24:46.202858005Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:24:46.202861075Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:25:25.908273701Z [err]  Error: TIMEOUT
+2026-04-12T15:25:25.908283761Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:25:25.908288461Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:25:25.908292501Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:26:05.917498049Z [err]  Error: TIMEOUT
+2026-04-12T15:26:05.917503379Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:26:05.917506669Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:26:05.917509719Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:26:45.920532592Z [err]  Error: TIMEOUT
+2026-04-12T15:26:45.920538682Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:26:45.920543392Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:26:45.920547852Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:27:25.926362115Z [err]  Error: TIMEOUT
+2026-04-12T15:27:25.926367535Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:27:25.926371465Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:27:25.926374895Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:28:05.969841853Z [err]  Error: TIMEOUT
+2026-04-12T15:28:05.969847483Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:28:05.969852343Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:28:05.969857603Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:28:45.658425869Z [err]  Error: TIMEOUT
+2026-04-12T15:28:45.658433659Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:28:45.658437839Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:28:45.658441319Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:29:25.658227251Z [err]  Error: TIMEOUT
+2026-04-12T15:29:25.658230841Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:29:25.658233841Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:29:25.658236741Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:30:05.668825215Z [err]  Error: TIMEOUT
+2026-04-12T15:30:05.668831015Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:30:05.668835145Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:30:05.668839085Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:30:45.678881877Z [err]  Error: TIMEOUT
+2026-04-12T15:30:45.678886857Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:30:45.678889967Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:30:45.678892637Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:31:25.684013501Z [err]  Error: TIMEOUT
+2026-04-12T15:31:25.684018061Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:31:25.684020711Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:31:25.684023391Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:31:35.148833718Z [inf]  request completed
+2026-04-12T15:31:35.336948331Z [inf]  request completed
+2026-04-12T15:31:35.369902027Z [inf]  request completed
+2026-04-12T15:31:35.710661766Z [inf]  request completed
+2026-04-12T15:31:35.710666256Z [inf]  request completed
+2026-04-12T15:31:35.710670826Z [inf]  request completed
+2026-04-12T15:31:35.936098570Z [inf]  request completed
+2026-04-12T15:31:35.961120240Z [inf]  request completed
+2026-04-12T15:31:35.961127840Z [inf]  request completed
+2026-04-12T15:31:36.008040384Z [inf]  request completed
+2026-04-12T15:31:38.698128140Z [inf]  request completed
+2026-04-12T15:31:41.805213443Z [inf]  Аккаунт активен
+2026-04-12T15:31:41.805217923Z [inf]  request completed
+2026-04-12T15:31:41.907700413Z [inf]  request completed
+2026-04-12T15:31:49.753679695Z [inf]  request completed
+2026-04-12T15:31:52.207272516Z [inf]  request completed
+2026-04-12T15:31:52.263017629Z [inf]  request completed
+2026-04-12T15:31:52.421017053Z [inf]  request completed
+2026-04-12T15:31:56.993528906Z [err]  Error: TIMEOUT
+2026-04-12T15:31:56.993542716Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:31:56.993548396Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:31:56.993552666Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:31:59.019384984Z [inf]  request completed
+2026-04-12T15:31:59.141783793Z [inf]  request completed
+2026-04-12T15:31:59.155322624Z [inf]  request completed
+2026-04-12T15:32:04.357205976Z [inf]  request completed
+2026-04-12T15:32:04.394358327Z [inf]  request completed
+2026-04-12T15:32:04.855618772Z [inf]  request completed
+2026-04-12T15:32:09.470175450Z [inf]  request completed
+2026-04-12T15:32:09.906413154Z [inf]  request completed
+2026-04-12T15:32:09.906555922Z [inf]  request completed
+2026-04-12T15:32:14.906877360Z [inf]  request completed
+2026-04-12T15:32:14.907024308Z [inf]  request completed
+2026-04-12T15:32:14.907028238Z [inf]  request completed
+2026-04-12T15:32:19.902099347Z [inf]  request completed
+2026-04-12T15:32:20.003585534Z [inf]  request completed
+2026-04-12T15:32:20.081469110Z [inf]  request completed
+2026-04-12T15:32:24.890401061Z [inf]  request completed
+2026-04-12T15:32:25.205521736Z [inf]  request completed
+2026-04-12T15:32:25.268928808Z [inf]  request completed
+2026-04-12T15:32:29.937943080Z [inf]  request completed
+2026-04-12T15:32:30.369531972Z [inf]  request completed
+2026-04-12T15:32:30.419824179Z [inf]  request completed
+2026-04-12T15:32:35.046014396Z [inf]  request completed
+2026-04-12T15:32:35.548664558Z [inf]  request completed
+2026-04-12T15:32:35.611685393Z [inf]  request completed
+2026-04-12T15:32:36.195592775Z [err]  Error: TIMEOUT
+2026-04-12T15:32:36.195596345Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:32:36.195609255Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:32:36.195612815Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:32:40.160272981Z [inf]  request completed
+2026-04-12T15:32:40.892550714Z [inf]  request completed
+2026-04-12T15:32:40.892556114Z [inf]  request completed
+2026-04-12T15:32:45.277979659Z [inf]  request completed
+2026-04-12T15:32:45.983105250Z [inf]  request completed
+2026-04-12T15:32:45.983108510Z [inf]  request completed
+2026-04-12T15:32:50.396992908Z [inf]  request completed
+2026-04-12T15:32:51.056009818Z [inf]  request completed
+2026-04-12T15:32:51.108447079Z [inf]  request completed
+2026-04-12T15:32:55.514739757Z [inf]  request completed
+2026-04-12T15:32:56.209349013Z [inf]  request completed
+2026-04-12T15:32:56.290713501Z [inf]  request completed
+2026-04-12T15:33:00.621904042Z [inf]  request completed
+2026-04-12T15:33:01.396385727Z [inf]  request completed
+2026-04-12T15:33:01.456155249Z [inf]  request completed
+2026-04-12T15:33:06.038929513Z [inf]  request completed
+2026-04-12T15:33:06.575450476Z [inf]  request completed
+2026-04-12T15:33:06.608154393Z [inf]  request completed
+2026-04-12T15:33:11.024143576Z [inf]  request completed
+2026-04-12T15:33:12.062757355Z [inf]  request completed
+2026-04-12T15:33:12.062759935Z [inf]  request completed
+2026-04-12T15:33:15.395644785Z [err]  Error: TIMEOUT
+2026-04-12T15:33:15.395649174Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:33:15.395652344Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:33:15.395658504Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:33:16.048118048Z [inf]  request completed
+2026-04-12T15:33:17.090663716Z [inf]  request completed
+2026-04-12T15:33:17.090667466Z [inf]  request completed
+2026-04-12T15:33:21.082689896Z [inf]  request completed
+2026-04-12T15:33:22.072661265Z [inf]  request completed
+2026-04-12T15:33:22.124810646Z [inf]  request completed
+2026-04-12T15:33:26.183305114Z [inf]  request completed
+2026-04-12T15:33:27.217019413Z [inf]  request completed
+2026-04-12T15:33:27.261725615Z [inf]  request completed
+2026-04-12T15:33:31.299500688Z [inf]  request completed
+2026-04-12T15:33:32.400442209Z [inf]  request completed
+2026-04-12T15:33:32.418017888Z [inf]  request completed
+2026-04-12T15:33:36.402343380Z [inf]  request completed
+2026-04-12T15:33:37.582645205Z [inf]  request completed
+2026-04-12T15:33:37.634631329Z [inf]  request completed
+2026-04-12T15:33:41.519956804Z [inf]  request completed
+2026-04-12T15:33:42.748100445Z [inf]  request completed
+2026-04-12T15:33:42.814379335Z [inf]  request completed
+2026-04-12T15:34:02.825492113Z [err]  Error: TIMEOUT
+2026-04-12T15:34:02.825496303Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:34:02.825498963Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:34:02.825502013Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:34:08.298065305Z [inf]  request completed
+2026-04-12T15:34:08.309918610Z [inf]  request completed
+2026-04-12T15:34:11.634835646Z [inf]  request completed
+2026-04-12T15:34:13.320439034Z [inf]  request completed
+2026-04-12T15:34:13.494596359Z [inf]  request completed
+2026-04-12T15:34:13.496639043Z [inf]  request completed
+2026-04-12T15:34:13.681031885Z [inf]  request completed
+2026-04-12T15:34:13.722500573Z [inf]  request completed
+2026-04-12T15:34:13.742475344Z [inf]  request completed
+2026-04-12T15:34:13.853928750Z [inf]  request completed
+2026-04-12T15:34:16.816842586Z [inf]  request completed
+2026-04-12T15:34:36.815297345Z [inf]  request completed
+2026-04-12T15:34:36.815300515Z [err]  Error: TIMEOUT
+2026-04-12T15:34:36.815303545Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:34:36.815306175Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:34:36.815308815Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:34:56.803506292Z [inf]  request completed
+2026-04-12T15:35:02.008662890Z [inf]  request completed
+2026-04-12T15:35:21.984357432Z [err]  Error: TIMEOUT
+2026-04-12T15:35:21.984364122Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:35:21.984367402Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:35:21.984369942Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:35:21.984372642Z [inf]  request completed
+2026-04-12T15:35:22.470657677Z [inf]  request completed
+2026-04-12T15:35:27.587833631Z [inf]  request completed
+2026-04-12T15:35:32.715119865Z [inf]  request completed
+2026-04-12T15:35:37.821656585Z [inf]  request completed
+2026-04-12T15:35:42.943766940Z [inf]  request completed
+2026-04-12T15:35:48.087522734Z [inf]  request completed
+2026-04-12T15:35:52.226426514Z [err]  Error: TIMEOUT
+2026-04-12T15:35:52.226434584Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:35:52.226438954Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:35:52.226442334Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:35:59.637817776Z [inf]  request completed
+2026-04-12T15:36:04.704855593Z [inf]  request completed
+2026-04-12T15:36:09.649286254Z [inf]  request completed
+2026-04-12T15:36:12.743762940Z [inf]  request completed
+2026-04-12T15:36:12.750261488Z [inf]  request completed
+2026-04-12T15:36:12.911295219Z [inf]  request completed
+2026-04-12T15:36:18.847109750Z [inf]  request completed
+2026-04-12T15:36:18.878291899Z [inf]  request completed
+2026-04-12T15:36:19.069242010Z [inf]  request completed
+2026-04-12T15:36:24.098331453Z [inf]  request completed
+2026-04-12T15:36:24.120811653Z [inf]  request completed
+2026-04-12T15:36:31.433270239Z [err]  Error: TIMEOUT
+2026-04-12T15:36:31.433275029Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:36:31.433277669Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:36:31.433279999Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:37:11.443012000Z [inf]  request completed
+2026-04-12T15:37:11.443018560Z [inf]  request completed
+2026-04-12T15:37:11.443022160Z [inf]  request completed
+2026-04-12T15:37:11.443025940Z [err]  Error: TIMEOUT
+2026-04-12T15:37:11.443028970Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:37:11.443032560Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:37:11.443035890Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:37:51.453144422Z [err]  Error: TIMEOUT
+2026-04-12T15:37:51.453148432Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:37:51.453150842Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:37:51.453153192Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:38:31.471367604Z [err]  Error: TIMEOUT
+2026-04-12T15:38:31.471370414Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:38:31.471373014Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:38:31.471375704Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:39:11.484705198Z [err]  Error: TIMEOUT
+2026-04-12T15:39:11.484711868Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:39:11.484715458Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:39:11.484718298Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:39:51.629383698Z [err]  Error: TIMEOUT
+2026-04-12T15:39:51.629388458Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:39:51.629391808Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:39:51.629395068Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:40:31.283700120Z [err]  Error: TIMEOUT
+2026-04-12T15:40:31.283706230Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:40:31.283709900Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:40:31.283713440Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:41:11.297210296Z [err]  Error: TIMEOUT
+2026-04-12T15:41:11.297215476Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:41:11.297219316Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:41:11.297222316Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:41:51.307348778Z [err]  Error: TIMEOUT
+2026-04-12T15:41:51.307354138Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:41:51.307357168Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:41:51.307360648Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:42:31.311107000Z [err]  Error: TIMEOUT
+2026-04-12T15:42:31.311113690Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:42:31.311116750Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:42:31.311119580Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:43:11.313093185Z [err]  Error: TIMEOUT
+2026-04-12T15:43:11.313097425Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:43:11.313100115Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:43:11.313133644Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:43:51.395499442Z [err]  Error: TIMEOUT
+2026-04-12T15:43:51.395503942Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:43:51.395508232Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:43:51.395512722Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:44:31.106209265Z [err]  Error: TIMEOUT
+2026-04-12T15:44:31.106213945Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:44:31.106217285Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:44:31.106219875Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:45:11.107956902Z [err]  Error: TIMEOUT
+2026-04-12T15:45:11.107969092Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:45:11.107977522Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:45:11.107982352Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:45:41.105620172Z [err]  Error: TIMEOUT
+2026-04-12T15:45:41.105625692Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:45:41.105631392Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:45:41.105634022Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:46:21.117894752Z [err]  Error: TIMEOUT
+2026-04-12T15:46:21.117903292Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:46:21.117910292Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:46:21.117914772Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:47:01.180429230Z [err]  Error: TIMEOUT
+2026-04-12T15:47:01.180433130Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:47:01.180438140Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:47:01.180442560Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:47:40.929999986Z [err]  Error: TIMEOUT
+2026-04-12T15:47:40.930004916Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:47:40.930008376Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:47:40.930011126Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:48:20.943479031Z [err]  Error: TIMEOUT
+2026-04-12T15:48:20.943488701Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:48:20.943492580Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:48:20.943496320Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:49:00.954059739Z [err]  Error: TIMEOUT
+2026-04-12T15:49:00.954064419Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:49:00.954067219Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:49:00.954069919Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:49:40.960779302Z [err]  Error: TIMEOUT
+2026-04-12T15:49:40.960784932Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:49:40.960788632Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:49:40.960791982Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:50:20.963375240Z [err]  Error: TIMEOUT
+2026-04-12T15:50:20.963378420Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:50:20.963381190Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:50:20.963383640Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:51:01.004784596Z [err]  Error: TIMEOUT
+2026-04-12T15:51:01.004788536Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:51:01.004792996Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:51:01.004797046Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:51:40.732524541Z [err]  Error: TIMEOUT
+2026-04-12T15:51:40.732534881Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:51:40.732537501Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:51:40.732539921Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:52:20.733431782Z [err]  Error: TIMEOUT
+2026-04-12T15:52:20.733439482Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:52:20.733443112Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:52:20.733445642Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:53:00.753001024Z [err]  Error: TIMEOUT
+2026-04-12T15:53:00.753005214Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:53:00.753008134Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:53:00.753010604Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:53:40.753683515Z [err]  Error: TIMEOUT
+2026-04-12T15:53:40.753691935Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:53:40.753696794Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:53:40.753701934Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:54:10.756928419Z [err]  Error: TIMEOUT
+2026-04-12T15:54:10.756931279Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:54:10.756933979Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:54:10.756937069Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:54:50.493347592Z [err]  Error: TIMEOUT
+2026-04-12T15:54:50.493355002Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:54:50.493358772Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:54:50.493362262Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:55:30.495542532Z [err]  Error: TIMEOUT
+2026-04-12T15:55:30.495547052Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:55:30.495549941Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:55:30.495552631Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:56:10.486995575Z [err]  Error: TIMEOUT
+2026-04-12T15:56:10.487000425Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:56:10.487003505Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:56:10.487005945Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:56:50.491217083Z [err]  Error: TIMEOUT
+2026-04-12T15:56:50.491221743Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:56:50.491224863Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:56:50.491230253Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:57:30.173188539Z [err]  Error: TIMEOUT
+2026-04-12T15:57:30.173191339Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:57:30.173194519Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:57:30.173197509Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:58:10.172704723Z [err]  Error: TIMEOUT
+2026-04-12T15:58:10.172708863Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:58:10.172713943Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:58:10.172717333Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:58:50.171634059Z [err]  Error: TIMEOUT
+2026-04-12T15:58:50.171637729Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:58:50.171641419Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:58:50.171644809Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T15:59:30.178492007Z [err]  Error: TIMEOUT
+2026-04-12T15:59:30.178496217Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T15:59:30.178498727Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T15:59:30.178501227Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:00:10.270172336Z [err]  Error: TIMEOUT
+2026-04-12T16:00:10.270175346Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:00:10.270178096Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:00:10.270180456Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:00:49.955433073Z [err]  Error: TIMEOUT
+2026-04-12T16:00:49.955438443Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:00:49.955441333Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:00:49.955443913Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:01:29.960316989Z [err]  Error: TIMEOUT
+2026-04-12T16:01:29.960325819Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:01:29.960337689Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:01:29.960340549Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:02:09.968991347Z [err]  Error: TIMEOUT
+2026-04-12T16:02:09.968994627Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:02:09.968998036Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:02:09.969000496Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:02:39.963544457Z [err]  Error: TIMEOUT
+2026-04-12T16:02:39.963547328Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:02:39.963551508Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:02:39.963554228Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:03:19.969756547Z [err]  Error: TIMEOUT
+2026-04-12T16:03:19.969760927Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:03:19.969764087Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:03:19.969767387Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:04:00.029043467Z [err]  Error: TIMEOUT
+2026-04-12T16:04:00.029047797Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:04:00.029050716Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:04:00.029053976Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:04:40.194631793Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:04:40.194643903Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:04:40.194669793Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:04:40.194700773Z [err]  Error: TIMEOUT
+2026-04-12T16:05:19.923517056Z [err]  Error: TIMEOUT
+2026-04-12T16:05:19.923526166Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:05:19.923530686Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:05:19.923534566Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:05:59.929646183Z [err]  Error: TIMEOUT
+2026-04-12T16:05:59.929651783Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:05:59.929654613Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:05:59.929657373Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:06:39.939217303Z [err]  Error: TIMEOUT
+2026-04-12T16:06:39.939221673Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:06:39.939226093Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:06:39.939230773Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:07:19.930639459Z [err]  Error: TIMEOUT
+2026-04-12T16:07:19.930643169Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:07:19.930646019Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:07:19.930648349Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:07:59.938245275Z [err]  Error: TIMEOUT
+2026-04-12T16:07:59.938249645Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:07:59.938252485Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:07:59.938255355Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:08:40.077063963Z [err]  Error: TIMEOUT
+2026-04-12T16:08:40.077068323Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:08:40.077073663Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:08:40.077077973Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:09:19.817094873Z [err]  Error: TIMEOUT
+2026-04-12T16:09:19.817099373Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:09:19.817102943Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:09:19.817107683Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:09:59.821600652Z [err]  Error: TIMEOUT
+2026-04-12T16:09:59.821605892Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:09:59.821608952Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:09:59.821611422Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:10:39.825108724Z [err]  Error: TIMEOUT
+2026-04-12T16:10:39.825114764Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:10:39.825119454Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:10:39.825122924Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:11:09.826394971Z [err]  Error: TIMEOUT
+2026-04-12T16:11:09.826401191Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:11:09.826406600Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:11:09.826410360Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:11:49.825083992Z [err]  Error: TIMEOUT
+2026-04-12T16:11:49.825087282Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:11:49.825090352Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:11:49.825093532Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:12:30.053502475Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:12:30.053506515Z [err]  Error: TIMEOUT
+2026-04-12T16:12:30.053507085Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:12:30.053511665Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:13:09.744726927Z [err]  Error: TIMEOUT
+2026-04-12T16:13:09.744730587Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:13:09.744733477Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:13:09.744736487Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:13:29.745517370Z [inf]  request completed
+2026-04-12T16:13:29.745521820Z [inf]  request completed
+2026-04-12T16:13:29.745525310Z [inf]  request completed
+2026-04-12T16:13:30.288985896Z [inf]  request completed
+2026-04-12T16:13:30.288992876Z [inf]  request completed
+2026-04-12T16:13:30.288997876Z [inf]  request completed
+2026-04-12T16:13:30.396097333Z [inf]  request completed
+2026-04-12T16:13:30.405246291Z [inf]  request completed
+2026-04-12T16:13:30.432936293Z [inf]  request completed
+2026-04-12T16:13:30.449605963Z [inf]  request completed
+2026-04-12T16:13:33.390433390Z [inf]  request completed
+2026-04-12T16:13:35.330010225Z [inf]  request completed
+2026-04-12T16:13:42.987823978Z [inf]  request completed
+2026-04-12T16:13:45.855333731Z [inf]  request completed
+2026-04-12T16:13:46.363291525Z [inf]  request completed
+2026-04-12T16:13:46.363293855Z [inf]  request completed
+2026-04-12T16:13:46.363296945Z [err]  Error: TIMEOUT
+2026-04-12T16:13:46.363299555Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:13:46.363302265Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:13:46.363304485Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:13:50.343110478Z [inf]  request completed
+2026-04-12T16:13:51.385040472Z [inf]  request completed
+2026-04-12T16:13:51.802353758Z [inf]  request completed
+2026-04-12T16:13:51.830958544Z [inf]  request completed
+2026-04-12T16:13:52.388732606Z [inf]  request completed
+2026-04-12T16:13:57.066693565Z [inf]  request completed
+2026-04-12T16:13:57.401847249Z [inf]  request completed
+2026-04-12T16:13:57.510002797Z [inf]  request completed
+2026-04-12T16:14:02.444345688Z [inf]  request completed
+2026-04-12T16:14:02.444348458Z [inf]  request completed
+2026-04-12T16:14:02.635478936Z [inf]  request completed
+2026-04-12T16:14:04.983374243Z [inf]  request completed
+2026-04-12T16:14:07.448194992Z [inf]  request completed
+2026-04-12T16:14:07.448199152Z [inf]  request completed
+2026-04-12T16:14:10.655769446Z [inf]  request completed
+2026-04-12T16:14:12.471223583Z [inf]  request completed
+2026-04-12T16:14:12.597778668Z [inf]  request completed
+2026-04-12T16:14:32.603096402Z [err]  Error: TIMEOUT
+2026-04-12T16:14:32.603101062Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:14:32.603104792Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:14:32.603107652Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:15:12.736790930Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:15:12.736796290Z [err]  Error: TIMEOUT
+2026-04-12T16:15:12.736805540Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:15:12.736805950Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:15:52.468855879Z [err]  Error: TIMEOUT
+2026-04-12T16:15:52.468862919Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:15:52.468866129Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:15:52.468870729Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:16:32.484049697Z [err]  Error: TIMEOUT
+2026-04-12T16:16:32.484053287Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:16:32.484055877Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:16:32.484058487Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:17:02.487519607Z [err]  Error: TIMEOUT
+2026-04-12T16:17:02.487526277Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:17:02.487530837Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:17:02.487534167Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:17:42.488161691Z [err]  Error: TIMEOUT
+2026-04-12T16:17:42.488167871Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:17:42.488172571Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:17:42.488177051Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:18:22.486569496Z [err]  Error: TIMEOUT
+2026-04-12T16:18:22.486572486Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:18:22.486577176Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:18:22.486579536Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:19:02.489506811Z [err]  Error: TIMEOUT
+2026-04-12T16:19:02.489510231Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:19:02.489513591Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:19:02.489516601Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:19:42.267073515Z [err]  Error: TIMEOUT
+2026-04-12T16:19:42.267077275Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:19:42.267080405Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:19:42.267085185Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:20:22.279586914Z [err]  Error: TIMEOUT
+2026-04-12T16:20:22.279590234Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:20:22.279594634Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:20:22.279598104Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:21:02.287685407Z [err]  Error: TIMEOUT
+2026-04-12T16:21:02.287688327Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:21:02.287691017Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:21:02.287694237Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:21:42.292170614Z [err]  Error: TIMEOUT
+2026-04-12T16:21:42.292175694Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:21:42.292178984Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:21:42.292182494Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:22:22.298643837Z [inf]  [33m[2026-04-12T16:22:14.795] [INFO] - [connection closed][0m
+2026-04-12T16:22:22.298649297Z [inf]  [35m[2026-04-12T16:22:14.795] [WARN] - [Connection closed while receiving data][0m
+2026-04-12T16:22:22.298653237Z [err]  Error: Not connected
+2026-04-12T16:22:22.298656597Z [err]      at ConnectionTCPFull.recv (file:///app/artifacts/api-server/dist/index.mjs:58944:15)
+2026-04-12T16:22:22.298661107Z [err]      at async _MTProtoSender._recvLoop (file:///app/artifacts/api-server/dist/index.mjs:63058:20)
+2026-04-12T16:22:22.298664417Z [inf]  [33m[2026-04-12T16:22:15.795] [INFO] - [Started reconnecting][0m
+2026-04-12T16:22:22.298668037Z [inf]  [35m[2026-04-12T16:22:15.795] [WARN] - [[Reconnect] Closing current connection...][0m
+2026-04-12T16:22:22.298671517Z [inf]  [33m[2026-04-12T16:22:15.795] [INFO] - [Disconnecting from 149.154.167.51:80/TCPFull...][0m
+2026-04-12T16:22:22.298675297Z [inf]  [33m[2026-04-12T16:22:15.795] [INFO] - [Connecting to 149.154.167.51:80/TCPFull...][0m
+2026-04-12T16:22:22.298678777Z [err]  Error: TIMEOUT
+2026-04-12T16:22:22.298682187Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:22:22.298685436Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:22:22.298688716Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:22:22.298692576Z [inf]  [33m[2026-04-12T16:22:16.118] [INFO] - [Connection to 149.154.167.51:80/TCPFull complete!][0m
+2026-04-12T16:22:22.298695526Z [inf]  [33m[2026-04-12T16:22:16.118] [INFO] - [Handling reconnect!][0m
+2026-04-12T16:23:02.400292954Z [err]  Error: TIMEOUT
+2026-04-12T16:23:02.400295654Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:23:02.400298544Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:23:02.400301784Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:23:42.116741285Z [err]  Error: TIMEOUT
+2026-04-12T16:23:42.116749465Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:23:42.116753625Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:23:42.116756755Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:24:22.122590005Z [err]  Error: TIMEOUT
+2026-04-12T16:24:22.122593905Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:24:22.122597455Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:24:22.122600925Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:25:02.127261682Z [err]  Error: TIMEOUT
+2026-04-12T16:25:02.127267112Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:25:02.127273452Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:25:02.127276762Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:25:32.132524076Z [err]  Error: TIMEOUT
+2026-04-12T16:25:32.132526876Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:25:32.132530436Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:25:32.132533126Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:26:12.174320310Z [err]  Error: TIMEOUT
+2026-04-12T16:26:12.174328770Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:26:12.174334950Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:26:12.174340260Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:26:51.911168597Z [err]  Error: TIMEOUT
+2026-04-12T16:26:51.911174327Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:26:51.911177547Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:26:51.911180467Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:27:31.918262397Z [err]  Error: TIMEOUT
+2026-04-12T16:27:31.918267457Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:27:31.918270567Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:27:31.918273377Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:28:11.921709988Z [err]  Error: TIMEOUT
+2026-04-12T16:28:11.921715308Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:28:11.921718078Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:28:11.921720578Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:28:51.926743641Z [err]  Error: TIMEOUT
+2026-04-12T16:28:51.926746661Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:28:51.926749521Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:28:51.926752641Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:29:31.931476820Z [err]  Error: TIMEOUT
+2026-04-12T16:29:31.931481460Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:29:31.931484160Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:29:31.931486980Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:30:12.105096893Z [err]  Error: TIMEOUT
+2026-04-12T16:30:12.105104963Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:30:12.105109203Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:30:12.105117753Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:30:51.785423315Z [err]  Error: TIMEOUT
+2026-04-12T16:30:51.785427735Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:30:51.785430375Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:30:51.785433045Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:31:31.794256133Z [err]  Error: TIMEOUT
+2026-04-12T16:31:31.794264883Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:31:31.794270223Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:31:31.794273603Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:32:11.800249321Z [err]  Error: TIMEOUT
+2026-04-12T16:32:11.800252541Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:32:11.800255381Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:32:11.800257981Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:32:51.793558768Z [err]  Error: TIMEOUT
+2026-04-12T16:32:51.793579358Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:32:51.793583808Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:32:51.793587748Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:33:31.804789657Z [err]  Error: TIMEOUT
+2026-04-12T16:33:31.804794207Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:33:31.804797687Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:33:31.804801637Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:34:01.806710942Z [err]  Error: TIMEOUT
+2026-04-12T16:34:01.806715392Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:34:01.806718692Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:34:01.806722042Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:34:41.523766265Z [err]  Error: TIMEOUT
+2026-04-12T16:34:41.523770875Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:34:41.523774025Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:34:41.523776905Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:35:21.688465861Z [err]  Error: TIMEOUT
+2026-04-12T16:35:21.688470221Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:35:21.688475001Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:35:21.688478741Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:36:01.697445186Z [err]  Error: TIMEOUT
+2026-04-12T16:36:01.697450256Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:36:01.697454126Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:36:01.697457886Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:36:41.700426075Z [err]  Error: TIMEOUT
+2026-04-12T16:36:41.700430285Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:36:41.700434265Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:36:41.700438425Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:37:21.723107529Z [err]  Error: TIMEOUT
+2026-04-12T16:37:21.723112079Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:37:21.723116109Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:37:21.723119519Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:38:01.729994325Z [err]  Error: TIMEOUT
+2026-04-12T16:38:01.729997955Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:38:01.730000655Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:38:01.730002875Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:38:31.816223916Z [err]      at ConnectionTCPFull.recv (file:///app/artifacts/api-server/dist/index.mjs:58944:15)
+2026-04-12T16:38:31.816240286Z [err]      at async _MTProtoSender._recvLoop (file:///app/artifacts/api-server/dist/index.mjs:63058:20)
+2026-04-12T16:38:31.816246566Z [inf]  [33m[2026-04-12T16:38:27.996] [INFO] - [Connecting to 149.154.167.51:80/TCPFull...][0m
+2026-04-12T16:38:31.816251256Z [inf]  [33m[2026-04-12T16:38:27.996] [INFO] - [connection closed][0m
+2026-04-12T16:38:31.816256886Z [inf]  [33m[2026-04-12T16:38:29.313] [INFO] - [Connection to 149.154.167.51:80/TCPFull complete!][0m
+2026-04-12T16:38:31.816262386Z [inf]  [33m[2026-04-12T16:38:29.313] [INFO] - [Handling reconnect!][0m
+2026-04-12T16:38:31.816278885Z [err]  Error: TIMEOUT
+2026-04-12T16:38:31.816282845Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:38:31.816286325Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66807:13)
+2026-04-12T16:38:31.816292195Z [inf]  [33m[2026-04-12T16:38:27.995] [INFO] - [Started reconnecting][0m
+2026-04-12T16:38:31.816296655Z [inf]  [35m[2026-04-12T16:38:27.995] [WARN] - [[Reconnect] Closing current connection...][0m
+2026-04-12T16:38:31.816300855Z [inf]  [33m[2026-04-12T16:38:27.995] [INFO] - [Disconnecting from 149.154.167.51:80/TCPFull...][0m
+2026-04-12T16:38:31.816305105Z [inf]  [35m[2026-04-12T16:38:27.996] [WARN] - [Connection closed while receiving data][0m
+2026-04-12T16:38:31.816308685Z [err]  Error: Not connected
+2026-04-12T16:38:36.203969464Z [err]  Error: TIMEOUT
+2026-04-12T16:38:36.203974594Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:38:36.203978394Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:38:36.203983314Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:39:16.209867631Z [err]  Error: TIMEOUT
+2026-04-12T16:39:16.210131978Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:39:16.210135568Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:39:16.210138138Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:39:56.227391320Z [err]  Error: TIMEOUT
+2026-04-12T16:39:56.227396360Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:39:56.227399420Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:39:56.227402940Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:40:35.956009193Z [err]  Error: TIMEOUT
+2026-04-12T16:40:35.956016413Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:40:35.956027453Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:40:35.956031543Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:41:15.960610012Z [err]  Error: TIMEOUT
+2026-04-12T16:41:15.960615782Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:41:15.960618632Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:41:15.960621812Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:41:55.968520836Z [err]  Error: TIMEOUT
+2026-04-12T16:41:55.968530146Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:41:55.968535416Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:41:55.968539766Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:42:35.967622336Z [err]  Error: TIMEOUT
+2026-04-12T16:42:35.967631926Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:42:35.967638106Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:42:35.967641436Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:43:16.032252462Z [err]  Error: TIMEOUT
+2026-04-12T16:43:16.032265852Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:43:16.032272752Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:43:16.032278861Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:43:55.752589354Z [err]  Error: TIMEOUT
+2026-04-12T16:43:55.752593734Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:43:55.752596334Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:43:55.752598864Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:44:35.781436934Z [err]  Error: TIMEOUT
+2026-04-12T16:44:35.781440674Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:44:35.781443914Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:44:35.781449154Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:45:15.782445369Z [err]  Error: TIMEOUT
+2026-04-12T16:45:15.782451679Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:45:15.782456269Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:45:15.782459949Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:45:55.782774587Z [err]  Error: TIMEOUT
+2026-04-12T16:45:55.782782147Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:45:55.782787797Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:45:55.782792737Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:46:35.806474712Z [err]  Error: TIMEOUT
+2026-04-12T16:46:35.806480962Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:46:35.806484752Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:46:35.806488052Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:47:15.535774301Z [err]  Error: TIMEOUT
+2026-04-12T16:47:15.535778481Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:47:15.535781251Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:47:15.535783891Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:47:35.528044341Z [inf]  [33m[2026-04-12T16:47:27.045] [INFO] - [connection closed][0m
+2026-04-12T16:47:35.528049511Z [inf]  [35m[2026-04-12T16:47:27.045] [WARN] - [Connection closed while receiving data][0m
+2026-04-12T16:47:35.528053341Z [err]  Error: Not connected
+2026-04-12T16:47:35.528057221Z [err]      at ConnectionTCPFull.recv (file:///app/artifacts/api-server/dist/index.mjs:58944:15)
+2026-04-12T16:47:35.528060761Z [err]      at async _MTProtoSender._recvLoop (file:///app/artifacts/api-server/dist/index.mjs:63058:20)
+2026-04-12T16:47:35.528064211Z [inf]  [33m[2026-04-12T16:47:28.046] [INFO] - [Started reconnecting][0m
+2026-04-12T16:47:35.528067941Z [inf]  [35m[2026-04-12T16:47:28.046] [WARN] - [[Reconnect] Closing current connection...][0m
+2026-04-12T16:47:35.528071291Z [inf]  [33m[2026-04-12T16:47:28.046] [INFO] - [Disconnecting from 149.154.167.51:80/TCPFull...][0m
+2026-04-12T16:47:35.528075181Z [inf]  [33m[2026-04-12T16:47:28.047] [INFO] - [Connecting to 149.154.167.51:80/TCPFull...][0m
+2026-04-12T16:47:35.528078811Z [inf]  [33m[2026-04-12T16:47:28.271] [INFO] - [Connection to 149.154.167.51:80/TCPFull complete!][0m
+2026-04-12T16:47:35.528082351Z [inf]  [33m[2026-04-12T16:47:28.271] [INFO] - [Handling reconnect!][0m
+2026-04-12T16:47:45.113654590Z [err]  Error: TIMEOUT
+2026-04-12T16:47:45.113658810Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:47:45.113662690Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:47:45.113667400Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:48:25.132560698Z [err]  Error: TIMEOUT
+2026-04-12T16:48:25.132563408Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:48:25.132583518Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:48:25.132586798Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:49:04.844608470Z [err]  Error: TIMEOUT
+2026-04-12T16:49:04.844614030Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:49:04.844617670Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:49:04.844621010Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:49:44.841119473Z [err]  Error: TIMEOUT
+2026-04-12T16:49:44.841122343Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:49:44.841125153Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:49:44.841127983Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:50:24.846918148Z [err]  Error: TIMEOUT
+2026-04-12T16:50:24.846923188Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:50:24.846926317Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:50:24.846929157Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:51:04.858129399Z [err]  Error: TIMEOUT
+2026-04-12T16:51:04.858134159Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:51:04.858137039Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:51:04.858139559Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:51:44.885085485Z [err]  Error: TIMEOUT
+2026-04-12T16:51:44.885090135Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:51:44.885094645Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:51:44.885099635Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:52:24.589319403Z [err]  Error: TIMEOUT
+2026-04-12T16:52:24.589324313Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:52:24.589326883Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:52:24.589329183Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:53:04.599552977Z [err]  Error: TIMEOUT
+2026-04-12T16:53:04.599559737Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:53:04.599563837Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:53:04.599567407Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:53:44.603717828Z [err]  Error: TIMEOUT
+2026-04-12T16:53:44.603728138Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:53:44.603734048Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:53:44.603738238Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:54:24.615752417Z [err]  Error: TIMEOUT
+2026-04-12T16:54:24.615757357Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:54:24.615761027Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:54:24.615764307Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:55:04.623244245Z [err]  Error: TIMEOUT
+2026-04-12T16:55:04.623248944Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:55:04.623252154Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:55:04.623255534Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:55:44.628049840Z [err]  Error: TIMEOUT
+2026-04-12T16:55:44.628053550Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:55:44.628056520Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:55:44.628059380Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:56:24.347140404Z [err]  Error: TIMEOUT
+2026-04-12T16:56:24.347149094Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:56:24.347154634Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:56:24.347160104Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:56:54.349108221Z [err]  Error: TIMEOUT
+2026-04-12T16:56:54.349111831Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:56:54.349114561Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:56:54.349117721Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:57:34.354088464Z [err]  Error: TIMEOUT
+2026-04-12T16:57:34.354096334Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:57:34.354101354Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:57:34.354107884Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:58:14.359655304Z [err]  Error: TIMEOUT
+2026-04-12T16:58:14.359658604Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:58:14.359661334Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:58:14.359664054Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:58:54.369877528Z [err]  Error: TIMEOUT
+2026-04-12T16:58:54.369883588Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:58:54.369886208Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:58:54.369888948Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T16:59:34.420122885Z [err]  Error: TIMEOUT
+2026-04-12T16:59:34.420128295Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T16:59:34.420141455Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T16:59:34.420147035Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:00:14.112917245Z [err]  Error: TIMEOUT
+2026-04-12T17:00:14.112923185Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:00:14.112926735Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:00:14.112936035Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:00:54.120692295Z [err]  Error: TIMEOUT
+2026-04-12T17:00:54.120697145Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:00:54.120700515Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:00:54.120703075Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:01:34.123690879Z [err]  Error: TIMEOUT
+2026-04-12T17:01:34.123695259Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:01:34.123699789Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:01:34.123703809Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:02:14.118462470Z [err]  Error: TIMEOUT
+2026-04-12T17:02:14.118467230Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:02:14.118471420Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:02:14.118474600Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:02:54.128738672Z [err]  Error: TIMEOUT
+2026-04-12T17:02:54.128742482Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:02:54.128746102Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:02:54.128749572Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:03:33.817574119Z [err]  Error: TIMEOUT
+2026-04-12T17:03:33.817585709Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:03:33.817590778Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:03:33.817601248Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:04:13.819844141Z [err]  Error: TIMEOUT
+2026-04-12T17:04:13.819849111Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:04:13.819852141Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:04:13.819854731Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:04:53.830664668Z [err]  Error: TIMEOUT
+2026-04-12T17:04:53.830668478Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:04:53.830671398Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:04:53.830673898Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:05:23.842554282Z [err]  Error: TIMEOUT
+2026-04-12T17:05:23.842558532Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:05:23.842562832Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:05:23.842565262Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:06:03.907336392Z [err]  Error: TIMEOUT
+2026-04-12T17:06:03.907346442Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:06:03.907352252Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:06:03.907356112Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:06:43.909444317Z [err]  Error: TIMEOUT
+2026-04-12T17:06:43.909447597Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:06:43.909450557Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:06:43.909452987Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:07:23.656667243Z [err]  Error: TIMEOUT
+2026-04-12T17:07:23.656670913Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:07:23.656673753Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:07:23.656677573Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:08:03.663738986Z [err]  Error: TIMEOUT
+2026-04-12T17:08:03.663743216Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:08:03.663747426Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:08:03.663750516Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:08:43.672018456Z [err]  Error: TIMEOUT
+2026-04-12T17:08:43.672021846Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:08:43.672024726Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:08:43.672030656Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:09:23.670693803Z [err]  Error: TIMEOUT
+2026-04-12T17:09:23.670697212Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:09:23.670700012Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:09:23.670702792Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:10:03.670863784Z [err]  Error: TIMEOUT
+2026-04-12T17:10:03.670870254Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:10:03.670888214Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:10:03.670893494Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:10:43.364092364Z [err]  Error: TIMEOUT
+2026-04-12T17:10:43.364095944Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:10:43.364099184Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:10:43.364102774Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:11:23.370057927Z [err]  Error: TIMEOUT
+2026-04-12T17:11:23.370063127Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:11:23.370066167Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:11:23.370068787Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:12:03.384003706Z [err]  Error: TIMEOUT
+2026-04-12T17:12:03.384009636Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:12:03.384013276Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:12:03.384016446Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:12:43.462574050Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:12:43.462585990Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:12:43.462590570Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:12:43.462708379Z [err]  Error: TIMEOUT
+2026-04-12T17:13:23.609085604Z [err]  Error: TIMEOUT
+2026-04-12T17:13:23.609088934Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:13:23.609091914Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:13:23.609094754Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:13:53.665422855Z [err]  Error: TIMEOUT
+2026-04-12T17:13:53.665429885Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:13:53.665435654Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:13:53.665439824Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:14:33.368018132Z [err]  Error: TIMEOUT
+2026-04-12T17:14:33.368022572Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:14:33.368025342Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:14:33.368065162Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:15:13.384921842Z [err]  Error: TIMEOUT
+2026-04-12T17:15:13.384927522Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:15:13.384931362Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:15:13.384937972Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:15:53.396092398Z [err]  Error: TIMEOUT
+2026-04-12T17:15:53.396096358Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:15:53.396100328Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:15:53.396104478Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:16:33.399686351Z [err]  Error: TIMEOUT
+2026-04-12T17:16:33.399692971Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:16:33.399697511Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:16:33.399701561Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:17:13.452601174Z [err]  Error: TIMEOUT
+2026-04-12T17:17:13.452605784Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:17:13.452609654Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:17:13.452613624Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:17:52.968580357Z [err]  Error: TIMEOUT
+2026-04-12T17:17:52.968583557Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:17:52.968586216Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:17:52.968592876Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:18:32.979709952Z [err]  Error: TIMEOUT
+2026-04-12T17:18:32.979715592Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:18:32.979719442Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:18:32.979723142Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:19:12.980918751Z [err]  Error: TIMEOUT
+2026-04-12T17:19:12.980929731Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:19:12.980935261Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:19:12.980939631Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:19:52.984884548Z [err]  Error: TIMEOUT
+2026-04-12T17:19:52.984895268Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:19:52.984901778Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:19:52.984905798Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:20:33.010101623Z [err]  Error: TIMEOUT
+2026-04-12T17:20:33.010106003Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:20:33.010109963Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:20:33.010114052Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:21:12.741793135Z [err]  Error: TIMEOUT
+2026-04-12T17:21:12.741802215Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:21:12.741806995Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:21:12.741810825Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:21:52.734568375Z [err]  Error: TIMEOUT
+2026-04-12T17:21:52.734571895Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:21:52.734575645Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:21:52.734579485Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:22:32.749139911Z [err]  Error: TIMEOUT
+2026-04-12T17:22:32.749148701Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:22:32.749153131Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:22:32.749159051Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:23:02.749064394Z [err]  Error: TIMEOUT
+2026-04-12T17:23:02.749067214Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:23:02.749071264Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:23:02.749074004Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:23:42.745498674Z [err]  Error: TIMEOUT
+2026-04-12T17:23:42.745504314Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:23:42.745507414Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:23:42.745511184Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:24:22.409488921Z [err]  Error: TIMEOUT
+2026-04-12T17:24:22.409491511Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:24:22.409495311Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:24:22.409497781Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:25:02.390756035Z [err]  Error: TIMEOUT
+2026-04-12T17:25:02.390761495Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:25:02.390767065Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:25:02.390770135Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:25:42.397067379Z [err]  Error: TIMEOUT
+2026-04-12T17:25:42.397071549Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:25:42.397077119Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:25:42.397080289Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:26:22.425192386Z [err]  Error: TIMEOUT
+2026-04-12T17:26:22.425195696Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:26:22.425198806Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:26:22.425201876Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:27:02.109443977Z [err]  Error: TIMEOUT
+2026-04-12T17:27:02.109446467Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:27:02.109449817Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:27:02.109452677Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:27:42.109495103Z [err]  Error: TIMEOUT
+2026-04-12T17:27:42.109499033Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:27:42.109501863Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:27:42.109504733Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:28:22.110533399Z [err]  Error: TIMEOUT
+2026-04-12T17:28:22.110538209Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:28:22.110542909Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:28:22.110546169Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:29:02.115172704Z [err]  Error: TIMEOUT
+2026-04-12T17:29:02.115177114Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:29:02.115180294Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:29:02.115183274Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:29:42.157651797Z [err]  Error: TIMEOUT
+2026-04-12T17:29:42.157655677Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:29:42.157659357Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:29:42.157663747Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:30:22.432244300Z [err]  Error: TIMEOUT
+2026-04-12T17:30:22.432250329Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:30:22.432255049Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:30:22.432260419Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:31:02.509892399Z [err]  Error: TIMEOUT
+2026-04-12T17:31:02.509897009Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:31:02.509903339Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:31:02.509908679Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:31:32.213891850Z [err]  Error: TIMEOUT
+2026-04-12T17:31:32.213903380Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:31:32.213917250Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:31:32.213921470Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:32:12.215536159Z [err]  Error: TIMEOUT
+2026-04-12T17:32:12.215542099Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:32:12.215546239Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:32:12.215549709Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:32:52.225469602Z [err]  Error: TIMEOUT
+2026-04-12T17:32:52.225475612Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:32:52.225479832Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:32:52.225483922Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)
+2026-04-12T17:33:32.228852755Z [err]  Error: TIMEOUT
+2026-04-12T17:33:32.228855795Z [err]      at file:///app/artifacts/api-server/dist/index.mjs:66855:82
+2026-04-12T17:33:32.228858645Z [err]      at async attempts (file:///app/artifacts/api-server/dist/index.mjs:66841:18)
+2026-04-12T17:33:32.228861935Z [err]      at async _updateLoop (file:///app/artifacts/api-server/dist/index.mjs:66801:13)

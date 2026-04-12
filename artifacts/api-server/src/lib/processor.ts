@@ -12,7 +12,7 @@
  */
 import { db, sessionsTable, chatResultsTable } from "@workspace/db";
 import { eq, and, gte } from "drizzle-orm";
-import { fetchChatMessages, fetchChatMessagesLegacy, getFloodWaitSeconds, isAuthError } from "./telegram.js";
+import { fetchChatMessages, fetchChatMessagesLegacy, getFloodWaitSeconds, isAuthError, resetAllClients } from "./telegram.js";
 import { analyzeChat } from "./deepseek.js";
 import { logger } from "./logger.js";
 import { getSettingValue } from "./settings-store.js";
@@ -83,7 +83,9 @@ export function stopProcessor(sessionId: number): void {
   if (controller) {
     controller.abort();
     activeProcessors.delete(sessionId);
-    logger.info({ sessionId }, "Processor stopped");
+    // Reset all telegram clients to stop background reconnect loops
+    resetAllClients();
+    logger.info({ sessionId }, "Processor stopped, clients reset");
   }
 }
 
