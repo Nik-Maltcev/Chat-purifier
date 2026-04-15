@@ -247,7 +247,7 @@ export function Accounts() {
                       </div>
                     </div>
                     <div className="flex items-center gap-1 shrink-0">
-                      {(acc.status === "flood_wait" || acc.status === "banned") && (
+                      {(acc.status === "flood_wait" || acc.status === "banned" || acc.status === "disabled") && (
                         <Button
                           size="sm"
                           variant="outline"
@@ -260,7 +260,7 @@ export function Accounts() {
                           ) : (
                             <RefreshCw className="w-3 h-3" />
                           )}
-                          Сбросить
+                          {acc.status === "disabled" ? "Включить" : "Сбросить"}
                         </Button>
                       )}
                       {acc.status === "active" && (
