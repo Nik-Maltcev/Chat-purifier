@@ -116,10 +116,19 @@ export function Accounts() {
     try {
       const url = editId ? `/api/accounts/${editId}` : "/api/accounts";
       const method = editId ? "PUT" : "POST";
+      
+      // Don't send empty password/hash/session on edit — keeps existing values
+      const payload = { ...form };
+      if (editId) {
+        if (!payload.proxyPassword) delete (payload as Record<string, unknown>).proxyPassword;
+        if (!payload.apiHash) delete (payload as Record<string, unknown>).apiHash;
+        if (!payload.session) delete (payload as Record<string, unknown>).session;
+      }
+      
       const res = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error("Ошибка сохранения");
       setShowDialog(false);
