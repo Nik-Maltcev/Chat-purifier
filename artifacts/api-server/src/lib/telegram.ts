@@ -45,9 +45,22 @@ export function isAuthError(err: unknown): boolean {
   return telegramAuthErrors.some(code => msg.includes(code));
 }
 
-export async function getClientForAccount(account: TelegramAccount): Promise<TelegramClient> {
+// Lock to prevent concurrent client creation for the same account
+const connectingLocks = new Map<number, Promise<TelegramClient>>();
+
+export function getClientForAccount(account: TelegramAccount): Promise<TelegramClient> {
+  const existing = connectingLocks.get(account.id);
+  if (existing) return existing;
+
+  const promise = _getClientForAccount(account).finally(() => {
+    connectingLocks.delete(account.id);
+  });
+  connectingLocks.set(account.id, promise);
+  return promise;
+}
+
+async function _getClientForAccount(account: TelegramAccount): Promise<TelegramClient> {
   // First, disconnect ALL other clients to prevent AUTH_KEY_DUPLICATED
-  // This is aggressive but necessary when accounts share API credentials
   for (const [id, entry] of clientPool) {
     if (id !== account.id) {
       try { await entry.client.disconnect(); } catch {}
