@@ -151,6 +151,16 @@ export function Accounts() {
     }
   };
 
+  const handleToggleDisable = async (id: number, status: "active" | "disabled") => {
+    await fetch(`/api/accounts/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status }),
+    });
+    load();
+    toast({ title: status === "disabled" ? "Аккаунт отключён" : "Аккаунт включён" });
+  };
+
   const set = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setForm((prev) => ({ ...prev, [key]: e.target.value }));
 
@@ -251,6 +261,26 @@ export function Accounts() {
                             <RefreshCw className="w-3 h-3" />
                           )}
                           Сбросить
+                        </Button>
+                      )}
+                      {acc.status === "active" && (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="gap-1 text-xs text-muted-foreground"
+                          onClick={() => handleToggleDisable(acc.id, "disabled")}
+                        >
+                          Отключить
+                        </Button>
+                      )}
+                      {acc.status === "disabled" && (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="gap-1 text-xs"
+                          onClick={() => handleToggleDisable(acc.id, "active")}
+                        >
+                          Включить
                         </Button>
                       )}
                       <Button size="sm" variant="ghost" onClick={() => openEdit(acc)}>
