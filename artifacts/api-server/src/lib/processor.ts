@@ -12,7 +12,7 @@
  */
 import { db, sessionsTable, chatResultsTable } from "@workspace/db";
 import { eq, and, gte } from "drizzle-orm";
-import { fetchChatMessages, fetchChatMessagesLegacy, getFloodWaitSeconds, isAuthError, resetAllClients } from "./telegram.js";
+import { fetchChatMessages, getFloodWaitSeconds, isAuthError, resetAllClients } from "./telegram.js";
 import { analyzeChat } from "./deepseek.js";
 import { logger } from "./logger.js";
 import { getSettingValue } from "./settings-store.js";
@@ -149,6 +149,12 @@ async function processSession(sessionId: number, signal: AbortSignal): Promise<v
       .where(eq(sessionsTable.id, sessionId));
 
     const useMultiAccount = await hasAnyAccount();
+    if (!useMultiAccount) {
+      logger.error({ sessionId }, "Нет аккаунтов Telegram — добавьте аккаунт в настройках");
+      await db.update(sessionsTable).set({ status: "error", updatedAt: new Date() }).where(eq(sessionsTable.id, sessionId));
+      activeProcessors.delete(sessionId);
+      return;
+    }
 
     let consecutiveErrors = 0;
     let totalProcessed = 0;
@@ -210,18 +216,15 @@ async function processSession(sessionId: number, signal: AbortSignal): Promise<v
       }
 
       // TECHNIQUE 9: Get available Telegram account
-      let currentAccount: TelegramAccount | null = null;
-      if (useMultiAccount) {
-        currentAccount = await waitForAvailableAccount(signal);
-        if (!currentAccount) {
-          logger.error({ sessionId }, "Все аккаунты Telegram заблокированы — остановка сессии");
-          await db.update(sessionsTable).set({
-            status: "paused",
-            updatedAt: new Date(),
-          }).where(eq(sessionsTable.id, sessionId));
-          activeProcessors.delete(sessionId);
-          return;
-        }
+      const currentAccount = await waitForAvailableAccount(signal);
+      if (!currentAccount) {
+        logger.error({ sessionId }, "Все аккаунты Telegram заблокированы — остановка сессии");
+        await db.update(sessionsTable).set({
+          status: "paused",
+          updatedAt: new Date(),
+        }).where(eq(sessionsTable.id, sessionId));
+        activeProcessors.delete(sessionId);
+        return;
       }
 
       logger.info(
@@ -231,7 +234,7 @@ async function processSession(sessionId: number, signal: AbortSignal): Promise<v
           identifier: chat.chatIdentifier,
           dailyCount,
           dailyQuota,
-          account: currentAccount ? `${currentAccount.label} (#${currentAccount.id})` : "legacy",
+          account: `${currentAccount.label} (#${currentAccount.id})`,
         },
         "Processing chat"
       );
@@ -254,33 +257,15 @@ async function processSession(sessionId: number, signal: AbortSignal): Promise<v
             .set({ status: "fetching", updatedAt: new Date() })
             .where(eq(chatResultsTable.id, chat.id));
 
-          let title: string | null;
-          let username: string | null;
-          let membersCount: number | null;
-          let messages: string[];
-
-          if (currentAccount) {
-            // Multi-account mode
-            const result = await fetchChatMessages(
-              chat.chatIdentifier,
-              freshSession.messagesCount,
-              currentAccount,
-            );
-            title = result.title;
-            username = result.username;
-            membersCount = result.membersCount;
-            messages = result.messages;
-          } else {
-            // Legacy mode (settings-based single account)
-            const result = await fetchChatMessagesLegacy(
-              chat.chatIdentifier,
-              freshSession.messagesCount,
-            );
-            title = result.title;
-            username = result.username;
-            membersCount = result.membersCount;
-            messages = result.messages;
-          }
+          const result = await fetchChatMessages(
+            chat.chatIdentifier,
+            freshSession.messagesCount,
+            currentAccount,
+          );
+          const title = result.title;
+          const username = result.username;
+          const membersCount = result.membersCount;
+          const messages = result.messages;
 
           if (messages.length === 0) {
             await db.update(chatResultsTable).set({

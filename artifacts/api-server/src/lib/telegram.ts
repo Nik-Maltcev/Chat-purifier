@@ -91,10 +91,10 @@ async function _getClientForAccount(account: TelegramAccount): Promise<TelegramC
   
   // Build client options
   const clientOptions: ConstructorParameters<typeof TelegramClient>[3] = {
-    connectionRetries: 3,
-    retryDelay: 2000,
-    autoReconnect: false, // Disable auto-reconnect to prevent zombie connections
-    requestRetries: 3,
+    connectionRetries: 5,
+    retryDelay: 3000,
+    autoReconnect: true,
+    requestRetries: 5,
     floodSleepThreshold: 0, // Don't auto-sleep, we handle FloodWait ourselves
     sequentialUpdates: true,
   };
@@ -175,12 +175,7 @@ export async function fetchChatMessages(
     .replace(/^@/, "")
     .trim();
 
-  // 30 second timeout for getEntity
-  const entity = await withTimeout(
-    tg.getEntity(cleanIdentifier),
-    30_000,
-    `getEntity(${cleanIdentifier})`
-  );
+  const entity = await tg.getEntity(cleanIdentifier);
 
   let title: string | null = null;
   let username: string | null = null;
@@ -195,15 +190,7 @@ export async function fetchChatMessages(
   const messages: string[] = [];
   const iter = tg.iterMessages(entity, { limit: messagesCount });
 
-  // 2 minute timeout for fetching all messages
-  const startTime = Date.now();
-  const maxDuration = 120_000; // 2 minutes max for message fetching
-
   for await (const msg of iter) {
-    if (Date.now() - startTime > maxDuration) {
-      logger.warn({ chatIdentifier, fetchedCount: messages.length }, "Message fetch timeout - returning partial results");
-      break;
-    }
     if (msg.message && msg.message.trim().length > 0) {
       messages.push(msg.message.trim());
     }
@@ -275,12 +262,7 @@ export async function fetchChatMessagesLegacy(
     .replace(/^@/, "")
     .trim();
 
-  // 30 second timeout for getEntity
-  const entity = await withTimeout(
-    tg.getEntity(cleanIdentifier),
-    30_000,
-    `getEntity(${cleanIdentifier})`
-  );
+  const entity = await tg.getEntity(cleanIdentifier);
 
   let title: string | null = null;
   let username: string | null = null;
@@ -295,15 +277,7 @@ export async function fetchChatMessagesLegacy(
   const messages: string[] = [];
   const iter = tg.iterMessages(entity, { limit: messagesCount });
 
-  // 2 minute timeout for fetching all messages
-  const startTime = Date.now();
-  const maxDuration = 120_000; // 2 minutes max for message fetching
-
   for await (const msg of iter) {
-    if (Date.now() - startTime > maxDuration) {
-      logger.warn({ chatIdentifier, fetchedCount: messages.length }, "Message fetch timeout - returning partial results");
-      break;
-    }
     if (msg.message && msg.message.trim().length > 0) {
       messages.push(msg.message.trim());
     }
