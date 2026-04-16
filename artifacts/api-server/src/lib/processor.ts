@@ -12,7 +12,7 @@
  */
 import { db, sessionsTable, chatResultsTable } from "@workspace/db";
 import { eq, and, gte } from "drizzle-orm";
-import { fetchChatMessages, getFloodWaitSeconds, isAuthError, resetAllClients } from "./telegram.js";
+import { fetchChatMessages, getFloodWaitSeconds, isAuthError, resetAllClients, disconnectClientForAccount } from "./telegram.js";
 import { analyzeChat } from "./deepseek.js";
 import { logger } from "./logger.js";
 import { getSettingValue } from "./settings-store.js";
@@ -346,7 +346,22 @@ async function processSession(sessionId: number, signal: AbortSignal): Promise<v
       if (result === "flood_wait" || result === "auth_error") {
         // Don't count as processed — will be retried with different account
         consecutiveErrors = 0;
-        continue; // Immediately try next (waitForAvailableAccount will pick new one)
+        
+        // Wait 5 minutes before switching to next account — let Telegram cool down
+        logger.info("Пауза 5 минут перед переключением на другой аккаунт");
+        const resumed = await abortableSleep(300_000, signal);
+        if (!resumed) {
+          await db.update(sessionsTable).set({ status: "paused", updatedAt: new Date() }).where(eq(sessionsTable.id, sessionId));
+          activeProcessors.delete(sessionId);
+          return;
+        }
+        
+        // Also disconnect the flood-waited client to free resources
+        if (currentAccount) {
+          disconnectClientForAccount(currentAccount.id);
+        }
+        
+        continue;
       }
 
       totalProcessed++;
