@@ -15,9 +15,9 @@ export async function analyzeChat(
   chatTitle: string | null,
   messages: string[]
 ): Promise<AnalysisResult> {
-  const apiKey = await getSettingValue("deepseek_api_key") || process.env.DEEPSEEK_API_KEY;
+  const apiKey = await getSettingValue("deepseek_api_key") || process.env.DEEPSEEK_API_KEY || process.env.OPENAI_API_KEY;
   if (!apiKey) {
-    throw new Error("API ключ DeepSeek не настроен. Зайдите в Настройки и укажите ключ.");
+    throw new Error("API ключ не настроен. Зайдите в Настройки и укажите ключ.");
   }
 
   const messagesText = messages.slice(0, 50).join("\n---\n");
@@ -59,14 +59,14 @@ ${messagesText}
 
   let response: Response;
   try {
-    response = await fetch("https://api.deepseek.com/v1/chat/completions", {
+    response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: "deepseek-chat",
+        model: "gpt-4o-mini",
         messages: [
           {
             role: "user",
@@ -84,7 +84,7 @@ ${messagesText}
 
   if (!response.ok) {
     const errText = await response.text();
-    throw new Error(`DeepSeek API error ${response.status}: ${errText}`);
+    throw new Error(`OpenAI API error ${response.status}: ${errText}`);
   }
 
   const data = await response.json() as {
@@ -92,11 +92,11 @@ ${messagesText}
   };
 
   const content = data.choices[0]?.message?.content?.trim() || "";
-  logger.info({ content }, "DeepSeek raw response");
+  logger.info({ content }, "GPT-4o-mini raw response");
 
   const jsonMatch = content.match(/\{[\s\S]*\}/);
   if (!jsonMatch) {
-    throw new Error(`Не удалось разобрать JSON из ответа DeepSeek: ${content}`);
+    throw new Error(`Не удалось разобрать JSON из ответа GPT: ${content}`);
   }
 
   const parsed = JSON.parse(jsonMatch[0]) as AnalysisResult & { country?: unknown };
