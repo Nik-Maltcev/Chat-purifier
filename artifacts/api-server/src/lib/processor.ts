@@ -303,7 +303,15 @@ async function processSession(sessionId: number, signal: AbortSignal): Promise<v
           const floodSec = getFloodWaitSeconds(err);
           if (floodSec !== null) {
             const waitSec = floodSec + 60;
-            logger.warn({ floodSec, waitSec: formatSeconds(waitSec) }, "FloodWait — переключаем аккаунт");
+            logger.warn({ 
+              floodSec, 
+              waitSec: formatSeconds(waitSec),
+              accountId: currentAccount.id,
+              accountLabel: currentAccount.label,
+              proxyHost: currentAccount.proxyHost,
+              proxyPort: currentAccount.proxyPort,
+              proxyUsername: currentAccount.proxyUsername,
+            }, "FloodWait — переключаем аккаунт");
 
             // Mark this account as flood_wait
             if (currentAccount) {
