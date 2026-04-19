@@ -45,18 +45,39 @@ export function isAuthError(err: unknown): boolean {
   return telegramAuthErrors.some(code => msg.includes(code));
 }
 
-// Lock to prevent concurrent client creation for the same account
-const connectingLocks = new Map<number, Promise<TelegramClient>>();
+// Global lock — only one account can connect at a time
+let globalConnectLock: Promise<TelegramClient> | null = null;
 
 export function getClientForAccount(account: TelegramAccount): Promise<TelegramClient> {
-  const existing = connectingLocks.get(account.id);
-  if (existing) return existing;
+  // Check if cached client is still connected — no lock needed
+  const cached = clientPool.get(account.id);
+  if (cached) {
+    try {
+      if (cached.client.connected) {
+        return Promise.resolve(cached.client);
+      }
+    } catch {}
+  }
 
-  const promise = _getClientForAccount(account).finally(() => {
-    connectingLocks.delete(account.id);
+  // Need to connect — use global lock
+  const doConnect = async (): Promise<TelegramClient> => {
+    // Wait for any previous connection to finish
+    if (globalConnectLock) {
+      try { await globalConnectLock; } catch {}
+    }
+    
+    // Re-check cache after waiting
+    const cached2 = clientPool.get(account.id);
+    if (cached2?.client?.connected) return cached2.client;
+    
+    return _getClientForAccount(account);
+  };
+
+  globalConnectLock = doConnect().finally(() => {
+    globalConnectLock = null;
   });
-  connectingLocks.set(account.id, promise);
-  return promise;
+  
+  return globalConnectLock;
 }
 
 async function _getClientForAccount(account: TelegramAccount): Promise<TelegramClient> {
@@ -67,6 +88,9 @@ async function _getClientForAccount(account: TelegramAccount): Promise<TelegramC
       clientPool.delete(id);
     }
   }
+  
+  // Wait for gramjs to fully close connections
+  await new Promise(r => setTimeout(r, 2000));
 
   const cached = clientPool.get(account.id);
   

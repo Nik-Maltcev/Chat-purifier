@@ -1,5 +1,6 @@
 from telethon import TelegramClient
 from telethon.sessions import StringSession
+from telethon.errors import SessionPasswordNeededError
 import asyncio
 
 async def main():
@@ -24,35 +25,44 @@ async def main():
         print("Сканируй QR в Telegram: Настройки > Устройства > Подключить устройство\n")
 
         while True:
-            result = await client(ExportLoginTokenRequest(
-                api_id=api_id, api_hash=api_hash, except_ids=[]
-            ))
+            try:
+                result = await client(ExportLoginTokenRequest(
+                    api_id=api_id, api_hash=api_hash, except_ids=[]
+                ))
 
-            if isinstance(result, LoginTokenSuccess):
-                break
-
-            if isinstance(result, LoginTokenMigrateTo):
-                await client._switch_dc(result.dc_id)
-                result = await client(ImportLoginTokenRequest(result.token))
                 if isinstance(result, LoginTokenSuccess):
                     break
 
-            token = base64.urlsafe_b64encode(result.token).decode()
-            url = f"tg://login?token={token}"
+                if isinstance(result, LoginTokenMigrateTo):
+                    await client._switch_dc(result.dc_id)
+                    result = await client(ImportLoginTokenRequest(result.token))
+                    if isinstance(result, LoginTokenSuccess):
+                        break
 
-            if has_qr:
-                qr = qrcode.QRCode(box_size=1, border=1)
-                qr.add_data(url)
-                qr.make(fit=True)
-                qr.print_ascii(invert=True)
+                token = base64.urlsafe_b64encode(result.token).decode()
+                url = f"tg://login?token={token}"
 
-            print(f"URL: {url}\n")
-            print("Жду сканирование (30 сек)...\n")
+                if has_qr:
+                    qr = qrcode.QRCode(box_size=1, border=1)
+                    qr.add_data(url)
+                    qr.make(fit=True)
+                    qr.print_ascii(invert=True)
 
-            try:
+                print(f"URL: {url}\n")
+                print("Жду сканирование (30 сек)...\n")
+
                 await asyncio.sleep(30)
-            except:
+
+            except SessionPasswordNeededError:
+                password = input("Введи 2FA пароль: ").strip()
+                await client.sign_in(password=password)
                 break
+            except Exception as e:
+                if "SESSION_PASSWORD_NEEDED" in str(e):
+                    password = input("Введи 2FA пароль: ").strip()
+                    await client.sign_in(password=password)
+                    break
+                raise
 
     print("\n" + "=" * 50)
     print("Session string:")
