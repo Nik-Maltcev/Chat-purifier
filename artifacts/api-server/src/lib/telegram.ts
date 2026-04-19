@@ -81,28 +81,27 @@ export function getClientForAccount(account: TelegramAccount): Promise<TelegramC
 }
 
 async function _getClientForAccount(account: TelegramAccount): Promise<TelegramClient> {
-  // First, disconnect ALL other clients to prevent AUTH_KEY_DUPLICATED
+  // First, DESTROY ALL other clients completely
   for (const [id, entry] of clientPool) {
     if (id !== account.id) {
-      try { await entry.client.disconnect(); } catch {}
+      try { 
+        entry.client._destroyed = true;
+        await entry.client.disconnect();
+      } catch {}
       clientPool.delete(id);
     }
   }
   
   // Wait for gramjs to fully close connections
-  await new Promise(r => setTimeout(r, 2000));
+  await new Promise(r => setTimeout(r, 3000));
 
+  // Always disconnect and recreate — don't reuse cached clients
   const cached = clientPool.get(account.id);
-  
-  // Check if cached client is still connected
   if (cached) {
-    try {
-      if (cached.client.connected) {
-        return cached.client;
-      }
+    try { 
+      cached.client._destroyed = true;
+      await cached.client.disconnect();
     } catch {}
-    // Client disconnected or errored — clean up
-    try { await cached.client.disconnect(); } catch {}
     clientPool.delete(account.id);
   }
 
