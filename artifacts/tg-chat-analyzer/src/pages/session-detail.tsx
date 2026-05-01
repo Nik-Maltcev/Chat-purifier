@@ -284,6 +284,7 @@ export function SessionDetail() {
               <TableRow className="bg-muted/50 hover:bg-muted/50">
                 <TableHead className="w-[180px]">Чат</TableHead>
                 <TableHead>Страна</TableHead>
+                <TableHead>Категория</TableHead>
                 <TableHead>Статус</TableHead>
                 <TableHead>Вердикт</TableHead>
                 <TableHead className="text-center">Баллы (К/С/А/Т)</TableHead>
@@ -302,6 +303,15 @@ export function SessionDetail() {
                     {chat.country ? (
                       <span className="inline-flex items-center gap-1 text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200 rounded px-1.5 py-0.5 whitespace-nowrap">
                         {chat.country}
+                      </span>
+                    ) : (
+                      <span className="text-muted-foreground/30 text-xs">—</span>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {chat.category ? (
+                      <span className="inline-flex items-center gap-1 text-xs font-medium bg-purple-50 text-purple-700 border border-purple-200 rounded px-1.5 py-0.5 whitespace-nowrap">
+                        {chat.category}
                       </span>
                     ) : (
                       <span className="text-muted-foreground/30 text-xs">—</span>
@@ -351,7 +361,7 @@ export function SessionDetail() {
               ))}
               {chats?.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
+                  <TableCell colSpan={8} className="text-center text-muted-foreground py-8">
                     Нет чатов по выбранному фильтру.
                   </TableCell>
                 </TableRow>

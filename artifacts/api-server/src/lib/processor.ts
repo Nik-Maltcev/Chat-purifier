@@ -282,7 +282,7 @@ async function processSession(sessionId: number, signal: AbortSignal): Promise<v
               .set({ status: "analyzing", chatTitle: title, chatUsername: username, membersCount, updatedAt: new Date() })
               .where(eq(chatResultsTable.id, chat.id));
 
-            const analysis = await analyzeChat(title, messages);
+            const analysis = await analyzeChat(title, messages, freshSession.language);
 
             await db.update(chatResultsTable).set({
               status: "done",
@@ -292,6 +292,7 @@ async function processSession(sessionId: number, signal: AbortSignal): Promise<v
               activityScore: analysis.activityScore,
               topicScore: analysis.topicScore,
               aiSummary: analysis.summary,
+              category: analysis.category,
               country: analysis.country,
               updatedAt: new Date(),
             }).where(eq(chatResultsTable.id, chat.id));

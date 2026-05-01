@@ -35,6 +35,7 @@ router.post("/sessions", async (req, res) => {
       name: body.name,
       delaySeconds: body.delaySeconds ?? 12,
       messagesCount: body.messagesCount ?? 50,
+      language: (req.body as Record<string, unknown>).language as string || "ru",
       totalChats: lines.length,
       processedChats: 0,
       status: "idle",
@@ -231,13 +232,14 @@ router.get("/sessions/:sessionId/export", async (req, res) => {
       .orderBy(chatResultsTable.id);
   }
 
-  const header = "chat_identifier,chat_title,chat_username,members_count,country,verdict,score,spam_score,activity_score,topic_score,summary";
+  const header = "chat_identifier,chat_title,chat_username,members_count,country,category,verdict,score,spam_score,activity_score,topic_score,summary";
   const rows = chats.map((c) => [
     csvEscape(c.chatIdentifier),
     csvEscape(c.chatTitle ?? ""),
     csvEscape(c.chatUsername ? `@${c.chatUsername}` : ""),
     c.membersCount ?? "",
     csvEscape(c.country ?? ""),
+    csvEscape(c.category ?? ""),
     c.verdict ?? "",
     c.score ?? "",
     c.spamScore ?? "",
@@ -268,6 +270,7 @@ function formatSession(session: typeof sessionsTable.$inferSelect) {
     processedChats: session.processedChats,
     delaySeconds: session.delaySeconds,
     messagesCount: session.messagesCount,
+    language: session.language,
     autoRestart: session.autoRestart,
     createdAt: session.createdAt.toISOString(),
     updatedAt: session.updatedAt.toISOString(),
@@ -289,6 +292,7 @@ function formatChat(chat: typeof chatResultsTable.$inferSelect) {
     activityScore: chat.activityScore ?? null,
     topicScore: chat.topicScore ?? null,
     aiSummary: chat.aiSummary ?? null,
+    category: chat.category ?? null,
     country: chat.country ?? null,
     errorMessage: chat.errorMessage ?? null,
     createdAt: chat.createdAt.toISOString(),

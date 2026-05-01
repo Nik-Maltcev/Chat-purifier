@@ -1,6 +1,29 @@
 import { logger } from "./logger.js";
 import { getSettingValue } from "./settings-store.js";
 
+const CATEGORIES = [
+  "18+", "AI", "Apple", "ChatGPT", "IT", "SEO", "Telegram",
+  "Бизнес", "Будущее", "Видео", "Вопросы", "Деньги", "Дизайн",
+  "Еда", "Животные", "Здоровье", "Игры", "Инвестиции", "Истории",
+  "История", "Карьера", "Кино и сериалы", "Книги", "Крипто",
+  "Кулинария", "Личный опыт", "Маркетинг", "Маркетплейсы", "Медиа",
+  "Менеджмент", "Мнения", "Наука", "Образование", "Общение",
+  "Отношения", "Офис", "Офлайн", "Политика", "Право", "Приложения",
+  "Природа", "Путешествия", "Рабочие будни", "Разработка", "Релокация",
+  "Ритейл", "Рост", "Сервис", "Сервисы", "Соцсети", "Спорт",
+  "Технологии", "Топ-менеджмент", "Транспорт", "Трибуна", "Флуд",
+  "Хобби", "Экономика", "Юмор", "Юриспруденция", "Другое",
+];
+
+const LANG_CONFIG: Record<string, { name: string; promptLang: string }> = {
+  ru: { name: "Русский", promptLang: "на русском" },
+  en: { name: "English", promptLang: "in English" },
+  de: { name: "Deutsch", promptLang: "auf Deutsch" },
+  es: { name: "Español", promptLang: "en español" },
+  it: { name: "Italiano", promptLang: "in italiano" },
+  fr: { name: "Français", promptLang: "en français" },
+};
+
 interface AnalysisResult {
   verdict: "keep" | "filter";
   score: number;
@@ -8,12 +31,14 @@ interface AnalysisResult {
   activityScore: number;
   topicScore: number;
   summary: string;
+  category: string | null;
   country: string | null;
 }
 
 export async function analyzeChat(
   chatTitle: string | null,
-  messages: string[]
+  messages: string[],
+  language: string = "ru",
 ): Promise<AnalysisResult> {
   const apiKey = await getSettingValue("deepseek_api_key") || process.env.DEEPSEEK_API_KEY || process.env.OPENAI_API_KEY;
   if (!apiKey) {
@@ -21,39 +46,44 @@ export async function analyzeChat(
   }
 
   const messagesText = messages.slice(0, 50).join("\n---\n");
-  const chatName = chatTitle || "Без названия";
+  const chatName = chatTitle || "Unknown";
+  const lang = LANG_CONFIG[language] || LANG_CONFIG.ru;
+  const categoriesList = CATEGORIES.join(", ");
 
-  const prompt = `Ты аналитик качества Telegram-чатов об эмиграции и путешествиях.
+  const prompt = `You are a Telegram chat quality analyst.
 
-Проанализируй следующие сообщения из чата "${chatName}" и дай оценку.
+Analyze the following messages from chat "${chatName}" and evaluate it.
 
-Сообщения:
+Messages:
 ${messagesText}
 
-Оцени чат по следующим критериям (каждый от 1 до 10):
-- spamScore: уровень спама (1 = минимальный спам, 10 = полностью спам/реклама)
-- activityScore: активность и вовлечённость (1 = мёртвый, 10 = очень активный)
-- topicScore: релевантность теме эмиграции/путешествий/помощи (1 = не по теме, 10 = строго по теме)
-- score: общая полезность чата (1 = бесполезный, 10 = очень полезный)
+Rate the chat on these criteria (each 1-10):
+- spamScore: spam level (1 = minimal spam, 10 = pure spam/ads)
+- activityScore: activity and engagement (1 = dead, 10 = very active)
+- topicScore: relevance and usefulness (1 = off-topic/useless, 10 = highly relevant/useful)
+- score: overall quality (1 = useless, 10 = very useful)
 
-Вердикт:
-- "keep" — если чат активный, по делу, люди реально помогают друг другу с эмиграцией/переездом/документами/жильём/работой за рубежом
-- "filter" — если чат завален спамом, рекламой, оффтопом, неактивен, или не связан с темой
+Verdict:
+- "keep" — if the chat is active, useful, people help each other, has real discussions
+- "filter" — if the chat is full of spam, ads, off-topic, inactive, or useless
 
-Дополнительно: определи страну, которой посвящён чат (Германия, США, Канада и т.д.). Ориентируйся прежде всего на название чата, затем на сообщения. Если страна не определяется — верни null.
+Category — pick ONE from this list: ${categoriesList}
+Choose the most fitting category based on chat name and messages.
 
-Ответь ТОЛЬКО в формате JSON без лишних слов:
+Country — determine which country the chat is about (Germany, USA, Canada, etc.). Look at the chat name first, then messages. If unclear — return null.
+
+Reply ONLY in JSON format, summary ${lang.promptLang}:
 {
   "verdict": "keep" or "filter",
-  "score": число 1-10,
-  "spamScore": число 1-10,
-  "activityScore": число 1-10,
-  "topicScore": число 1-10,
-  "summary": "краткий вывод на русском до 150 символов",
-  "country": "Название страны на русском или null"
+  "score": number 1-10,
+  "spamScore": number 1-10,
+  "activityScore": number 1-10,
+  "topicScore": number 1-10,
+  "summary": "brief summary ${lang.promptLang}, max 150 chars",
+  "category": "one category from the list",
+  "country": "country name or null"
 }`;
 
-  // 60 second timeout for DeepSeek API
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 60_000);
 
@@ -67,14 +97,9 @@ ${messagesText}
       },
       body: JSON.stringify({
         model: "gpt-4o-mini",
-        messages: [
-          {
-            role: "user",
-            content: prompt,
-          },
-        ],
+        messages: [{ role: "user", content: prompt }],
         temperature: 0.1,
-        max_tokens: 300,
+        max_tokens: 400,
       }),
       signal: controller.signal,
     });
@@ -99,12 +124,18 @@ ${messagesText}
     throw new Error(`Не удалось разобрать JSON из ответа GPT: ${content}`);
   }
 
-  const parsed = JSON.parse(jsonMatch[0]) as AnalysisResult & { country?: unknown };
+  const parsed = JSON.parse(jsonMatch[0]) as AnalysisResult & { country?: unknown; category?: unknown };
 
   const rawCountry = parsed.country;
   const country =
     typeof rawCountry === "string" && rawCountry.toLowerCase() !== "null" && rawCountry.trim()
       ? rawCountry.trim()
+      : null;
+
+  const rawCategory = parsed.category;
+  const category =
+    typeof rawCategory === "string" && rawCategory.trim()
+      ? rawCategory.trim()
       : null;
 
   return {
@@ -114,6 +145,7 @@ ${messagesText}
     activityScore: Math.min(10, Math.max(1, parsed.activityScore || 5)),
     topicScore: Math.min(10, Math.max(1, parsed.topicScore || 5)),
     summary: parsed.summary || "",
+    category,
     country,
   };
 }

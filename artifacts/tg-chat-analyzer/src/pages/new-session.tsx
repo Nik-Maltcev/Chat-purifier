@@ -23,7 +23,17 @@ const formSchema = z.object({
   }, "Укажите хотя бы один чат для анализа"),
   delaySeconds: z.coerce.number().min(1).max(300).default(30),
   messagesCount: z.coerce.number().min(1).max(1000).default(50),
+  language: z.string().default("ru"),
 });
+
+const LANGUAGES = [
+  { value: "ru", label: "🇷🇺 Русский" },
+  { value: "en", label: "🇬🇧 English" },
+  { value: "de", label: "🇩🇪 Deutsch" },
+  { value: "es", label: "🇪🇸 Español" },
+  { value: "it", label: "🇮🇹 Italiano" },
+  { value: "fr", label: "🇫🇷 Français" },
+];
 
 type FormValues = z.infer<typeof formSchema>;
 
@@ -57,6 +67,7 @@ export function NewSession() {
       chatList: "",
       delaySeconds: 30,
       messagesCount: 50,
+      language: "ru",
     },
   });
 
@@ -290,6 +301,31 @@ export function NewSession() {
                     <FormControl>
                       <Input data-testid="input-session-name" placeholder="Например: Эмиграция IT-групп ч.1" {...field} />
                     </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="language"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Язык чатов</FormLabel>
+                    <FormControl>
+                      <select
+                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                        value={field.value}
+                        onChange={field.onChange}
+                      >
+                        {LANGUAGES.map((lang) => (
+                          <option key={lang.value} value={lang.value}>{lang.label}</option>
+                        ))}
+                      </select>
+                    </FormControl>
+                    <FormDescription>
+                      Язык сообщений в чатах. Влияет на язык анализа и выводов.
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
