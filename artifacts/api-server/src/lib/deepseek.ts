@@ -72,16 +72,16 @@ Choose the most fitting category based on chat name and messages.
 
 Country — determine which country the chat is about (Germany, USA, Canada, etc.). Look at the chat name first, then messages. If unclear — return null.
 
-Reply ONLY in JSON format, summary ${lang.promptLang}:
+Reply ONLY in JSON format, summary in Russian:
 {
   "verdict": "keep" or "filter",
   "score": number 1-10,
   "spamScore": number 1-10,
   "activityScore": number 1-10,
   "topicScore": number 1-10,
-  "summary": "brief summary ${lang.promptLang}, max 150 chars",
+  "summary": "краткий вывод на русском, до 150 символов",
   "category": "one category from the list",
-  "country": "country name or null"
+  "country": "country name in Russian or null"
 }`;
 
   const controller = new AbortController();
