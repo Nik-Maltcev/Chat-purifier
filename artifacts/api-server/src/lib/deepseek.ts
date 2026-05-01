@@ -99,7 +99,7 @@ Reply ONLY in JSON format, summary in Russian:
         model: "deepseek-v4-flash",
         messages: [{ role: "user", content: prompt }],
         temperature: 0.1,
-        max_tokens: 400,
+        max_tokens: 800,
       }),
       signal: controller.signal,
     });
@@ -119,12 +119,38 @@ Reply ONLY in JSON format, summary in Russian:
   const content = data.choices[0]?.message?.content?.trim() || "";
   logger.info({ content }, "DeepSeek V4 raw response");
 
+  // Try to extract JSON — handle markdown blocks, truncated responses
+  let jsonStr = "";
   const jsonMatch = content.match(/\{[\s\S]*\}/);
-  if (!jsonMatch) {
-    throw new Error(`Не удалось разобрать JSON из ответа GPT: ${content}`);
+  if (jsonMatch) {
+    jsonStr = jsonMatch[0];
+  } else {
+    // Try to fix truncated JSON — find opening { and add closing }
+    const braceIdx = content.indexOf("{");
+    if (braceIdx >= 0) {
+      jsonStr = content.slice(braceIdx);
+      // Count braces and close if needed
+      let depth = 0;
+      for (const ch of jsonStr) {
+        if (ch === "{") depth++;
+        if (ch === "}") depth--;
+      }
+      while (depth > 0) { jsonStr += "}"; depth--; }
+      // Try to fix trailing comma before }
+      jsonStr = jsonStr.replace(/,\s*}/g, "}");
+    }
   }
 
-  const parsed = JSON.parse(jsonMatch[0]) as AnalysisResult & { country?: unknown; category?: unknown };
+  if (!jsonStr) {
+    throw new Error(`Не удалось разобрать JSON из ответа GPT: ${content.slice(0, 200)}`);
+  }
+
+  let parsed: AnalysisResult & { country?: unknown; category?: unknown };
+  try {
+    parsed = JSON.parse(jsonStr);
+  } catch {
+    throw new Error(`Не удалось разобрать JSON из ответа GPT: ${content.slice(0, 200)}`);
+  }
 
   const rawCountry = parsed.country;
   const country =
