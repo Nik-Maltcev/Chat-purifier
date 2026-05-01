@@ -89,14 +89,14 @@ Reply ONLY in JSON format, summary in Russian:
 
   let response: Response;
   try {
-    response = await fetch("https://api.openai.com/v1/chat/completions", {
+    response = await fetch("https://api.deepseek.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini",
+        model: "deepseek-v4-flash",
         messages: [{ role: "user", content: prompt }],
         temperature: 0.1,
         max_tokens: 400,
@@ -109,7 +109,7 @@ Reply ONLY in JSON format, summary in Russian:
 
   if (!response.ok) {
     const errText = await response.text();
-    throw new Error(`OpenAI API error ${response.status}: ${errText}`);
+    throw new Error(`DeepSeek API error ${response.status}: ${errText}`);
   }
 
   const data = await response.json() as {
@@ -117,7 +117,7 @@ Reply ONLY in JSON format, summary in Russian:
   };
 
   const content = data.choices[0]?.message?.content?.trim() || "";
-  logger.info({ content }, "GPT-4o-mini raw response");
+  logger.info({ content }, "DeepSeek V4 raw response");
 
   const jsonMatch = content.match(/\{[\s\S]*\}/);
   if (!jsonMatch) {
