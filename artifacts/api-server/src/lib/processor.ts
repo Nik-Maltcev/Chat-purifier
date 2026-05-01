@@ -266,6 +266,7 @@ async function processSession(sessionId: number, signal: AbortSignal): Promise<v
           const username = result.username;
           const membersCount = result.membersCount;
           const messages = result.messages;
+          const lastMessageDate = result.lastMessageDate;
 
           if (messages.length === 0) {
             await db.update(chatResultsTable).set({
@@ -275,6 +276,19 @@ async function processSession(sessionId: number, signal: AbortSignal): Promise<v
               chatUsername: username,
               membersCount,
               aiSummary: "Нет доступных сообщений",
+              updatedAt: new Date(),
+            }).where(eq(chatResultsTable.id, chat.id));
+          } else if (lastMessageDate && (Date.now() - lastMessageDate.getTime()) > 3 * 24 * 60 * 60 * 1000) {
+            // Abandoned chat — last message older than 3 days
+            const daysAgo = Math.floor((Date.now() - lastMessageDate.getTime()) / (24 * 60 * 60 * 1000));
+            await db.update(chatResultsTable).set({
+              status: "done",
+              verdict: "filter",
+              chatTitle: title,
+              chatUsername: username,
+              membersCount,
+              aiSummary: `Заброшенный чат — последнее сообщение ${daysAgo} дн. назад`,
+              category: "Флуд",
               updatedAt: new Date(),
             }).where(eq(chatResultsTable.id, chat.id));
           } else {

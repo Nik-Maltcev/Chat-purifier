@@ -189,6 +189,7 @@ export async function fetchChatMessages(
   username: string | null;
   membersCount: number | null;
   messages: string[];
+  lastMessageDate: Date | null;
 }> {
   const tg = await getClientForAccount(account);
 
@@ -211,15 +212,19 @@ export async function fetchChatMessages(
   }
 
   const messages: string[] = [];
+  let lastMessageDate: Date | null = null;
   const iter = tg.iterMessages(entity, { limit: messagesCount });
 
   for await (const msg of iter) {
+    if (!lastMessageDate && msg.date) {
+      lastMessageDate = new Date(msg.date * 1000);
+    }
     if (msg.message && msg.message.trim().length > 0) {
       messages.push(msg.message.trim());
     }
   }
 
-  return { title, username, membersCount, messages };
+  return { title, username, membersCount, messages, lastMessageDate };
 }
 
 // Legacy: kept for telegram-folders.ts which still uses settings-based client
