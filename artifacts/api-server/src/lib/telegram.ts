@@ -81,7 +81,7 @@ export function getClientForAccount(account: TelegramAccount): Promise<TelegramC
 }
 
 async function _getClientForAccount(account: TelegramAccount): Promise<TelegramClient> {
-  // First, DESTROY ALL other clients completely
+  // Disconnect only OTHER clients (not the one we need)
   for (const [id, entry] of clientPool) {
     if (id !== account.id) {
       try { 
@@ -91,17 +91,17 @@ async function _getClientForAccount(account: TelegramAccount): Promise<TelegramC
       clientPool.delete(id);
     }
   }
-  
-  // Wait for gramjs to fully close connections
-  await new Promise(r => setTimeout(r, 3000));
 
-  // Always disconnect and recreate — don't reuse cached clients
+  // Check if we already have a working client for this account
   const cached = clientPool.get(account.id);
   if (cached) {
-    try { 
-      cached.client._destroyed = true;
-      await cached.client.disconnect();
+    try {
+      if (cached.client.connected) {
+        return cached.client;
+      }
     } catch {}
+    // Not connected — clean up and recreate
+    try { await cached.client.disconnect(); } catch {}
     clientPool.delete(account.id);
   }
 
