@@ -69,10 +69,14 @@ def _try_unpack_nonweb(raw: bytes) -> tuple[int, bytes] | None:
 
 
 def _pack_telethon(dc_id: int, auth_key: bytes) -> str:
-    """Pack into Telethon StringSession format (without '1' prefix)."""
+    """
+    Pack into Telethon StringSession format.
+    Returns the FULL string including "1" prefix and base64 WITH padding.
+    Telethon expects: "1" + base64url_with_padding(pack(">B4sH256s", ...))
+    """
     ip_bytes = ipaddress.ip_address(DC_IP_MAP[dc_id]).packed
     packed = struct.pack(">B4sH256s", dc_id, ip_bytes, 443, auth_key)
-    return base64.urlsafe_b64encode(packed).decode("ascii")
+    return "1" + base64.urlsafe_b64encode(packed).decode("ascii")
 
 
 def gramjs_to_telethon_session(gramjs_session: str) -> StringSession:
