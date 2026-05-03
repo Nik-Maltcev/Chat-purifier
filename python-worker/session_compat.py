@@ -1,9 +1,8 @@
 """
 Convert gramjs StringSession to Telethon StringSession.
 
-gramjs web sessions use variable-length server hostnames (e.g. "pluto.web.telegram.org"),
-while Telethon sessions use 4-byte packed IPv4 addresses. The binary formats differ,
-so a simple prefix strip is not enough — we must unpack and repack.
+gramjs web sessions use variable-length server hostnames,
+while Telethon sessions use 4-byte packed IPv4 addresses.
 
 Reference: https://gist.github.com/divyam234/127aae273a424f1e41c77eeae99503bf
 """
@@ -26,74 +25,93 @@ DC_IP_MAP: dict[int, str] = {
 }
 
 
-def _base64_decoded_length(s: str) -> int:
-    """Calculate the decoded byte length of a base64url string."""
-    padding = s.count("=") + s.count("\n") + s.count("\r")
-    return int((3 * (len(s) / 4)) - padding)
+def _b64decode(s: str) -> bytes:
+    """Decode base64url with auto-padding."""
+    return base64.urlsafe_b64decode(s + "=" * (-len(s) % 4))
 
 
-def _unpack_gramjs_web(session_b64: str) -> tuple[int, bytes]:
-    """
-    Unpack a gramjs WEB StringSession (variable-length server hostname).
-    Returns (dc_id, auth_key).
-    """
-    raw = base64.urlsafe_b64decode(session_b64 + "=" * (-len(session_b64) % 4))
-    # Format: >BH{server_len}sH256s
-    # The server_length field is at offset 1 (2 bytes, big-endian unsigned short)
-    server_length = struct.unpack_from(">H", raw, 1)[0]
-    fmt = ">BH{}sH256s".format(server_length)
-    dc_id, _server_len, _server_addr, _port, auth_key = struct.unpack(fmt, raw)
-    return dc_id, auth_key
+def _try_unpack_web(raw: bytes) -> tuple[int, bytes] | None:
+    """Try to unpack as gramjs WEB session. Returns (dc_id, auth_key) or None."""
+    try:
+        if len(raw) < 5:
+            return None
+        dc_id = struct.unpack_from(">B", raw, 0)[0]
+        if dc_id not in DC_IP_MAP:
+            return None
+        server_length = struct.unpack_from(">H", raw, 1)[0]
+        expected = 1 + 2 + server_length + 2 + 256  # B + H + server + H + auth_key
+        if len(raw) != expected:
+            return None
+        fmt = ">BH{}sH256s".format(server_length)
+        dc_id, _slen, _saddr, _port, auth_key = struct.unpack(fmt, raw)
+        return dc_id, auth_key
+    except (struct.error, ValueError):
+        return None
 
 
-def _unpack_gramjs_nonweb(session_b64: str) -> tuple[int, bytes]:
-    """
-    Unpack a gramjs non-web StringSession (same binary format as Telethon).
-    Returns (dc_id, auth_key).
-    """
-    raw = base64.urlsafe_b64decode(session_b64 + "=" * (-len(session_b64) % 4))
-    # IPv4 = 4 bytes, IPv6 = 16 bytes
-    server_length = 4 if len(raw) == 263 else 16
-    fmt = ">B{}sH256s".format(server_length)
-    dc_id, _ip_bytes, _port, auth_key = struct.unpack(fmt, raw)
-    return dc_id, auth_key
+def _try_unpack_nonweb(raw: bytes) -> tuple[int, bytes] | None:
+    """Try to unpack as gramjs non-web / Telethon session. Returns (dc_id, auth_key) or None."""
+    try:
+        # IPv4: 1+4+2+256 = 263, IPv6: 1+16+2+256 = 275
+        if len(raw) == 263:
+            ip_len = 4
+        elif len(raw) == 275:
+            ip_len = 16
+        else:
+            return None
+        fmt = ">B{}sH256s".format(ip_len)
+        dc_id, _ip, _port, auth_key = struct.unpack(fmt, raw)
+        if dc_id not in DC_IP_MAP:
+            return None
+        return dc_id, auth_key
+    except (struct.error, ValueError):
+        return None
 
 
-def _pack_telethon_session(dc_id: int, auth_key: bytes) -> str:
-    """
-    Pack dc_id + auth_key into Telethon StringSession format.
-    Returns the full string including the "1" prefix.
-    """
-    ip_bytes = ipaddress.ip_address(DC_IP_MAP[dc_id]).packed  # 4 bytes
+def _pack_telethon(dc_id: int, auth_key: bytes) -> str:
+    """Pack into Telethon StringSession format (without '1' prefix)."""
+    ip_bytes = ipaddress.ip_address(DC_IP_MAP[dc_id]).packed
     packed = struct.pack(">B4sH256s", dc_id, ip_bytes, 443, auth_key)
-    return "1" + base64.urlsafe_b64encode(packed).decode("ascii")
+    return base64.urlsafe_b64encode(packed).decode("ascii")
 
 
 def gramjs_to_telethon_session(gramjs_session: str) -> StringSession:
     """
     Convert a gramjs StringSession to a Telethon StringSession.
-
-    Handles both web sessions (variable-length hostname) and
-    non-web sessions (4/16-byte IP address).
+    Handles web sessions, non-web sessions, and already-Telethon sessions.
     """
-    if not gramjs_session or not gramjs_session.startswith("1"):
-        # Try as-is (might already be Telethon format)
-        return StringSession(gramjs_session)
+    if not gramjs_session:
+        raise ValueError("Empty session string")
 
-    payload = gramjs_session[1:]  # strip version prefix "1"
+    # Strip the "1" version prefix if present
+    if gramjs_session.startswith("1"):
+        payload = gramjs_session[1:]
+    else:
+        payload = gramjs_session
 
-    # Determine if this is a web session or non-web session
-    # by checking the decoded byte length.
-    # Non-web IPv4: 1 + 4 + 2 + 256 = 263 bytes → base64 = 352 chars
-    # Non-web IPv6: 1 + 16 + 2 + 256 = 275 bytes → base64 = 368 chars
-    decoded_len = _base64_decoded_length(payload)
+    raw = _b64decode(payload)
 
-    if decoded_len in (263, 275):
-        # Non-web session — same format as Telethon, just pass through
+    # Try non-web first (same format as Telethon — most common for non-browser clients)
+    result = _try_unpack_nonweb(raw)
+    if result:
+        dc_id, auth_key = result
+        telethon_b64 = _pack_telethon(dc_id, auth_key)
+        return StringSession(telethon_b64)
+
+    # Try web format (variable-length hostname)
+    result = _try_unpack_web(raw)
+    if result:
+        dc_id, auth_key = result
+        telethon_b64 = _pack_telethon(dc_id, auth_key)
+        return StringSession(telethon_b64)
+
+    # Last resort: try passing directly to Telethon
+    try:
         return StringSession(payload)
+    except ValueError:
+        pass
 
-    # Web session — needs conversion
-    dc_id, auth_key = _unpack_gramjs_web(payload)
-    telethon_str = _pack_telethon_session(dc_id, auth_key)
-    # telethon_str already has "1" prefix, StringSession expects without it
-    return StringSession(telethon_str[1:])
+    raise ValueError(
+        f"Cannot convert session string (decoded length={len(raw)}, "
+        f"payload length={len(payload)})"
+    )
