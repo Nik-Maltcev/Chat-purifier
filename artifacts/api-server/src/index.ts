@@ -21,10 +21,14 @@ if (Number.isNaN(port) || port <= 0) {
 // Start Python Telethon worker as a child process
 // ---------------------------------------------------------------------------
 function startPythonWorker(): void {
-  const workerDir = path.resolve(process.cwd(), "python-worker");
+  const projectRoot = process.cwd();
+  const workerDir = path.resolve(projectRoot, "python-worker");
+  const pythonBin = path.resolve(projectRoot, "python-worker", ".venv", "bin", "python3");
   const workerPort = process.env["TELEGRAM_WORKER_PORT"] ?? "8001";
 
-  const child = spawn("python-worker/.venv/bin/python3", ["worker.py"], {
+  logger.info({ pythonBin, workerDir, workerPort }, "Starting Python worker");
+
+  const child = spawn(pythonBin, ["worker.py"], {
     cwd: workerDir,
     env: {
       ...process.env,
@@ -54,7 +58,7 @@ function startPythonWorker(): void {
   });
 
   child.on("error", (err) => {
-    logger.error({ err }, "Failed to start Python worker");
+    logger.error({ err, pythonBin, workerDir }, "Failed to start Python worker");
   });
 
   logger.info({ workerDir, workerPort }, "Python worker started");
