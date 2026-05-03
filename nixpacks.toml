@@ -1,10 +1,11 @@
 [phases.setup]
-nixPkgs = ["nodejs_20", "pnpm", "python3", "python3Packages.pip"]
+nixPkgs = ["nodejs_20", "pnpm", "python3", "python3Packages.pip", "python3Packages.virtualenv"]
 
 [phases.install]
 cmds = [
   "pnpm install --no-frozen-lockfile",
-  "pip install -r python-worker/requirements.txt"
+  "python3 -m venv python-worker/.venv",
+  "python-worker/.venv/bin/pip install -r python-worker/requirements.txt"
 ]
 
 [phases.build]

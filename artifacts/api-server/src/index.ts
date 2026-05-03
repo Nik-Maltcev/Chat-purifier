@@ -24,7 +24,7 @@ function startPythonWorker(): void {
   const workerDir = path.resolve(process.cwd(), "python-worker");
   const workerPort = process.env["TELEGRAM_WORKER_PORT"] ?? "8001";
 
-  const child = spawn("python3", ["worker.py"], {
+  const child = spawn("python-worker/.venv/bin/python3", ["worker.py"], {
     cwd: workerDir,
     env: {
       ...process.env,
