@@ -12,7 +12,8 @@
  */
 import { db, sessionsTable, chatResultsTable } from "@workspace/db";
 import { eq, and, gte } from "drizzle-orm";
-import { fetchChatMessages, getFloodWaitSeconds, isAuthError, resetAllClients, disconnectClientForAccount } from "./telegram.js";
+import { fetchChatMessagesViaWorker } from "./telegram-worker-client.js";
+import { getFloodWaitSeconds, isAuthError } from "./telegram.js";
 import { analyzeChat } from "./deepseek.js";
 import { logger } from "./logger.js";
 import { getSettingValue } from "./settings-store.js";
@@ -83,9 +84,7 @@ export function stopProcessor(sessionId: number): void {
   if (controller) {
     controller.abort();
     activeProcessors.delete(sessionId);
-    // Reset all telegram clients to stop background reconnect loops
-    resetAllClients();
-    logger.info({ sessionId }, "Processor stopped, clients reset");
+    logger.info({ sessionId }, "Processor stopped");
   }
 }
 
@@ -257,7 +256,7 @@ async function processSession(sessionId: number, signal: AbortSignal): Promise<v
             .set({ status: "fetching", updatedAt: new Date() })
             .where(eq(chatResultsTable.id, chat.id));
 
-          const result = await fetchChatMessages(
+          const result = await fetchChatMessagesViaWorker(
             chat.chatIdentifier,
             freshSession.messagesCount,
             currentAccount,
@@ -377,11 +376,6 @@ async function processSession(sessionId: number, signal: AbortSignal): Promise<v
           await db.update(sessionsTable).set({ status: "paused", updatedAt: new Date() }).where(eq(sessionsTable.id, sessionId));
           activeProcessors.delete(sessionId);
           return;
-        }
-        
-        // Also disconnect the flood-waited client to free resources
-        if (currentAccount) {
-          disconnectClientForAccount(currentAccount.id);
         }
         
         continue;
