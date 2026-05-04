@@ -68,7 +68,14 @@ class ClientPool:
                 proxy_password,
             )
 
-        client = TelegramClient(session, api_id, api_hash, proxy=proxy)
+        client = TelegramClient(
+            session,
+            api_id,
+            api_hash,
+            proxy=proxy,
+            receive_updates=False,
+            flood_sleep_threshold=0,
+        )
         await client.connect()
 
         self._clients[account_id] = client
@@ -82,12 +89,6 @@ class ClientPool:
             log_ctx["proxy_host"] = proxy_host
 
         logger.info("telethon_client_connected", **log_ctx)
-
-        # Schedule background reconnect monitoring
-        asyncio.create_task(
-            self._monitor_disconnection(account_id, account),
-            name=f"reconnect-monitor-{account_id}",
-        )
 
         return client
 
