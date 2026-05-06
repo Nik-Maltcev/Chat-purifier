@@ -33,6 +33,7 @@ const LANGUAGES = [
   { value: "es", label: "🇪🇸 Español" },
   { value: "it", label: "🇮🇹 Italiano" },
   { value: "fr", label: "🇫🇷 Français" },
+  { value: "pt", label: "🇧🇷 Português" },
 ];
 
 type FormValues = z.infer<typeof formSchema>;

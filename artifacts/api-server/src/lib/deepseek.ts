@@ -22,6 +22,7 @@ const LANG_CONFIG: Record<string, { name: string; promptLang: string }> = {
   es: { name: "Español", promptLang: "en español" },
   it: { name: "Italiano", promptLang: "in italiano" },
   fr: { name: "Français", promptLang: "en français" },
+  pt: { name: "Português", promptLang: "em português" },
 };
 
 interface AnalysisResult {
