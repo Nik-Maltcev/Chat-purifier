@@ -14,7 +14,7 @@ import { db, sessionsTable, chatResultsTable } from "@workspace/db";
 import { eq, and, gte } from "drizzle-orm";
 import { fetchChatMessagesViaWorker } from "./telegram-worker-client.js";
 import { getFloodWaitSeconds, isAuthError } from "./telegram.js";
-import { analyzeChat } from "./deepseek.js";
+import { analyzeChat, checkTitleLanguage } from "./deepseek.js";
 import { logger } from "./logger.js";
 import { getSettingValue } from "./settings-store.js";
 import {
@@ -291,6 +291,38 @@ async function processSession(sessionId: number, signal: AbortSignal): Promise<v
               updatedAt: new Date(),
             }).where(eq(chatResultsTable.id, chat.id));
           } else {
+            // Check title language for non-Russian sessions
+            // Skip chats with titles in wrong language (e.g., Russian/Chinese/Arabic when English is selected)
+            if (freshSession.language !== "ru" && title) {
+              const langCheck = await checkTitleLanguage(title, freshSession.language);
+              logger.info({
+                chatTitle: title,
+                targetLanguage: freshSession.language,
+                isTargetLanguage: langCheck.isTargetLanguage,
+                detectedLanguage: langCheck.detectedLanguage,
+                confidence: langCheck.confidence,
+              }, "Title language check");
+
+              if (!langCheck.isTargetLanguage && langCheck.confidence >= 70) {
+                const langNames: Record<string, string> = {
+                  ru: "русский", en: "английский", de: "немецкий", es: "испанский",
+                  fr: "французский", it: "итальянский", pt: "португальский",
+                  ar: "арабский", zh: "китайский", ja: "японский", ko: "корейский",
+                };
+                const detectedName = langNames[langCheck.detectedLanguage] || langCheck.detectedLanguage;
+                await db.update(chatResultsTable).set({
+                  status: "skipped",
+                  verdict: "filter",
+                  chatTitle: title,
+                  chatUsername: username,
+                  membersCount,
+                  aiSummary: `Заголовок на другом языке (${detectedName})`,
+                  updatedAt: new Date(),
+                }).where(eq(chatResultsTable.id, chat.id));
+                return "done";
+              }
+            }
+
             await db.update(chatResultsTable)
               .set({ status: "analyzing", chatTitle: title, chatUsername: username, membersCount, updatedAt: new Date() })
               .where(eq(chatResultsTable.id, chat.id));

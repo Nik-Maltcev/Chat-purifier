@@ -15,15 +15,103 @@ const CATEGORIES = [
   "Хобби", "Экономика", "Юмор", "Юриспруденция", "Другое",
 ];
 
-const LANG_CONFIG: Record<string, { name: string; promptLang: string }> = {
-  ru: { name: "Русский", promptLang: "на русском" },
-  en: { name: "English", promptLang: "in English" },
-  de: { name: "Deutsch", promptLang: "auf Deutsch" },
-  es: { name: "Español", promptLang: "en español" },
-  it: { name: "Italiano", promptLang: "in italiano" },
-  fr: { name: "Français", promptLang: "en français" },
-  pt: { name: "Português", promptLang: "em português" },
+const LANG_CONFIG: Record<string, { name: string; promptLang: string; code: string }> = {
+  ru: { name: "Русский", promptLang: "на русском", code: "ru" },
+  en: { name: "English", promptLang: "in English", code: "en" },
+  de: { name: "Deutsch", promptLang: "auf Deutsch", code: "de" },
+  es: { name: "Español", promptLang: "en español", code: "es" },
+  it: { name: "Italiano", promptLang: "in italiano", code: "it" },
+  fr: { name: "Français", promptLang: "en français", code: "fr" },
+  pt: { name: "Português", promptLang: "em português", code: "pt" },
 };
+
+interface TitleLanguageResult {
+  isTargetLanguage: boolean;
+  detectedLanguage: string;
+  confidence: number;
+}
+
+/**
+ * Check if chat title is in the target language.
+ * Used to filter out chats in other languages before full analysis.
+ */
+export async function checkTitleLanguage(
+  chatTitle: string,
+  targetLanguage: string,
+): Promise<TitleLanguageResult> {
+  const apiKey = await getSettingValue("deepseek_api_key") || process.env.DEEPSEEK_API_KEY || process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    throw new Error("API ключ не настроен. Зайдите в Настройки и укажите ключ.");
+  }
+
+  const lang = LANG_CONFIG[targetLanguage] || LANG_CONFIG.ru;
+
+  const prompt = `Analyze the language of this chat/channel title: "${chatTitle}"
+
+Determine what language the title is written in. Consider:
+- The script used (Latin, Cyrillic, Arabic, Chinese, etc.)
+- Common words and patterns
+- Mixed language titles should be classified by the dominant language
+
+Reply ONLY in JSON format:
+{
+  "isTargetLanguage": true/false (is it in ${lang.name}?),
+  "detectedLanguage": "language code (en, ru, de, es, fr, it, pt, ar, zh, ja, ko, etc.)",
+  "confidence": number 0-100 (how confident you are)
+}`;
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 30_000);
+
+  let response: Response;
+  try {
+    response = await fetch("https://api.deepseek.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: "deepseek-v4-flash",
+        messages: [{ role: "user", content: prompt }],
+        temperature: 0.1,
+        max_tokens: 200,
+      }),
+      signal: controller.signal,
+    });
+  } finally {
+    clearTimeout(timeoutId);
+  }
+
+  if (!response.ok) {
+    const errText = await response.text();
+    throw new Error(`DeepSeek API error ${response.status}: ${errText}`);
+  }
+
+  const data = await response.json() as {
+    choices: Array<{ message: { content: string } }>;
+  };
+
+  const content = data.choices[0]?.message?.content?.trim() || "";
+  logger.info({ content, chatTitle, targetLanguage }, "Title language check response");
+
+  const jsonMatch = content.match(/\{[\s\S]*\}/);
+  if (!jsonMatch) {
+    // Default to allowing the chat if we can't parse
+    return { isTargetLanguage: true, detectedLanguage: "unknown", confidence: 0 };
+  }
+
+  try {
+    const parsed = JSON.parse(jsonMatch[0]);
+    return {
+      isTargetLanguage: Boolean(parsed.isTargetLanguage),
+      detectedLanguage: String(parsed.detectedLanguage || "unknown"),
+      confidence: Number(parsed.confidence) || 0,
+    };
+  } catch {
+    return { isTargetLanguage: true, detectedLanguage: "unknown", confidence: 0 };
+  }
+}
 
 interface AnalysisResult {
   verdict: "keep" | "filter";

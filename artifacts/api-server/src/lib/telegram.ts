@@ -84,10 +84,7 @@ async function _getClientForAccount(account: TelegramAccount): Promise<TelegramC
   // Disconnect only OTHER clients (not the one we need)
   for (const [id, entry] of clientPool) {
     if (id !== account.id) {
-      try { 
-        entry.client._destroyed = true;
-        await entry.client.disconnect();
-      } catch {}
+      try { await entry.client.disconnect(); } catch {}
       clientPool.delete(id);
     }
   }
